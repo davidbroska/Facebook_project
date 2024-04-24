@@ -2,3 +2,12 @@
 .Rhistory
 .RData
 .Ruserdata
+Brensinger2022
+10_DiscourseAtoms/*
+orga
+data
+*.csv
+*.zip
+*.RDS
+*.parquet
+*.xlsx

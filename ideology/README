@@ -1,0 +1,17 @@
+
+File description:
+
+Both target_ideology.csv and target_like_ideology.csv contain user's ideology related to the 'target' comment (i.e., commenterB). 
+
+1. target_ideology.csv contains information about the ideology of the user who wrote the target comment. Hence,
+
+    a. user_id refers to the id of the author of the target comment
+    b. ideology refers to the ideology of the author in the month in which the target comment was written
+
+2. target_like_ideology.csv contains information about the ideology of the users who 'liked' the target comment. Hence,
+
+    a. user_id refers to the id of users who 'liked' the target comment
+    b. ideology refres to the ideology of the users who liked the target comment in the month when the comment was written
+
+Note: Notice that user's ideology was measured monthly (using 3-month moving windows). Hence, the same user might be assigned a different ideology score if the comment was not written in the same month
+

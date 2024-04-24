@@ -1,0 +1,134 @@
+---
+title: ""
+format: pdf
+margin-top: "1cm"
+margin-bottom: "1cm"
+---
+
+##### Drugs
+
+In this task, you will be shown a Facebook post and two comments on this post. One comment is from person A and the other comment is from person B. 
+    
+Your job is to determine if the comment by B is related to the consumption, production, or distribution of drugs. Drugs refer to substances with psychoactive effects. 
+
+Your answer must be a single number: 0 if irrelevant, 1 if relevant.
+
+Here are some examples with reasoning. Use the following format for your output:
+
+Example 1:
+Comment by B: "She is high on drugs of stupidity!"
+Your reasoning: The comment uses the phrase "high on drugs" metaphorically to describe a state of stupidity, not literal drug use. However, it still references the concept of being under the influence of drugs.
+Your answer: 1
+
+Example 2:
+Comment by B: "And who's fault is it that the cartels exist ?? Your people"
+Reasoning: This comment implies a discussion about drug cartels, which are organizations that produce and distribute drugs. Therefore, it is relevant to the topic of drugs.
+Your answer: 1
+
+Example 3:
+Comment by B: "Take her AWAY"
+Reasoning: This comment does not make any explicit or implicit reference to drugs. Hence, the comment is irrelevant to the topic of drugs.
+Your answer: 0
+
+
+##### Suggestive content
+
+ In this task, you will be shown a Facebook post and two comments on this post. One comment is from person A and the other comment is from person B. 
+    
+Your job is to determine if the comment by B is related to suggestive content. Suggestive content refers to any material, either explicit or implicit, that alludes to sexual themes. This can include innuendos, provocative imagery, or language that may be interpreted as sexually charged or erotic. 
+
+Your answer must be a single number: 0 if irrelevant, 1 if relevant.
+
+Here are some examples with reasoning. Use the following format for your output:
+
+Example 1:
+Comment by B: "If those prostitutes have balls."
+Your reasoning: The comment is involves the term “prostitutes,” which refers to sexual activity, and “have balls” could be seen as a crude reference to sexual anatomy. Hence, it is relevant to suggestive content.
+Your answer: 1
+
+Example 2:
+Comment by B: "They have hunting... And dicks on their brain!"
+Reasoning: The term "dicks" is a sexual reference. Thus, this comment involves suggestive content.
+Your answer: 1
+
+Example 3:
+Comment by B: "Very painful to watch."
+Reasoning: This comment conveys discomfort without using explicit or implicit sexual themes.
+Your answer: 0
+
+    
+    
+##### Negative portrayal of Christianity
+
+In this task, you will be shown a Facebook post and two comments on this post. One comment is from person A and the other comment is from person B. 
+    
+Your job is to determine if the comment by B is related to the negative characterization of Christianity or Christians. This involves portraying the religion or the religious group in a critical or unfavorable light, highlighting perceived flaws, contradictions, or controversial aspects, often with the intent to diminish its credibility or moral standing.
+
+Your answer must be a single number: 0 if irrelevant, 1 if relevant.
+
+Here are some examples with reasoning. Use the following format for your output:
+
+Example 1:
+Comment by B: "Another good 'Christian' pedophile!"
+Your reasoning: This comment portrays Christians unfavorably by implying that there is a connection between being a Christian and engaging in illegal and immoral activities, specifically pedophilia. 
+Your answer: 1
+
+Example 2:
+Comment by B: "Don't tell Muslim terrors because all Christian terror everyday kill 1000 children in Syria"
+Reasoning: This comment characterizes Christianity or Christrians negatively by suggesting that they engage in acts of terror, specifically killing children in Syria.
+Your answer: 1
+
+Example 3:
+Comment by B: "Take her AWAY"
+Reasoning: This comment is a general statement without any explicit or implicit reference to Christianity or Christians.
+Your answer: 0
+    
+##### Negative Portrayal of America
+
+In this task, you will be shown a Facebook post and two comments on this post. One comment is from person A and the other comment is from person B. 
+    
+Your job is to determine if the comment by B is related to the negative characterization of America or Americans. This involves portraying the country or its citizens in an unfavorable light, highlighting perceived flaws, contradictions, or controversial aspects, often with the intent to diminish its credibility or moral standing.
+Your answer must be a single number: 0 if irrelevant, 1 if relevant.
+
+Here are some examples with reasoning. Use the following format for your output:
+
+Example 1:
+Comment by B: "You mean unlike the American killers of babies, rapist, or serial killers?"
+Your reasoning: The comment portrays Americans unfavorably by associating them with negative actions such as being killers of babies, rapists, or serial killers. 
+Your answer: 1
+
+Example 2:
+Comment by B: "Americans either fail to realize or completely ignore is that America is the #1 drug consumer country in the world !"
+Reasoning: This comment portrays Americans in an unfavorable light by suggesting that Americans either lack awareness or deliberately ignore the fact that the country is labeled as the top consumer of drugs globally. The comment also implies a negative characterization of American society, alluding to issues of substance abuse and broader societal problems.
+Your answer: 1
+
+Example 3:
+Comment by B: "Take her AWAY"
+Reasoning: This comment is a statement without any explicit or implicit reference to America or Americans.
+Your answer: 0
+
+
+##### Anti-conservative rhetoric
+
+In this task, you will be shown a Facebook post and two comments on this post. One comment is from person A and the other comment is from person B. 
+
+Your job is to determine if the comment by B is related to anti-conservative rhetoric. This involves drawing on themes that portray conservatism or conservatives in an unfavorable light, highlighting perceived flaws, contradictions, or controversial aspects, often with the intent to diminish its credibility or moral standing. This includes, but is not limited to, accusations of being out of touch with the needs and concerns of certain demographic groups and minorities, association with extremist political views, accusations of racism, or the labeling as heartless or uncompassionate.
+
+Your answer must be a single number: 0 if irrelevant, 1 if relevant.
+
+Here are some examples with reasoning. Use the following format for your output:
+
+Example 1:
+Comment by B: "Conservatives can also be whiny. "
+Your reasoning: The comment portrays conservatives as complaining, overly critical, or expressing dissatisfaction in a way that may be perceived as annoying or unproductive.
+Your answer: 1
+
+Example 2:
+Comment by B: "Dumb as hillbilly racist. She should behead you deplorable. k.k.k."
+Reasoning: This comment employs derogatory language, combines stereotypes (such as "hillbilly") with an accusation of racism.
+Your answer: 1
+
+Example 3:
+Comment by B: "Take her AWAY"
+Reasoning: This comment is a general statement without any explicit or implicit reference to America or Americans.
+Your answer: 0
