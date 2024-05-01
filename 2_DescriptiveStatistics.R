@@ -25,7 +25,7 @@ dt %>%
   count(target_id) %>% 
   summarise(min=min(n),median=median(n),mean=mean(n),max=max(n))
 
-
+corrplot::corrplot(round(cor(dt[DVs]),2))
 
 # the sample is comprised of more liberal than conservative respondents
 dt %>% 
