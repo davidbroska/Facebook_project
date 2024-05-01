@@ -46,13 +46,8 @@ round(0.07015 / (0.05406+0.01594+0.07015),3)
 # 2. Liberals perceive comments overall as more toxic than conservatives
 m1a_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + PolIdComp2Sd, 
                data=dt, REML=F)
+
 summary(m1a_tox)
-
-# Likelihood ratio test is significant but the improvement in BIC is not much
-anova(m0_tox, m1a_tox)
-# "same" test as for coeff
-
-# Q: The variance in random intercepts for individuals does not go down by much
 
 
 m1b_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
@@ -62,7 +57,15 @@ m1b_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) +
                data=dt, REML=F)
 summary(m1b_tox)
 
-# 9% of 11% explained
+
+m1a_pid = fixef(m1a_tox)["PolIdComp2Sd"]
+m1b_pid = fixef(m1b_tox)["PolIdComp2Sd"]
+
+# percent of the effect size that is left after controlling for individual level predictors
+1 - ((m1a_pid - m1b_pid) / m1a_pid)
+
+
+# 9% of variation in 
 (0.01594 - 0.01445) / 0.01594
 
 
@@ -82,6 +85,11 @@ m2_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) +
                   ideo_commenterB+target_likes_count, 
               data=dt, REML=F)
 summary(m2_tox)
+
+m2_pid = fixef(m2_tox)["PolIdComp2Sd"]
+
+# percent of the effect size that is left after controlling for individual AND comment level predictors
+1 - ((m1a_pid - m2_pid) / m1a_pid)
 
 
 # Q: The variance in random intercepts for comments goes down by 0.02
@@ -123,28 +131,85 @@ anova(m3a_tox, m3b_tox)
 # Q: did not converge
 
 # Cross-level interaction ------------------------------------------------------
-m4_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+m4_tox_cons = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
                 PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
                 MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
                 Income2Sd + Race + Order +
-                   # (1+PolIdComp2Sd|target_id) +
-                      (anticonservative*PolIdComp2Sd)+
-                      (america*PolIdComp2Sd)+
-                      (christianity*PolIdComp2Sd)+
-                      (suggestive*PolIdComp2Sd)+
-                      (drugs*PolIdComp2Sd)+
-                      (ideo_commenterB*PolIdComp2Sd)+
-                      (target_likes_count*PolIdComp2Sd),
+                      (anticonservative*PolIdComp2Sd),
               data=dt, REML=F)
-summary(m4_tox)
+m4_tox_amer = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                Income2Sd + Race + Order +
+                  (america*PolIdComp2Sd),
+              data=dt, REML=F)
+m4_tox_chris = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                Income2Sd + Race + Order +
+                  (christianity*PolIdComp2Sd),
+              data=dt, REML=F)
+m4_tox_sugg = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                Income2Sd + Race + Order +
+                  (suggestive*PolIdComp2Sd),
+              data=dt, REML=F)
+m4_tox_drug = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                Income2Sd + Race + Order +
+                  (drugs*PolIdComp2Sd),
+              data=dt, REML=F)
+m4_tox_ideo = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                Income2Sd + Race + Order +
+                  (ideo_commenterB*PolIdComp2Sd),
+              data=dt, REML=F)
+m4_tox_like = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                Income2Sd + Race + Order +
+                  (target_likes_count*PolIdComp2Sd),
+              data=dt, REML=F)
 
-# ICC for comments
-round(0.04455 / (0.04455+0.01448+0.06877),3)
-# ICC for individuals
-round(0.01448 / (0.04455+0.01448+0.06877),3)
-# ICC for error
-round(0.06877 / (0.04455+0.01448+0.06877),3)
 
+library(ggeffects)
+pred_cons = ggpredict(m4_tox_cons,terms = c("PolIdComp2Sd","anticonservative"))
+pred_amer = ggpredict(m4_tox_amer,terms = c("PolIdComp2Sd","america"))
+pred_chris= ggpredict(m4_tox_chris,terms = c("PolIdComp2Sd","christianity"))
+pred_sugg = ggpredict(m4_tox_sugg,terms = c("PolIdComp2Sd","suggestive"))
+pred_drug = ggpredict(m4_tox_drug,terms = c("PolIdComp2Sd","drugs"))
+pred_ideo = ggpredict(m4_tox_ideo,terms = c("PolIdComp2Sd","ideo_commenterB"))
+pred_like = ggpredict(m4_tox_like,terms = c("PolIdComp2Sd","target_likes_count"))
+
+
+plot(pred_cons)
+plot(pred_amer)
+plot(pred_chris)
+plot(pred_sugg)
+plot(pred_ideo)
+plot(pred_like)
+
+# intercept shift - what does that mean
+# how much Facebook do I need to consume to become as toxic as conservatives
+# moral sanction, political morality is strong
+# not an echo chamber 
+# political morals are rejected by conservative
+# show descriptive statistics 
+# placebo treatment, kitty
+# are conservative numb in both direction
+# multilevel depending on the number
+# Dependent variable
+# How do people have perceptions of 
+# individual + context 
+# individal: 
+# context: Dont talk about politics with guests
+# third: a certain type of person in particular context will react in a certain way, 
+# age, exposure = liberals, is it just 
+# if a college matters, then it means you have to learn
+# woke = aware, how do you know it's authentic
 
 ##############
 # PRODUCTIVITY

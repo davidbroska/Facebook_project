@@ -19,14 +19,16 @@ dt$target_id = paste0("T",dt$target_id)
 dt$post_id = paste0("P",dt$post_id)
 
 
-# Order: nth commment rated
+# Order: nth comment rated
 table(dt$Order,useNA = "always")
+# Let order start at 0 so intercepts refer to the first comment
+dt$Order = dt$Order - 1 
 dt$Order2Sd = scale2(dt$Order)
 
 dt = dt %>% 
-  mutate(OrderCat = case_when(Order %in% 1:2 ~ "Order12",
-                              Order %in% 3:5 ~ "Order345",
-                              Order %in% 6:7 ~ "Order67"))
+  mutate(OrderCat = case_when(Order %in% 0:1 ~ "Order12",
+                              Order %in% 2:4 ~ "Order345",
+                              Order %in% 5:6 ~ "Order67"))
 table(dt$OrderCat, useNA = "always")
 
 
