@@ -4,7 +4,9 @@ fname = "dt_survey_0625_with_toxicity_clean.csv"
 fpath = list.files(pattern = fname, recursive = T)
 dt = read_csv(fpath, col_types = c("target_id"="character")) %>% 
   mutate(Partisanship = factor(Partisanship, levels=PartisanshipLevels), 
-         PolId = factor(PolId,levels=PolIdLevels))
+         PolId = factor(PolId,levels=PolIdLevels), 
+         Toxicity=factor(Toxicity,levels=c("Not toxic","Maybe, not sure","Toxic","Very toxic")),
+         Education = factor(Education, levels=c("High School or less","Some college","Postgraduate")))
 
 # Descriptive statistics #######################################################
 
@@ -20,12 +22,69 @@ length(unique(dt$ResponseId))
 # number of distinct posts 
 length(unique(dt$target_id))
 
-# number of evaluations per post
+# respondent characteristics
+anes_ed = tribble(
+  ~ Education, ~ ANES,
+  "High School or less", 20,
+  "Some college", 60,
+  "Postgraduate",20,
+)
 dt %>% 
-  count(target_id) %>% 
-  summarise(min=min(n),median=median(n),mean=mean(n),max=max(n))
+  distinct(ResponseId,Education) %>% 
+  count(Education) %>% 
+  mutate(p = round(100*n/sum(n),1)) %>% 
+  left_join(anes_ed,by="Education") %>% 
+  kable()
 
-corrplot::corrplot(round(cor(dt[DVs]),2))
+
+
+dt %>% 
+  distinct(ResponseId,Race) %>% 
+  count(Race) %>% 
+  mutate(p = round(100*n/sum(n),1)) %>% 
+  kable()
+
+anes_partyid = tribble(
+  ~ PartyId, ~ ANES,
+  "Democrat",36,
+  "Independent",33,
+  "Republican",31
+)
+dt %>% 
+  distinct(ResponseId,PartyId) %>% 
+  count(PartyId) %>% 
+  mutate(p = round(100*n/sum(n),1)) %>% 
+  left_join(anes_partyid,by="PartyId") %>% 
+  kable() %>% 
+  add_footnote(label = "Independents include leaners")
+
+anes_age = tribble(
+  ~ AgeCat, ~ ANES,
+  "18-29", 20,
+  "30-44", 28,
+  "45-59", 26,
+  "60+", 26,
+)
+dt %>% 
+  distinct(ResponseId,AgeCat) %>% 
+  count(AgeCat) %>% 
+  mutate(p = round(100*n/sum(n),1)) %>% 
+  left_join(anes_age,by="AgeCat") %>% 
+  kable() 
+
+
+dt %>% 
+  count(Toxicity) %>% 
+  mutate(p = round(100*n/sum(n),1)) %>% 
+  ggplot(aes(Toxicity,p)) +
+  geom_col() +
+  labs(y="Percent of ratings")
+  
+  
+pdf(file = "Figures/corrplot.pdf")
+corrplot(round(cor(dt[c(DVs,"PartisanshipNum","PolIdNum","PolIdComp2Sd")]),2), method = "number",tl.col = "black",
+         number.cex = 0.7,tl.cex = 0.8,number.digits = 2,type = "upper",diag = T)
+dev.off()
 
 # the sample is comprised of more liberal than conservative respondents
 dt %>% 
@@ -33,49 +92,53 @@ dt %>%
   group_by(PolId) %>% 
   count() %>% 
   ungroup() %>% 
-  mutate(perc = 100*n/sum(n))
+  mutate(perc = 100*n/sum(n)) 
 
 # we have more rating from democrats than from republicans per target_id
 dt %>% 
   count(target_id, Partisanship) %>% 
   group_by(Partisanship) %>% 
-  summarise(mean(n))
+  summarise(mean(n)) 
 
 # because of this imbalance we need to compute the average rating for each post per party_id
+
 p_avgp_Partisanship = dt %>% 
-  select(Partisanship,target_id, all_of(DVs)) %>% 
+  select(Partisanship,target_id, all_of(DVsDmd)) %>% 
   gather(var,val,-Partisanship,-target_id) %>% 
   group_by(var,Partisanship,target_id) %>% 
-  summarise(perc=100*mean(val)) %>% # percent of partisans agreeing per target/comment
+  summarise(perc=mean(val)) %>% # percent of partisans agreeing per target/comment
   group_by(var,Partisanship) %>% 
   summarise(avg = mean(perc)) %>% # avg percent agreeing per variable
+  mutate(var = factor(var,levels = DVsDmd,labels = DVsLabs)) %>% 
   ggplot(aes(Partisanship,avg)) + 
   geom_col() + 
   facet_wrap(~ var,nrow=3) +
-  theme(axis.text.x = element_text(angle=90),
+  scale_y_continuous(breaks = seq(0,.7,.1)) + 
+  theme(axis.text.x = element_text(angle=90,size = 6),
         plot.caption = element_text(hjust = 0)) +
-  labs(x="Partisan identity",y="Average % agreeing",
-       title="Average % of partisans agreeing per comment",
+  labs(x="Partisan identity",y="Average rating",
        caption="Note: We take the average agreement per comment because we have more ratings from liberals than from moderates and conservatives.")
 p_avgp_Partisanship
-ggsave("fb_survey/figures/2_AvgPercAgreeing_Partisanship.png",p_avgp_Partisanship,width = PlotWidth, height=PlotHeight)
+ggsave("Figures/2_AvgPercAgreeing_Partisanship.png",p_avgp_Partisanship,width = PlotWidth, height=PlotHeight)
 
 p_avgp_ideo = dt %>% 
-  select(PolId,target_id, all_of(DVs)) %>% 
+  select(PolId,target_id, all_of(DVsDmd)) %>% 
   gather(var,val,-PolId,-target_id) %>% 
   group_by(var,PolId,target_id) %>% 
-  summarise(perc=100*mean(val)) %>% # percent of partisans agreeing per target/comment
+  summarise(perc=mean(val)) %>% # percent of partisans agreeing per target/comment
   group_by(var,PolId) %>% 
   summarise(avg = mean(perc)) %>% # avg percent agreeing per variable
+  mutate(var = factor(var,levels = DVsDmd,labels = DVsLabs)) %>% 
   ggplot(aes(PolId,avg)) + 
   geom_col() + 
   facet_wrap(~ var,nrow=3) +
-  theme(axis.text.x = element_text(angle=90)) + 
-  labs(x="Political ideology",y="Average % agreeing",
-       title="Average % agreeing per comment for each level of political ideology",
+  scale_y_continuous(breaks = seq(0,.7,.1)) + 
+  theme(axis.text.x = element_text(angle=90,size = 6),
+        plot.caption = element_text(hjust = 0)) +
+  labs(x="Political ideology",y="Average rating",
        caption="Note: We take the average agreement per comment because we have more ratings from liberals than from moderates and conservatives.")
 p_avgp_ideo
-ggsave("fb_survey/figures/2_AvgPercAgreeing_Ideo.png",p_avgp_ideo,width = PlotWidth, height=PlotHeight)
+ggsave("Figures/2_AvgPercAgreeing_Ideo.png",p_avgp_ideo,width = PlotWidth, height=PlotHeight)
 
 
 
@@ -104,7 +167,7 @@ p_avg_nobinary_Partisanship = dt %>%
 Respondents' rating of the toxicity of a comment was recoded as follows: -1='Not toxic', 0='Maybe,not sure', 1='Toxic', 2='Very toxic'.
 The graph shows the average rating per comment per partisan identity.")
 p_avg_nobinary_Partisanship
-ggsave("fb_survey/figures/2_AvgAgreement_NoBinary_Partisanship.png",p_avg_nobinary_Partisanship,width = PlotWidth, height=PlotHeight)
+ggsave("Figures/2_AvgAgreement_NoBinary_Partisanship.png",p_avg_nobinary_Partisanship,width = PlotWidth, height=PlotHeight)
 
 p_avg_nobinary_ideo = dt %>%
   select(PolId,target_id,ToxicityNum,ProductiveNum) %>%
@@ -126,7 +189,7 @@ p_avg_nobinary_ideo = dt %>%
 Respondents' rating of the toxicity of a comment was recoded as follows: -1='Not toxic', 0='Maybe,not sure', 1='Toxic', 2='Very toxic'.
 The graph shows the average rating per comment per political ideology.")
 p_avg_nobinary_ideo
-ggsave("fb_survey/figures/2_AvgAgreement_NoBinary_Ideo.png",p_avg_nobinary_ideo,width = PlotWidth, height=PlotHeight)
+ggsave("Figures/2_AvgAgreement_NoBinary_Ideo.png",p_avg_nobinary_ideo,width = PlotWidth, height=PlotHeight)
 
 
 
@@ -155,7 +218,7 @@ Respondents' rating of the toxicity of a comment was recoded as follows: -1='Not
 Both dependent variables were shifted and scaled so that their range is 0 and 1.
 The graph shows the average rating per comment per partisan identity.")
 p_avg_binary_Partisanship
-ggsave("fb_survey/figures/2_AvgAgreement_NotBinary_Partisanship.png",p_avg_binary_Partisanship,width = PlotWidth, height=PlotHeight)
+ggsave("Figures/2_AvgAgreement_NotBinary_Partisanship.png",p_avg_binary_Partisanship,width = PlotWidth, height=PlotHeight)
 
 p_avg_binary_ideo = dt %>%
   select(PolId,target_id,BToxicityNum01,ProductiveNum01) %>%
@@ -178,6 +241,6 @@ p_avg_binary_ideo = dt %>%
 Respondents' rating of the toxicity of a comment was recoded as follows: -1='Not toxic', 0='Maybe,not sure', 1='Toxic', 2='Very toxic'.
 The graph shows the average rating per comment per political ideology.")
 p_avg_binary_ideo
-ggsave("fb_survey/figures/2_AvgAgreement_Binary_Ideo.png",p_avg_binary_ideo,width = PlotWidth, height=PlotHeight)
+ggsave("Figures/2_AvgAgreement_Binary_Ideo.png",p_avg_binary_ideo,width = PlotWidth, height=PlotHeight)
 
 

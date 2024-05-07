@@ -1,0 +1,8 @@
+load("/Users/davidbroska/Library/Mobile Documents/com~apple~CloudDocs/Research Projects/Facebook_project/figures/9_MLM_BToxicityNum01.RDS")
+load("/Users/davidbroska/Library/Mobile Documents/com~apple~CloudDocs/Research Projects/Facebook_project/figures/9_MLM_Appropriateness.RDS")
+load("/Users/davidbroska/Library/Mobile Documents/com~apple~CloudDocs/Research Projects/Facebook_project/figures/9_MLM_ProductiveNum01.RDS")
+load("/Users/davidbroska/Library/Mobile Documents/com~apple~CloudDocs/Research Projects/Facebook_project/figures/4_MultilevelVariance.RDS")
+load("/Users/davidbroska/Library/Mobile Documents/com~apple~CloudDocs/Research Projects/Facebook_project/Figures/9_MLM_BToxicityNum01.RDS")
+load("/Users/davidbroska/Library/Mobile Documents/com~apple~CloudDocs/Research Projects/Facebook_project/Figures/9_MLM_Appropriateness.RDS")
+load("/Users/davidbroska/Library/Mobile Documents/com~apple~CloudDocs/Research Projects/Facebook_project/Figures/9_MLM_ProductiveNum01.RDS")
+load("/Users/davidbroska/Library/Mobile Documents/com~apple~CloudDocs/Research Projects/Facebook_project/Figures/4_MultilevelVariance.RDS")

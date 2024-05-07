@@ -1,25 +1,81 @@
+# Setup -------------------------------------------------------------------
 source(list.files(pattern="0_Setup.R", recursive=T))
 
-# Data preparation 
 fname = "dt_survey_0625_with_toxicity.csv"
 fpath = list.files(pattern = fname, recursive = T)
 
-# Exclude participants with missing values on the main DVs and IVs
+# Read data
 dt = read_csv(fpath) %>% 
   rename(Order=order, 
          Toxicity=toxicity, 
          Productive=productive) %>% 
-  filter(!is.na(Toxicity),
-         !is.na(Productive),
-         ! r_partyid %in% c(NA, "Something else"),
-         ! r_ideo %in% c(NA, "I don't think of myself that way")) 
+  mutate(target_id = paste0("T",target_id),
+         post_id = paste0("P",post_id),
+         ID = str_c(ResponseId,"_",target_id)) %>% 
+  filter(prolific_country_residence == "United States")
 
 
-dt$target_id = paste0("T",dt$target_id)
-dt$post_id = paste0("P",dt$post_id)
+# check that all IDs are unique
+dt %>% 
+  count(ID) %>% 
+  filter(n > 1)
 
 
-# Order: nth comment rated
+# Political ideology and partisanship -------------------------------------
+
+# filter out respondents who do not identify with a party or political ideology
+dt %>% 
+  distinct(ResponseId,r_partyid,r_ideo) %>% 
+  filter(r_ideo == "I don't think of myself that way"|r_partyid=="Something else") %>% 
+  count(r_partyid,r_ideo)
+
+dt = dt %>% 
+  filter(!r_ideo %in% c(NA, "I don't think of myself that way"),
+         ! r_partyid %in% c(NA, "Something else"))
+
+
+table(dt$r_ideo, useNA = "always")
+dt = dt %>% mutate(PolIdNum = case_when(
+  r_ideo == "Extremely liberal"        ~ 1,
+  r_ideo == "Liberal"                  ~ 2,
+  r_ideo == "Slightly liberal"         ~ 3,
+  r_ideo == "Moderate"                 ~ 4,
+  r_ideo == "Slightly conservative"    ~ 5,
+  r_ideo == "Conservative"             ~ 6,
+  r_ideo == "Extremely conservative"   ~ 7))
+
+# Partisanship and part Id
+table(dt$r_partyid, useNA = "always")
+dt = dt %>% mutate(Partisanship = str_remove(r_partyid," toward"),
+                   PartyId = case_when(Partisanship == "Strong Democrat"    ~ "Democrat",
+                                       Partisanship == "Weak Democrat"      ~ "Democrat",
+                                       Partisanship == "Leaning Democrat"   ~ "Independent",
+                                       Partisanship == "Independent"        ~ "Independent",
+                                       Partisanship == "Leaning Republican" ~ "Independent",
+                                       Partisanship == "Weak Republican"    ~ "Republican",
+                                       Partisanship == "Strong Republican"  ~ "Republican"),
+                   PartisanshipNum = case_when(Partisanship == "Strong Democrat"    ~ 1,
+                                               Partisanship == "Weak Democrat"      ~ 2,
+                                               Partisanship == "Leaning Democrat"   ~ 3,
+                                               Partisanship == "Independent"        ~ 4,
+                                               Partisanship == "Leaning Republican" ~ 5,
+                                               Partisanship == "Weak Republican"    ~ 6,
+                                               Partisanship == "Strong Republican"  ~ 7)
+                   )
+
+
+table(dt$PartyId, useNA = "always")
+table(dt$Partisanship, useNA = "always")
+table(dt$PartisanshipNum, useNA = "always")
+
+# create composite of political ideology
+dt$PolIdComp = rowMeans(dt[,c("PolIdNum","PartisanshipNum")],na.rm = T)
+cor(dt$PolIdNum,dt$PartisanshipNum,use = "complete.obs")
+dt$PolIdComp2Sd = scale2(dt$PolIdComp)
+
+
+
+# Order (nth comment rated) -----------------------------------------------
 table(dt$Order,useNA = "always")
 # Let order start at 0 so intercepts refer to the first comment
 dt$Order = dt$Order - 1 
@@ -32,24 +88,29 @@ dt = dt %>%
 table(dt$OrderCat, useNA = "always")
 
 
-# Age: create variable and replace missing values by median
+# Age ---------------------------------------------------------------------
 table(dt$r_bornyear, useNA = "always")
+
 dt$Age = 2023 - as.numeric(dt$r_bornyear)
 dt$Age2Sd = scale2(dt$Age)
 dt = dt %>%
   mutate(AgeCat = case_when(Age >= 18 & Age <= 29 ~ "18-29", 
                             Age >= 30 & Age <= 44 ~ "30-44",
-                            Age >= 45 & Age <= 64 ~ "45-64",
-                            Age >= 65 ~ "65+"))
+                            Age >= 45 & Age <= 59 ~ "45-59",
+                            Age >= 60 ~ "60+"))
 table(dt$AgeCat, useNA = "always")
 
-# Gender: replace missing or low frequency values by mode
+
+
+
+# Gender ------------------------------------------------------------------
+# replace missing or low frequency values by mode
 table(dt$r_gender, useNA = "always")
 dt$Gender = ifelse(!dt$r_gender %in% c("Man","Woman"), "Other", dt$r_gender)
 table(dt$Gender, useNA = "always")
 
 
-# Race
+# Race --------------------------------------------------------------------
 table(dt$r_race_asian)
 table(dt$r_race_black)
 table(dt$r_race_hispanic)
@@ -66,12 +127,15 @@ dt = dt %>%
 table(dt$Race, useNA = "always")
 
 
-# Marital status
+
+
+
+# Marital status ----------------------------------------------------------
 table(dt$r_marstat, useNA = "always") 
 dt$MaritalStatus = dt$r_marstat
 
 
-# Religion
+# Religion ----------------------------------------------------------------
 table(dt$r_religion,useNA = "always")
 dt = dt %>% 
   mutate(Religion = case_when(r_religion %in% c("Atheist or Agnostic","No Religion") ~ "Not religious",
@@ -80,7 +144,8 @@ dt = dt %>%
 table(dt$Religion,useNA = "always")
 
 
-# Sexual orientation
+
+# Sexual orientation ------------------------------------------------------
 table(dt$r_sexorient,useNA = "always")
 dt = dt %>% 
   mutate(SexualOrientation = case_when(r_sexorient %in% c(NA,"Other","Prefer not to answer") ~ "Other", 
@@ -88,7 +153,8 @@ dt = dt %>%
 table(dt$SexualOrientation,useNA = "always")
 
 
-# Household size 
+
+# Household size ----------------------------------------------------------
 table(dt$r_householdsize,useNA = "always")
 dt = dt %>% 
   mutate(HhSize = case_when(r_householdsize %in% c("Prefer not to answer",NA) ~ "Other",
@@ -98,8 +164,8 @@ dt = dt %>%
 table(dt$HhSize,useNA = "always")
 
 
-# Region
 
+# Region ------------------------------------------------------------------
 dt = dt %>% 
   mutate(UsState = ifelse(r_state=="Prefer not to answer",NA,r_state),
     Region = case_when(
@@ -126,7 +192,9 @@ table(dt$Region,useNA = "always")
 
 
 
-# Education: replace missing with mode
+
+# Education ---------------------------------------------------------------
+# replace missing with mode
 names(sort(-table(dt$r_educ))[1])
 
 dt$r_educ = ifelse(dt$r_educ == "Prefer not to answer", NA, dt$r_educ)
@@ -222,44 +290,10 @@ dt$IncomeQuantiles <- cut(dt$Income, breaks = IncomeCats, labels = c(1:5),
 
 
 
-# Political ideology
-table(dt$r_ideo, useNA = "always")
-dt = dt %>% mutate(PolIdNum = case_when(r_ideo == "Extremely liberal"        ~ 1,
-                                        r_ideo == "Liberal"                  ~ 2,
-                                        r_ideo == "Slightly liberal"         ~ 3,
-                                        r_ideo == "Moderate"                 ~ 4,
-                                        r_ideo == "Slightly conservative"    ~ 5,
-                                        r_ideo == "Conservative"             ~ 6,
-                                        r_ideo == "Extremely conservative"   ~ 7))
-
-# Partisanship and part Id
-table(dt$r_partyid, useNA = "always")
-dt = dt %>% mutate(Partisanship = str_remove(r_partyid," toward"),
-                   PartyId = case_when(Partisanship == "Strong Democrat"    ~ "Democrat",
-                                       Partisanship == "Weak Democrat"      ~ "Democrat",
-                                       Partisanship == "Leaning Democrat"   ~ "Democrat",
-                                       Partisanship == "Independent"        ~ "Independent",
-                                       Partisanship == "Leaning Republican" ~ "Republican",
-                                       Partisanship == "Weak Republican"    ~ "Republican",
-                                       Partisanship == "Strong Republican"  ~ "Republican"),
-                   PartisanshipNum = case_when(Partisanship == "Strong Democrat"    ~ 1,
-                                               Partisanship == "Weak Democrat"      ~ 2,
-                                               Partisanship == "Leaning Democrat"   ~ 3,
-                                               Partisanship == "Independent"        ~ 4,
-                                               Partisanship == "Leaning Republican" ~ 5,
-                                               Partisanship == "Weak Republican"    ~ 6,
-                                               Partisanship == "Strong Republican"  ~ 7))
-table(dt$PartyId, useNA = "always")
-table(dt$Partisanship, useNA = "always")
-table(dt$PartisanshipNum, useNA = "always")
-
-# create composite of political ideology
-dt$PolIdComp = rowMeans(dt[,c("PolIdNum","PartisanshipNum")],na.rm = T)
-cor(dt$PolIdNum,dt$PartisanshipNum,use = "complete.obs")
-dt$PolIdComp2Sd = scale2(dt$PolIdComp)
 
 
-# Dependent variables
+
+# Dependent variables -----------------------------------------------------
 dt = dt %>% 
   mutate(across(c(hatespeech_commenterA,hatespeech_author,hatespeech_others,hatespeech_no,hatespeech_notsure), ~ifelse(.==-99,0,.))) %>% 
   mutate(
@@ -318,70 +352,91 @@ dt = dt %>%
                               Productive=="Not sure"~0,
                               Productive=="Yes"~1),
     IsProductive = ifelse(Productive=="Yes",1,0),
-    ProductiveNum01 = (ProductiveNum + 1) / 2, 
-    # Other variables
-    CharCountText = nchar(productive_why_text,keepNA = F) +
-      nchar(productive_whynot_text,keepNA = F) +
-      nchar(productive_whynotsure_text,keepNA = F),
-    StrCountProductive = str_count(replace_na(productive_why_text,"NA"),"[Pp]roductive") +
-      str_count(replace_na(productive_whynot_text,"NA"),"[Pp]roductive") +
-      str_count(replace_na(productive_whynotsure_text,"NA"),"[Pp]roductiv"),
-    StrCountToxic = str_count(replace_na(productive_why_text,"NA"),"[Tt]oxic") +
-      str_count(replace_na(productive_whynot_text,"NA"),"[Tt]oxic") +
-      str_count(replace_na(productive_whynotsure_text,"NA"),"[Tt]oxic"),
-    PercProductive = 100*StrCountProductive/CharCountText,
-    PercToxic      = 100*StrCountToxic/CharCountText)
+    ProductiveNum01 = (ProductiveNum + 1) / 2)
 
 
-lapply(dt[DVs], range)
+# check range of dependent variables
+lapply(dt[DVs], function(x) range(x,na.rm=T))
 
+# created non-demeaned binary dependent variables
+dt_DvsNonDmd = dt %>% 
+  select(ID,target_id, all_of(unique(DVs))) %>%
+  rename_with(~str_c(.,"_NonDmd"), all_of(unique(DVs))) 
 
-# Create ID that is unique for each row
-dt$ID = str_c(dt$ResponseId,"_",dt$target_id)
-dt %>% 
-  count(ID) %>% 
-  filter(n > 1)
 
 # grand mean center variables 
 numeric_vars = c(DVs,Covs)[ sapply(dt[c(DVs,Covs)], is.numeric) ] 
 dt = dt %>% 
-  mutate(across(all_of(numeric_vars), ~.-mean(.)))
+  mutate(across(all_of(numeric_vars), ~.-mean(.,na.rm=T)))
 
 
-# created demeaned binary dependent variables
-dt_DvsDmd = dt %>% 
-  select(ID,target_id, all_of(unique(c(DVs, BinaryDVs)))) %>% 
-  group_by(target_id) %>% 
-  mutate(across(all_of(unique(c(DVs, BinaryDVs))), ~ (. - mean(.,na.rm=T)) )) %>% 
-  rename_with(~str_c(.,"_TargetDmd"), all_of(unique(c(DVs, BinaryDVs)))) 
 
-dt = left_join(dt,dt_DvsDmd,by = c("ID","target_id"))
+# Load data from LLM classifier -------------------------------------------
+jw = read_csv(list.files(pattern="classified_comments.csv",recursive = T))
 
+cols = colnames(jw)[ - which(colnames(jw)=="target_id") ]
+
+# prepare dataset for analysis
+topic_labels = jw %>% 
+  # to long data format
+  pivot_longer(cols = cols) %>% 
+  # list annotator
+  mutate(annotator = str_extract(name,"_[a-z]+$") %>% str_remove("_"),
+         name = str_remove(name,"_[a-z]+")) %>% 
+  # have a column for each annotator
+  pivot_wider(id_cols = c(target_id,name),values_fill = NA,
+              names_from = annotator, values_from = value) %>% 
+  # if there are missing values for annotator db, impute with ne and llm
+  mutate(label = db %>% ifelse(is.na(.),ne,.) %>% ifelse(is.na(.),llm,.)) %>% 
+  pivot_wider(id_cols = target_id, names_from=name, values_from=label, values_fill=NA)
+  
+
+
+# Load data on ideology of author of comment ------------------------------
+di = read_csv(list.files(pattern="target_ideology.csv",recursive=T)) %>% 
+  distinct() %>% 
+  rename(target_id=comment_id, target_user_id=user_id, ideo_commenterB=ideology) %>% 
+  mutate(target_id = paste0("T",target_id)) %>% 
+  group_by(target_id,target_user_id) %>%
+  summarise(ideo_commenterB=mean(ideo_commenterB)) %>% 
+  ungroup() %>% 
+  mutate(ideo_commenterB = ideo_commenterB %>% ifelse(is.na(.),mean(.,na.rm=T),.))
+  
+all(count(di,target_id)$n==1)
+sum(is.na(di$ideo_commenterB))
 
  
-create_dummies = function(.data, .id, .col){
-  # Note that the matrix with dummies will not have full rank. Either:
-  # 1) drop a dummy or
-  # 2) add intercept and drop a dummy
-  prefix = names(select(.data,{{.col}}))
-  
-  .data %>%
-    select({{.id}}, {{.col}}) %>% 
-    arrange({{.col}}) %>% 
-    mutate(value=1) %>% 
-    pivot_wider(id_cols = {{.id}},
-                names_from = {{.col}},
-                names_prefix = prefix,
-                values_from= value, 
-                values_fill = 0) 
-}
+# Load data on ideology of those who liked comments -----------------------
+dl = read_csv(list.files(pattern="target_like_ideology.csv",recursive=T)) %>% 
+  distinct() %>% 
+  rename(target_id=comment_id, ideo_like=ideology) %>% 
+  mutate(target_id = paste0("T",target_id)) %>% 
+  group_by(target_id) %>%
+  summarise(ideo_like=mean(ideo_like,na.rm=T)) %>% 
+  ungroup() %>% 
+  mutate(ideo_like = ideo_like %>% ifelse(is.na(.), mean(.,na.rm=T),.))
+
+all(count(dl,target_id,sort=T)$n==1)
+sum(is.na(dl$ideo_like))
 
 
+# LIWC  -------------------------------------------------------------------
+
+liwc = read_csv("10_LIWC/LIWC-22_WordFrequencies_Target.csv") %>% 
+  mutate(post_id = paste0("P",post_id),
+         target_id = paste0("T",target_id)) %>% 
+  select(all_of(LiwcCats), target_id) %>% 
+  mutate(across(all_of(LiwcCats), ~ log(.x+1)))
+
+# check for NAs
+liwc %>% 
+  summarise(across(all_of(LiwcCats), ~sum(is.na(.)))) %>% 
+  select_if(~any(.>0))
+length(unique(dt$target_id))
 
 
-
-
-dt_clean = dt %>% 
+# Create cleaned data ------------------------------------------------
+dt = dt %>% 
   select(ID,ResponseId:inc_prob,
          Order,Order2Sd,OrderCat,
          PartyId,
@@ -393,70 +448,41 @@ dt_clean = dt %>%
          Race, MaritalStatus, Religion, SexualOrientation, HhSize, Region, 
          Income, Income1k, Income2Sd,
          Toxicity,BToxicNum,Productive,ProductiveNum,
-         all_of(DVs), all_of(DVsDmd), 
-         all_of(BinaryDVs),all_of(BinaryDVsDmd),
-         CharCountText:PercToxic) %>% 
-  left_join(create_dummies(dt,ID, Gender), by = "ID") %>% 
-  left_join(create_dummies(dt,ID, Education), by = "ID") %>% 
-  left_join(create_dummies(dt,ID, Race), by = "ID") %>% 
-  left_join(create_dummies(dt,ID, MaritalStatus), by = "ID") %>% 
-  left_join(create_dummies(dt,ID, Religion), by = "ID") %>% 
-  left_join(create_dummies(dt,ID, SexualOrientation), by = "ID") %>% 
-  left_join(create_dummies(dt,ID, HhSize), by = "ID") %>% 
-  left_join(create_dummies(dt,ID, Region), by = "ID") %>% 
-  left_join(create_dummies(dt,ID, IncomeQuantiles), by = "ID") 
-
-
-
-# join categorized data
-dc = read_csv(list.files(pattern="classified_comments.csv",recursive = T)) 
-
-
-
-dt_clean = dc %>% 
-  select(target_id,anticonservative,america,christianity,suggestive,drugs) %>% 
-  right_join(dt_clean,by="target_id")
-
-# lead data on join ideology of author of comment 
-di = read_csv(list.files(pattern="target_ideology.csv",recursive=T)) %>% 
-  distinct() %>% 
-  rename(target_id=comment_id, target_user_id=user_id, ideo_commenterB=ideology) %>% 
-  mutate(target_id = paste0("T",target_id)) %>% 
-  group_by(target_id,target_user_id) %>%
-  summarise(ideo_commenterB=mean(ideo_commenterB)) %>% 
-  ungroup() %>% 
-  mutate(ideo_commenterB = ideo_commenterB %>% ifelse(is.na(.),mean(.,na.rm=T),.))
-  
-all(count(di,target_id)$n==1)
-
-# lead data on ideology of those who liked comments
-dl = read_csv(list.files(pattern="target_like_ideology.csv",recursive=T)) %>% 
-  distinct() %>% 
-  rename(target_id=comment_id, ideo_like=ideology) %>% 
-  mutate(target_id = paste0("T",target_id)) %>% 
-  group_by(target_id) %>%
-  summarise(ideo_like=mean(ideo_like,na.rm=T)) %>% 
-  ungroup() %>% 
-  mutate(ideo_like = ideo_like %>% ifelse(is.na(.), mean(.,na.rm=T),.))
-all(count(dl,target_id,sort=T)$n==1)
-
-# join data
-dt_clean = dt_clean %>% 
+         all_of(DVs), 
+         all_of(BinaryDVs),
+  ) %>% 
+  # Join non-centered dependent variables for plotting
+  left_join(dt_DvsNonDmd,by = c("ID","target_id")) %>%
+  # Join data on ideology of author of comment
   left_join(di,by=c("target_id","target_user_id")) %>% 
-  left_join(dl,by=c("target_id")) 
+  # Join data on ideology of those who liked a comment
+  left_join(dl,by=c("target_id")) %>% 
+  # Join topic labels
+  left_join(topic_labels,by="target_id") %>% 
+  # Join LIWC categories
+  left_join(liwc,by=c("target_id"))  
 
-sum(is.na(dt_clean$ideo_commenterB))
-sum(is.na(dt_clean$ideo_like))
 
-# export data
+# dt %>%
+#   transmute(across(all_of(LiwcCats), ~ ifelse(is.na(.),0,.) %>% {.+1} %>% log(.)))
+# dt$tone_neg %>% summary()
+# 
+# dt$tone_neg %>%   ifelse(is.na(.),0,.) %>% {.+1} %>% log(.) %>% summary()
+
+# Check for differential attrition ----------------------------------------
+# main DV
+attr_tox = lm(is.na(BToxicNum01)~Order+Age+PolIdComp2Sd+Gender+Race+Income1k,dt)
+coeftest(attr_tox,type="HC3")
+
+# filter out few missing values on DV
+sum(is.na(dt$BToxicNum01))
+dt = filter(dt,!is.na(BToxicNum01))
+
+
+# Export data -------------------------------------------------------------
 fpath_export = strsplit(fpath, fname)[[1]]
-write_csv(dt_clean, paste0(fpath_export, "dt_survey_0625_with_Toxicity_clean.csv"))
+write_csv(dt, paste0(fpath_export, "dt_survey_0625_with_Toxicity_clean.csv"))
 
-
-hist(dt_clean$ideo_commenterB)
-hist(dt_clean$ideo_like)
-
-#dt[c(Covs,DVs)]
 
 # The broader problem with the data is that the 15 variables are on different scales. We have the following: 
 #   -	4 items with 3 categories (Yes, No, Not Sure) transformed to a 0-1 items with values (0, 0.5, 1) 

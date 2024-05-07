@@ -3,21 +3,16 @@ source(list.files(pattern="0_Setup.R", recursive=T))
 LiwcCats = c("tone_pos","tone_neg","emo_pos","emo_neg","swear",
              "conflict","prosocial","polite","moral","comm",
              "cogproc", 
-             "politic", "ethnicity", "tech",                                    # culture 
-             "leisure", "home", "work", "money", "relig",                      # lifestyle  
-             "substances","sexual", "food","death",                             # physical
+             "politic", "ethnicity", "tech",               # culture 
+             "leisure", "home", "work", "money", "relig",  # lifestyle  
+             "substances","sexual", "food","death",        # physical
              "male","female",
              "shehe","they","you","i","we","Emoji",
              #"affiliation",
              "power","achieve"
 )
-CovsLean
 
-liwc = read_csv("fb_survey/10_LIWC/LIWC-22_WordFrequencies_Target.csv") %>% 
-  mutate(post_id = paste0("P",post_id),
-         target_id = paste0("T",target_id)) %>% 
-  filter(WC >= 10) %>% 
-  select(all_of(LiwcCats), contains("_id"))
+
 
 
 

@@ -1,5 +1,10 @@
 # run setup script to load data and functions
 source(list.files(pattern="0_Setup.R", recursive=T))
+library(lme4)
+library(kableExtra)
+library(performance)
+set.seed(04162024)
+is_REML = F
 
 fname = "dt_survey_0625_with_toxicity_clean.csv"
 fpath = list.files(pattern = fname, recursive = T)
@@ -13,16 +18,25 @@ dt = read_csv(fpath, col_types = c("target_id"="character")) %>%
 
 vars = c("BToxicNum01","ProductiveNum01","ResponseId","target_id","PolIdComp2Sd","Age2Sd","Gender","EducationNum2Sd",
          "MaritalStatus","Religion","SexualOrientation","HhSize","Region","Income2Sd","Race","Order",
-         "anticonservative","america","christianity","suggestive","drugs","ideo_commenterB","target_likes_count")
+         "ideo_commenterB","target_likes_count",
+         "antiamerica","antichristianity","suggestive",#"antiwhite.csv",
+         "drugs",#"killing.csv"
+         "antitrump","protrump","anticlinton","proclinton",#"antiobama.csv",
+         "antiimmigrant","proimmigrant","antiabortion","proabortion",
+         "antigun")#,"progun.csv","antirepcons.csv","antidemlib.csv")
 
 # check for NAs
 summarise(dt, across(all_of(vars), ~ sum(is.na(.)))) %>% 
   select_if(~ any(. > 0))
 
-library(lme4)
-library(kableExtra)
-library(performance)
-set.seed(04162024)
+
+
+dt %>%
+  select(all_of(c(LiwcCats,Topics))) 
+#   cor(use = "complete") %>% 
+#   corrplot()
+
+
 
 ###########
 # TOXICITY
@@ -30,14 +44,8 @@ set.seed(04162024)
 
 # Null model -------------------------------------------------------------------
 # 1. There is a correlation within individuals and within comments on perceived toxicity
-m0_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id), data=dt, REML=F)
-summary(m0_tox)
-# ICC for comments
-round(0.05406 / (0.05406+0.01594+0.07015),3)
-# ICC for individuals
-round(0.01594 / (0.05406+0.01594+0.07015),3)
-# ICC for error
-round(0.07015 / (0.05406+0.01594+0.07015),3)
+m0_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id), data=dt, REML=is_REML)
+icc(m0_tox,by_group = T)
 
 # Q: How large are these variances, and the icc?
 # 10% enough + substantive question
@@ -45,7 +53,7 @@ round(0.07015 / (0.05406+0.01594+0.07015),3)
 # Level 1 predictors --------------------------------------------------
 # 2. Liberals perceive comments overall as more toxic than conservatives
 m1a_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + PolIdComp2Sd, 
-               data=dt, REML=F)
+               data=dt, REML=is_REML)
 
 summary(m1a_tox)
 
@@ -54,7 +62,7 @@ m1b_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) +
                  PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
                  MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
                  Income2Sd + Race + Order, 
-               data=dt, REML=F)
+               data=dt, REML=is_REML)
 summary(m1b_tox)
 
 
@@ -75,29 +83,59 @@ anova(m0_tox, m1b_tox)
 
 
 
-# Level 2 predictors --------------------------------------------------------
-# 3. The following topics are perceived as more toxic than others
-m2_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
-                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
-                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
-                Income2Sd + Race + Order + 
-                  anticonservative + america + christianity + suggestive + drugs +
-                  ideo_commenterB+target_likes_count, 
-              data=dt, REML=F)
-summary(m2_tox)
+dt$achieve
+# Comment predictors ------------------------------------------------------
 
-m2_pid = fixef(m2_tox)["PolIdComp2Sd"]
+# Adding just comment predictors
+m2a_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+               # Comment predictors
+               antiamerica+antichristianity+suggestive +# antiwhite+drugs+killing+
+               antitrump+protrump+anticlinton+proclinton+ #"antiobama
+               antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+               ideo_commenterB+target_likes_count+#progun+antirepcons+antidemlib"
+               tone_pos+tone_neg+emo_pos+emo_neg+swear+
+               conflict+prosocial+polite+moral+comm+
+               cogproc+politic+ethnicity+tech+
+               leisure+home+work+money+relig+
+               substances+sexual+food+death+
+               male+female+shehe+they+you+i+we+Emoji+
+               power+achieve, 
+              data=dt, REML=is_REML)
+summary(m2a_tox)
+
+m2b_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                 # Person predictors
+                 PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                 MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                 Income2Sd + Race + Order + 
+                   # Comment predictors  
+                   antiamerica+antichristianity+suggestive +# antiwhite+drugs+killing+
+                   antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                   antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                   ideo_commenterB+target_likes_count+#progun+antirepcons+antidemlib"
+                   tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                   conflict+prosocial+polite+moral+comm+
+                   cogproc+politic+ethnicity+tech+
+                   leisure+home+work+money+relig+  
+                   substances+sexual+food+death+    
+                   male+female+shehe+they+you+i+we+Emoji+
+                   power+achieve, 
+               data=dt, REML=is_REML)
+summary(m2b_tox)
+
+m2b_pid = fixef(m2b_tox)["PolIdComp2Sd"]
 
 # percent of the effect size that is left after controlling for individual AND comment level predictors
-1 - ((m1a_pid - m2_pid) / m1a_pid)
+1 - ((m1a_pid - m2b_pid) / m1a_pid)
 
+(0.05408-0.04464) / 0.05408
 
 # Q: The variance in random intercepts for comments goes down by 0.02
 
 # Random slopes ----------------------------------------------------------------
 # The relationship between perceived toxicity and political ideology is not the same for all comments
 m3a_tox = lmer(BToxicNum01 ~ PolIdComp2Sd + (1|ResponseId) + 
-                 (1+PolIdComp2Sd|target_id), data=dt, REML=F)
+                 (1+PolIdComp2Sd|target_id), data=dt, REML=is_REML)
 anova(m1a_tox, m3a_tox)
 summary(m3a_tox)
 
@@ -114,83 +152,298 @@ summary(m3a_tox)
 
 # do I run random slopes in the fully specified model?
 m3b_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
-       # individual level
-       PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
-       MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
-       Income2Sd + Race + Order + 
-        # comment level
-        anticonservative + america + christianity + suggestive + drugs + 
-        ideo_commenterB+target_likes_count + 
-         # random slopes
-          (1+PolIdComp2Sd|target_id), 
-     data=dt, REML=F)
+                 # Person predictors
+                 PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                 MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                 Income2Sd + Race + Order + 
+                   # Comment predictors  
+                   antiamerica+antichristianity+suggestive +# antiwhite+drugs+killing+
+                   antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                   antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                   ideo_commenterB+target_likes_count+#progun+antirepcons+antidemlib"
+                   tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                   conflict+prosocial+polite+moral+comm+
+                   cogproc+politic+ethnicity+tech+
+                   leisure+home+work+money+relig+  
+                   substances+sexual+food+death+    
+                   male+female+shehe+they+you+i+we+Emoji+
+                   power+achieve+
+                     # random slopes
+                     (1+PolIdComp2Sd|target_id),
+               data=dt, REML=is_REML)
 summary(m3b_tox)
-anova(m2_tox, m3b_tox)
+anova(m2b_tox, m3b_tox)
 anova(m3a_tox, m3b_tox)
 
 # Q: did not converge
+colnames(dt)
 
 # Cross-level interaction ------------------------------------------------------
-m4_tox_cons = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
-                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
-                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
-                Income2Sd + Race + Order +
-                      (anticonservative*PolIdComp2Sd),
-              data=dt, REML=F)
-m4_tox_amer = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
-                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
-                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
-                Income2Sd + Race + Order +
-                  (america*PolIdComp2Sd),
-              data=dt, REML=F)
-m4_tox_chris = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
-                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
-                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
-                Income2Sd + Race + Order +
-                  (christianity*PolIdComp2Sd),
-              data=dt, REML=F)
-m4_tox_sugg = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
-                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
-                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
-                Income2Sd + Race + Order +
-                  (suggestive*PolIdComp2Sd),
-              data=dt, REML=F)
-m4_tox_drug = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
-                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
-                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
-                Income2Sd + Race + Order +
-                  (drugs*PolIdComp2Sd),
-              data=dt, REML=F)
+m4_tox_antigun = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                        # Person predictors
+                        PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                        MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                        Income2Sd + Race + Order + 
+                          # Comment predictors  
+                          antiamerica+antichristianity+suggestive +# antiwhite+drugs+killing+
+                          antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                          antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                          ideo_commenterB+target_likes_count+#progun+antirepcons+antidemlib"
+                          tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                          conflict+prosocial+polite+moral+comm+
+                          cogproc+politic+ethnicity+tech+
+                          leisure+home+work+money+relig+  
+                          substances+sexual+food+death+    
+                          male+female+shehe+they+you+i+we+Emoji+
+                          power+achieve+
+                            # Interaction
+                            (antigun*PolIdComp2Sd),
+                      data=dt, REML=is_REML)
+
+m4_tox_anticlinton = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                            # Person predictors
+                            PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                            MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                            Income2Sd + Race + Order + 
+                              # Comment predictors  
+                              antiamerica+antichristianity+suggestive +# antiwhite+drugs+killing+
+                              antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                              antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                              ideo_commenterB+target_likes_count+#progun+antirepcons+antidemlib"
+                              tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                              conflict+prosocial+polite+moral+comm+
+                              cogproc+politic+ethnicity+tech+
+                              leisure+home+work+money+relig+  
+                              substances+sexual+food+death+    
+                              male+female+shehe+they+you+i+we+Emoji+
+                              power+achieve+
+                                # Interaction
+                                (anticlinton*PolIdComp2Sd),
+                          data=dt, REML=is_REML)
+
+m4_tox_proclinton = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                           # Person predictors
+                           PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                           MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                           Income2Sd + Race + Order + 
+                           # Comment predictors  
+                           antiamerica+antichristianity+suggestive +# antiwhite+drugs+killing+
+                           antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                           antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                           ideo_commenterB+target_likes_count+#progun+antirepcons+antidemlib"
+                           tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                           conflict+prosocial+polite+moral+comm+
+                           cogproc+politic+ethnicity+tech+
+                           leisure+home+work+money+relig+  
+                           substances+sexual+food+death+    
+                           male+female+shehe+they+you+i+we+Emoji+
+                           power+achieve+
+                           # Interaction
+                           (proclinton*PolIdComp2Sd),
+                         data=dt, REML=is_REML)
+m4_tox_antitrump = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                          # Person predictors
+                          PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                          MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                          Income2Sd + Race + Order + 
+                          # Comment predictors  
+                          antiamerica+antichristianity+suggestive +# antiwhite+drugs+killing+
+                          antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                          antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                          ideo_commenterB+target_likes_count+#progun+antirepcons+antidemlib"
+                          tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                          conflict+prosocial+polite+moral+comm+
+                          cogproc+politic+ethnicity+tech+
+                          leisure+home+work+money+relig+  
+                          substances+sexual+food+death+    
+                          male+female+shehe+they+you+i+we+Emoji+
+                          power+achieve+
+                          # Interaction
+                          (antitrump*PolIdComp2Sd),
+              data=dt, REML=is_REML)
+m4_tox_protrump = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                         # Person predictors
+                         PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                         MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                         Income2Sd + Race + Order + 
+                         # Comment predictors  
+                         antiamerica+antichristianity+suggestive +# antiwhite+drugs+killing+
+                         antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                         antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                         ideo_commenterB+target_likes_count+#progun+antirepcons+antidemlib"
+                         tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                         conflict+prosocial+polite+moral+comm+
+                         cogproc+politic+ethnicity+tech+
+                         leisure+home+work+money+relig+  
+                         substances+sexual+food+death+    
+                         male+female+shehe+they+you+i+we+Emoji+
+                         power+achieve+
+                         # Interaction
+                         (protrump*PolIdComp2Sd),
+              data=dt, REML=is_REML)
+
+m4_tox_drugs = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                      # Person predictors
+                      PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                      MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                      Income2Sd + Race + Order + 
+                      # Comment predictors  
+                      antiamerica+antichristianity+suggestive +# antiwhite+drugs+killing+
+                      antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                      antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                      ideo_commenterB+target_likes_count+#progun+antirepcons+antidemlib"
+                      tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                      conflict+prosocial+polite+moral+comm+
+                      cogproc+politic+ethnicity+tech+
+                      leisure+home+work+money+relig+  
+                      substances+sexual+food+death+    
+                      male+female+shehe+they+you+i+we+Emoji+
+                      power+achieve+
+                      # Interaction
+                      (drugs*PolIdComp2Sd),
+              data=dt, REML=is_REML)
+m4_tox_suggestive = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                           # Person predictors
+                           PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                           MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                           Income2Sd + Race + Order + 
+                           # Comment predictors  
+                           antiamerica+antichristianity+suggestive +# antiwhite+drugs+killing+
+                           antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                           antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                           ideo_commenterB+target_likes_count+#progun+antirepcons+antidemlib"
+                           tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                           conflict+prosocial+polite+moral+comm+
+                           cogproc+politic+ethnicity+tech+
+                           leisure+home+work+money+relig+  
+                           substances+sexual+food+death+    
+                           male+female+shehe+they+you+i+we+Emoji+
+                           power+achieve+
+                           # Interaction
+                           (suggestive*PolIdComp2Sd),
+              data=dt, REML=is_REML)
 m4_tox_ideo = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
-                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
-                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
-                Income2Sd + Race + Order +
-                  (ideo_commenterB*PolIdComp2Sd),
-              data=dt, REML=F)
+                     # Person predictors
+                     PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                     MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                     Income2Sd + Race + Order + 
+                     # Comment predictors  
+                     antiamerica+antichristianity+suggestive +# antiwhite+drugs+killing+
+                     antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                     antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                     ideo_commenterB+target_likes_count+#progun+antirepcons+antidemlib"
+                     tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                     conflict+prosocial+polite+moral+comm+
+                     cogproc+politic+ethnicity+tech+
+                     leisure+home+work+money+relig+  
+                     substances+sexual+food+death+    
+                     male+female+shehe+they+you+i+we+Emoji+
+                     power+achieve+
+                     # Interaction
+                     (ideo_commenterB*PolIdComp2Sd),
+              data=dt, REML=is_REML)
 m4_tox_like = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
-                PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
-                MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
-                Income2Sd + Race + Order +
-                  (target_likes_count*PolIdComp2Sd),
-              data=dt, REML=F)
+                     # Person predictors
+                     PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                     MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                     Income2Sd + Race + Order + 
+                     # Comment predictors  
+                     antiamerica+antichristianity+suggestive +# antiwhite+drugs+killing+
+                     antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                     antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                     ideo_commenterB+target_likes_count+#progun+antirepcons+antidemlib"
+                     tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                     conflict+prosocial+polite+moral+comm+
+                     cogproc+politic+ethnicity+tech+
+                     leisure+home+work+money+relig+  
+                     substances+sexual+food+death+    
+                     male+female+shehe+they+you+i+we+Emoji+
+                     power+achieve+
+                     # Interaction
+                     (target_likes_count*PolIdComp2Sd),
+              data=dt, REML=is_REML)
 
 
 library(ggeffects)
-pred_cons = ggpredict(m4_tox_cons,terms = c("PolIdComp2Sd","anticonservative"))
-pred_amer = ggpredict(m4_tox_amer,terms = c("PolIdComp2Sd","america"))
-pred_chris= ggpredict(m4_tox_chris,terms = c("PolIdComp2Sd","christianity"))
-pred_sugg = ggpredict(m4_tox_sugg,terms = c("PolIdComp2Sd","suggestive"))
-pred_drug = ggpredict(m4_tox_drug,terms = c("PolIdComp2Sd","drugs"))
+pred_anticlinton = ggpredict(m4_tox_anticlinton,terms = c("PolIdComp2Sd","anticlinton"))
+pred_proclinton = ggpredict(m4_tox_proclinton,terms = c("PolIdComp2Sd","proclinton"))
+
+pred_antitrump= ggpredict(m4_tox_antitrump,terms = c("PolIdComp2Sd","antitrump"))
+pred_protrump = ggpredict(m4_tox_protrump,terms = c("PolIdComp2Sd","protrump"))
+
+pred_drugs = ggpredict(m4_tox_drugs,terms = c("PolIdComp2Sd","drugs"))
+
+pred_suggestive = ggpredict(m4_tox_suggestive,terms = c("PolIdComp2Sd","suggestive"))
+
 pred_ideo = ggpredict(m4_tox_ideo,terms = c("PolIdComp2Sd","ideo_commenterB"))
 pred_like = ggpredict(m4_tox_like,terms = c("PolIdComp2Sd","target_likes_count"))
 
+library(sjPlot)
+plot(pred_anticlinton) + 
+  scale_color_manual(values=c("1"="darkgreen","0"="grey"),labels=c("1"="yes","0"="no")) +
+  labs(title="Negative comment about Hillary Clinton",
+       color="Classified\nas relevant",
+       x="Political ideology composite (more conservative -->)")
+plot(pred_proclinton) +
+  scale_color_manual(values=c("1"="darkgreen","0"="grey"),labels=c("1"="yes","0"="no")) +
+  labs(title="Positive comment about Hillary Clinton",
+       color="Classified\nas relevant",
+       x="Political ideology composite (more conservative -->)")
+plot(pred_antitrump) +
+  scale_color_manual(values=c("1"="darkgreen","0"="grey"),labels=c("1"="yes","0"="no")) +
+  labs(title="Negative comment about Donald Trump",
+       color="Classified\nas relevant",
+       x="Political ideology composite (more conservative -->)")
+plot(pred_protrump)+
+  scale_color_manual(values=c("1"="darkgreen","0"="grey"),labels=c("1"="yes","0"="no")) +
+  labs(title="Positive comment about Donald Trump",
+       color="Classified\nas relevant",
+       x="Political ideology composite (more conservative -->)")
+plot(pred_drugs) +
+  scale_color_manual(values=c("1"="darkgreen","0"="grey"),labels=c("1"="yes","0"="no")) +
+  labs(title="Comment about drugs",
+       color="Classified\nas relevant",
+       x="Political ideology composite (more conservative -->)")
+plot(pred_suggestive) +
+  scale_color_manual(values=c("1"="darkgreen","0"="grey"),labels=c("1"="yes","0"="no")) +
+  labs(title="Suggestive comment",
+       color="Classified\nas relevant",
+       x="Political ideology composite (more conservative -->)")
+plot(pred_ideo) +
+  labs(title="Ideology of commenter",
+       x="Political ideology composite (more conservative -->)")
+plot(pred_like) +
+  labs(title="Number of likes of comments",
+       x="Political ideology composite (more conservative -->)")
 
-plot(pred_cons)
-plot(pred_amer)
-plot(pred_chris)
-plot(pred_sugg)
-plot(pred_ideo)
-plot(pred_like)
+
+
+sg = function(.m,.filename, .hide_controls=F){
+  
+  #add.lines = ifelse(.hide_controls, list(c("Control variables", rep("\\checkmark",10))), NULL)
+  
+  stargazer::stargazer(.m, digits = 2, omit.stat = c("F","rsq","ser"),
+                       no.space = T, font.size = "small",
+                       single.row = T, align = T,
+                       report = "vc*",
+                       se = NULL,
+                       intercept.bottom = T, header = F,
+                       dep.var.caption = "Dependent variable",
+                       column.sep.width = "-11pt", 
+                       #style = "asr",
+                       out = paste0("Tables/",.filename)#,
+                       #keep = .keep, 
+                       #add.lines = add.lines
+  )
+  
+}
+sg(list(m0_tox,m1a_tox,m1b_tox,
+   m2_tox),
+   "tox.tex")
+tab_model(m0_tox,m1a_tox,m1b_tox,m2_tox, file = "tox.docx")
+
+2*sd(dt$PolIdComp)
+range(dt$PolIdComp)
 
 # intercept shift - what does that mean
 # how much Facebook do I need to consume to become as toxic as conservatives

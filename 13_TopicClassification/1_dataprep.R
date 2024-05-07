@@ -1,9 +1,15 @@
 # run setup script to load data and functions
 source(list.files(pattern="0_Setup.R", recursive=T))
+library(googlesheets4)
 
-# classified
-fnames = c("anticonservative.csv","america.csv","christianity.csv","suggestive.csv","drugs.csv")
-df = fnames %>% 
+
+# LLM annotated data ------------------------------------------------------
+
+# List of files with comments classified by LLM
+fnames = paste0(Topics, ".csv") 
+
+# Read and aggregate those files
+lw = fnames %>% 
   lapply(., function(f){
     list.files(pattern = f, recursive=T) %>% 
       read_csv() %>% 
@@ -11,27 +17,61 @@ df = fnames %>%
       mutate(topic = str_extract(f,"[a-z]+.csv") %>% str_remove(".csv"))
   }) %>% 
   do.call(bind_rows, .) %>% 
-  mutate(relevant = label %>% 
-           str_extract("(^ ?[0-1])|([0-1] ?$)")) %>% 
+  mutate(relevant = label %>% str_extract("(^ ?[0-1])|([0-1] ?$)")) %>% 
   filter(!is.na(relevant)) %>% 
-  pivot_wider(names_from = "topic",values_from = "relevant",id_cols = "target_id") %>% 
-  left_join(distinct(dt,target_id,post,context,target),by="target_id")
-
-set.seed(0414)
-df = df[sample(1:nrow(df)),]
-
-df[which(df$target_id=="T1340233236006726"), "christianity"] = "0"
-df[which(df$target_id=="T1340233236006726"), "suggestive"] = "0"
-df[which(df$target_id=="T1340233236006726"), "drugs"] = "0"
-df[which(df$target_id=="T10154299684276548"),"christianity"] = "0"
-df[which(df$target_id=="T10154299684276548"),"suggestive"] = "0"
-df[which(df$target_id=="T10153200958788836"),"suggestive"] = "0"
-df[which(df$target_id=="T10153200958788836"),"christianity"] = "0"
-
-summarise_all(df, ~ sum(is.na(.)))
+  pivot_wider(names_from = "topic",names_glue = "{topic}_llm",
+              values_from = "relevant",id_cols = "target_id") 
 
 
-write_csv(df,"fb_survey/13_TopicClassification/classified_comments.csv")
+
+# Human annotated data ----------------------------------------------------
+
+# First set of annotations
+hw1 = read_sheet("17lQDiLpRpegbIXqfgcnrXZJF9niLbi5H-NIYBl-bA0g", sheet = "all_comments") %>% 
+  select(-anticonservative,-antiamerica,-antichristianity,-suggestive,-drugs,
+         -post,-context,-target, 
+         -contains("_db0"))
+
+# Second set of annotations
+hw2 = read_sheet("17lQDiLpRpegbIXqfgcnrXZJF9niLbi5H-NIYBl-bA0g", sheet = "comments_predicted_relevant") %>% 
+  select(-post,-context,-target)  
+
+hw1 %>% 
+  gather(var,val,-target_id) %>% 
+  group_by(target_id,var) %>%
+  mutate(notallNA = any(!is.na(val))) %>%
+  ungroup() %>%
+  filter(notallNA) %>%
+  filter(is.na(val))
+
+hw2 %>% 
+  gather(var,val,-target_id) %>% 
+  group_by(target_id,var) %>%
+  mutate(notallNA = any(!is.na(val))) %>%
+  ungroup() %>%
+  filter(notallNA) %>%
+  filter(is.na(val))
+
+# Append two sets of annotations 
+hw = bind_rows(hw2,hw1) %>% 
+  group_by(target_id) %>% 
+  slice(1) %>% 
+  ungroup()
+
+# Check that there are no duplicates 
+count(hw,target_id,sort=T) %>% filter(n>1) 
+
+
+# Join with LLM annotated data ------------------------------------------
+
+# joined wide format
+jw = left_join(lw,hw, by = "target_id")
+
+# check that there are no duplicates 
+count(jw,target_id,sort=T) %>% filter(n>1)
+
+# write file
+write_csv(jw,"13_TopicClassification/classified_comments.csv")
 
 
 

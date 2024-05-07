@@ -410,3 +410,78 @@ Example 3:
 Comment by B: "Here in NY, we have a huge population of illegal immigrants from China, Russia, Israel, and the Middle East."
 Reasoning: This comment is irrelevant because it does not directly refer to Democrats or liberals.
 Your answer: 0
+
+##### 17 Negative characterization of White people 
+
+In this task, you will be shown a Facebook post and two comments on this post. One comment is from person A and the other comment is from person B. 
+    
+Your job is to determine if the comment by B is related to the negative characterization of White people. This involves portraying White people in an unfavorable light, highlighting perceived flaws, contradictions, or controversial aspects.
+
+Your answer must be a single number: 0 if irrelevant, 1 if relevant.
+
+Here are some examples with reasoning. Use the following format for your output:
+
+Example 1:
+Comment by B: "White trash should lay low or move to another state."
+Your reasoning: This comment is relevant because it characterizes White people negatively as 'trash' and suggests they are unwanted or should relocate.
+Your answer: 1
+
+Example 2:
+Comment by B: "Almost all Caucasians have ancestors that were thieves, murderers, and rapists"
+Reasoning: This comment is relevant because it characterizes White people negatively by associating them with criminal behavior.
+Your answer: 1
+
+Example 3:
+Comment by B: "Take her AWAY"
+Reasoning: This comment is irrelevant because it does not directly refer to White people.
+Your answer: 0
+
+##### 18 Killing
+
+In this task, you will be shown a Facebook post and two comments on this post. One comment is from person A and the other comment is from person B. 
+
+Your job is to determine if the comment by B is related to the endorsement or the intention of killing someone.
+
+Your answer must be a single number: 0 if irrelevant, 1 if relevant.
+
+Here are some examples with reasoning. Use the following format for your output:
+
+Example 1:
+Comment by B: "Let's nuke them now!"
+Your reasoning: This comment is relevant because it states the intention to kill.
+Your answer: 1
+
+Example 2:
+Comment by B: "Execute them! That will teach them a lesson!"
+Reasoning: This comment is relevant because it endorses the killing of people.
+Your answer: 1
+
+Example 3:
+Comment by B: "Take her AWAY"
+Reasoning: This comment is irrelevant because it does not directly refer to the endorsement or the intention of killing someone.
+Your answer: 0
+
+##### 19 Negative characterization of Barack or Michelle Obama
+
+In this task, you will be shown a Facebook post and two comments on this post. One comment is from person A and the other comment is from person B. 
+
+Your job is to determine if the comment by B is related to the negative characterization of Barack Obama or Michelle Obama, the former president and the former first lady of the United States. This involves portraying Barack Obama or Michelle Obama in an unfavorable light, highlighting perceived flaws, contradictions, or controversial aspects.
+Your answer must be a single number: 0 if irrelevant, 1 if relevant.
+
+Here are some examples with reasoning. Use the following format for your output:
+
+Example 1:
+Comment by B: "Barack Obama needs to be tried for treason"
+Your reasoning: The comment is relevant because it characterizes Barack Obama negatively, accusing him of treason and advocates for legal action against him.
+Your answer: 1
+
+Example 2:
+Comment by B: "Anyone would be a 1000 time better first lady than Michelle Obama!"
+Reasoning: The comment is relevant because it depicts Michelle Obama negatively by accusing her of incompetence.
+Your answer: 1
+
+Example 3:
+Comment by B: "Take her AWAY"
+Reasoning: This comment is irrelevant because it is a statement that does not directly refer to Barack Obama or Michelle Obama.
+Your answer: 0
+

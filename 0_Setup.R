@@ -9,6 +9,7 @@ library(broom)
 library(tidyr)
 library(stringr)
 library(fixest)
+library(corrplot)
 library(multidplyr)
 theme_set(theme_bw(base_size = 8))
 report_effect = function(.m, .coef_name, .one_sided=F){
@@ -62,6 +63,25 @@ custom_fa = function(.data, .nfactors,.niter=1, .cor="cor"){
      n.iter = .niter)
 }
 
+Topics = c("antiamerica","antichristianity","suggestive",#"antiwhite",
+  "drugs",#"killing"
+  "antitrump","protrump","anticlinton","proclinton",#"antiobama",
+  "antiimmigrant","proimmigrant","antiabortion","proabortion",
+  "antigun"#,"progun","antirepcons","antidemlib"
+)
+
+
+LiwcCats = c("tone_pos","tone_neg","emo_pos","emo_neg","swear",
+             "conflict","prosocial","polite","moral","comm",
+             "cogproc", 
+             "politic", "ethnicity", "tech",               # culture 
+             "leisure", "home", "work", "money", "relig",  # lifestyle  
+             "substances","sexual", "food","death",        # physical
+             "male","female",
+             "shehe","they","you","i","we","Emoji",
+             "power","achieve"
+)
+
 # political ideology ordered categories from right-wing to left-wing
 PolIdLevels = c("Extremely liberal","Liberal","Slightly liberal","Moderate",
                 "Slightly conservative","Conservative","Extremely conservative")
@@ -91,7 +111,7 @@ DVsTable = tibble(DVs = c("UnderstandBNum01","BMakesEffortNum01","BStaysOnTopicN
                              "Toxicity","BUseHateSpeech","Productive"),
                   Labs = c("Understand B","B makes effort","B stays on topic","B agrees",
                            "B is respectul","B is open","B is objective","B is emotional","B is sarcastic","B is intolerant","B is hostile","B is none of the above",
-                           "B is toxic","B uses hate speech","Conversations is productive"))
+                           "B is toxic","B uses hate speech","Conversation is productive"))
               
 DVsLabs = DVsTable$Labs
 
@@ -103,8 +123,8 @@ CatDVs = DVsTable$CatDVs
 if(length(DVsLabs) != length(DVs)) warning("Length mismatch"); 
 
 
-DVsDmd = paste0(DVs,"_TargetDmd")
-BinaryDVsDmd = paste0(BinaryDVs, "_TargetDmd")
+DVsDmd = paste0(DVs,"_NonDmd")
+BinaryDVsDmd = paste0(BinaryDVs, "_NonDmd")
 MainDvLabs = c("Productive"="ProductiveNum01","Toxic"="BToxicityNum01")
 
 FaPSplit = 0.75
