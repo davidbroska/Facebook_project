@@ -4,6 +4,7 @@
 \usepackage{cite}
 \usepackage{natbib}
 \usepackage{dcolumn}
+\usepackage{pdfpages}
 \usepackage{epigraph} % Required for inspirational quote
 % packages required for kable()
 \usepackage{booktabs}
@@ -95,12 +96,13 @@ The second set of variables in the \textit{LIWC} category refers to the count of
     \item \textit{ideocommenterB}: the political ideology of commenter B is estimated based on the Facebook pages that the user visited. Negative values denote liberal political ideology while positive values represent conservatism.
 \end{itemize}
 
-
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Tables % 
 \input{Tables/summary_stats1}
 
+\renewcommand{\arraystretch}{1}
 \input{Tables/summary_stats2}
+\normalsize
 % End tables 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 \clearpage
@@ -199,6 +201,5 @@ While these results are promising, we would be remiss not to mention this work's
 \end{figure}
 
 % Regression table 
-
-
+\includepdf[pages={1-},scale=0.95]{tox.html.pdf}
 \end{document}
