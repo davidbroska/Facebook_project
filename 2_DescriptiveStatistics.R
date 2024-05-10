@@ -12,7 +12,7 @@ dt = read_csv(fpath, col_types = c("target_id"="character")) %>%
 
 # Descriptive statistics --------------------------------------------------
 
-Dems = c("PolIdComp","PolIdComp2Sd","Man","Woman","OtherGender","EducationNum","Income",
+Dems = c("PolIdComp","PolIdComp2Sd","Man","Woman","OtherGender","EducationNum","Income2Sd",
          "Asian","Black","Hispanic","White","OtherRace",
          "Married", "Separated","Widowed",
          "MaritalNoAnswer","Divorced","NeverMarried", 
@@ -54,12 +54,20 @@ summ_covs %>%
   writeLines('Tables/summary_stats1.tex')
 
 summ_covs %>% 
-  filter(Type %in% c("Topic","LIWC","Other")) %>% 
+  filter(Type %in% c("Topic","Other")) %>% 
   knitr::kable(format = 'latex',digits = 2,label = "summ-tab2",booktabs=T,
-               caption = "Summary statistics on conversation characteristics") %>% 
+               caption = "Summary statistics on conversation characteristics (1)") %>% 
   kableExtra::kable_styling(latex_options = "hold_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
   writeLines('Tables/summary_stats2.tex')
+
+summ_covs %>% 
+  filter(Type %in% c("LIWC")) %>% 
+  knitr::kable(format = 'latex',digits = 2,label = "summ-tab3",booktabs=T,
+               caption = "Summary statistics on conversation characteristics (2)") %>% 
+  kableExtra::kable_styling(latex_options = "hold_position") %>% 
+  kableExtra::collapse_rows(columns = 1) %>% 
+  writeLines('Tables/summary_stats3.tex')
 
 # confirm that ID is unique
 dt %>% 
