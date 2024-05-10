@@ -75,10 +75,13 @@ TopicsTab = tribble(
   "protrump",          "Pro-Trump",
   "anticlinton",       "Anti-Clinton",
   "proclinton",        "Pro-Clinton",
-  "antiimmigrant",     "Pro-Immigrant",
+  "antiimmigrant",     "Anti-Immigrant",
+  "proimmigrant",      "Pro-Immigrant",
   "antiabortion",      "Anti-Abortion",
   "proabortion",       "Pro-Abortion",
-  "antigun",           "Pro-Gun"
+  "antigun",           "Anti-Gun",
+  "progun",            "Pro-Gun",
+  "antiwhite",         "Anti-White"
 )
 TopicsTab
 

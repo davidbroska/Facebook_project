@@ -6,7 +6,7 @@ library(googlesheets4)
 # LLM annotated data ------------------------------------------------------
 
 # List of files with comments classified by LLM
-fnames = paste0(Topics, ".csv") 
+fnames = paste0(TopicsTab$topic, ".csv") 
 
 # Read and aggregate those files
 lw = fnames %>% 

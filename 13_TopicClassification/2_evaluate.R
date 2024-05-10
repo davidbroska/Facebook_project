@@ -17,7 +17,6 @@ dfl %>%
 dfw= dfl %>% 
   pivot_wider(id_cols = c(target_id,name),values_fill = NA,
               names_from = annotator, values_from = value) %>% 
-   unnest() %>% 
   rename(topic=name) %>% 
   filter(!is.na(llm))
 count(dfw,target_id,sort=T)
@@ -81,38 +80,41 @@ summ %>%
 summ %>% 
   filter(F1 >= 0.6)
 
-# plot 
-summ %>%
-  group_by(Topic) %>% 
-  mutate(Topic = paste0(Topic,"\nPrevalence=",round(mean(Prevalence),2)),
-         hvsllm = str_detect(comparison,"llm")) %>%  
-  ungroup() %>% 
-  #filter(TruePos >= 6) %>% 
-  pivot_longer(cols=c(Precision,Recall,F1,Specificity)) %>% 
-  ggplot(aes(value,name,color=comparison,shape=hvsllm)) + 
-  geom_point(size = 1.5,position=position_dodge(width = .65)) +
-  facet_wrap(~ Topic) +
-  scale_x_continuous(limits = c(0,1),breaks=seq(0,1,0.1)) +
-  geom_vline(xintercept = .7,alpha=.4,linetype="dashed") +
-  scale_color_manual(values=c(db_ne="#b10026",llm_ne="#fc4e2a",ne_db="#005a32",llm_db="#78c679"))
+
 
 summ %>%
-  filter(comparison %in% c("llm_db","ne_db")) %>% 
-  group_by(Topic) %>% 
-  mutate(Topic = paste0(Topic,"\nPrevalence=",round(mean(Prevalence),3))) %>%  
+  left_join(TopicsTab,by = c("Topic"="topic")) %>% 
+  #filter(comparison %in% c("llm_db","ne_db")) %>% 
+  group_by(Topic) %>%
+  mutate(
+    Topic = ifelse(any(comparison == "llm_db"), paste0(label,"\nN=",NCases,", True Pos.=",TruePos,", True Neg.=",TrueNeg), label),
+    ComparisonType = case_when(
+      str_detect(comparison,"llm_") ~ "LLM predicts labels\nfrom human annotator",
+      str_detect(comparison,"db_ne|ne_db") ~ "Human annotator predicts\nlabels from human annotator")) %>%  
   ungroup() %>% 
   pivot_longer(cols=c(Precision,Recall,F1,Specificity,Kappa)) %>% 
-  ggplot(aes(value,name,color=comparison)) + 
-  geom_point(size = 1.5,position=position_dodge(width = .65)) +
-  facet_wrap(~ Topic) +
+  filter(!is.na(value)) %>% 
+  ggplot(aes(value,name,color=comparison,shape=ComparisonType)) + 
+  geom_point(size = 1,position=position_dodge(width = .35)) +
+  facet_wrap(~ Topic,ncol=3) +
   scale_x_continuous(limits = c(0,1),breaks=seq(0,1,0.1)) +
   geom_vline(xintercept = .7,alpha=.4,linetype="dashed") +
-  scale_color_manual(values=c(db_ne="#b10026",llm_ne="#fc4e2a",ne_db="#005a32",llm_db="#78c679"))
-  
+  scale_color_manual(
+    breaks = c("db_ne","llm_ne","ne_db","llm_db"),
+    values=c("#b10026","#fc4e2a","#005a32","#78c679"),
+    labels=c("Annotator DB labels predict\nannotator NE labels",
+             "LLM labels predict\nannotator NE labels",
+             "Annotator NE labels predict\nannotator DB labels",
+             "LLM labels predict\nannotator DB labels")) +
+  labs(y="",shape="Comparison Type",color="Comparison")
+ggsave("Figures/classifier_performance.pdf",width=7,height=6,bg="white")
            
 
 
-
+pdf(file = "Figures/corrplot_topics.pdf")
+corrplot(round(cor(dt[TopicsTab$topic]),2), method = "number",tl.col = "black",
+         number.cex = 0.9,tl.cex = 0.8,number.digits = 2,type = "upper",diag = T,order = "hclust")
+dev.off()
 
 
 
@@ -136,36 +138,8 @@ cc %>%
   select(target_id,post,context,target) %>% 
   write_csv("13_TopicClassification/rarepos_classified2.csv")
 
-cc %>% summarise(across(c(proclinton_llm,proimmigrant_llm,antigun_llm,drugs_llm,antichristianity_llm,antiamerica_llm), ~ sum(.,na.rm=T)))
-  
-  
 
   
-
-
-
-# correlation between classifications
-lm(scale(anticonservative_ne) ~ scale(anticonservative),hw) #0.187161
-lm(scale(antiamerica_ne)      ~ scale(antiamerica),hw)      #0.24238
-lm(scale(antichristianity_ne) ~ scale(antichristianity),hw) #0.31065
-lm(scale(suggestive_ne)       ~ scale(suggestive),hw)       #0.69366
-lm(scale(drugs_ne)            ~ scale(drugs),hw)            #0.66714
-
-# get number of coded documents
-summarise(df,across(all_of(coded), ~ sum(!is.na(.))))
-
-# get number and percent of documents rated as relevant
-summarise(df,across(all_of(coded), ~ sum(.==1,na.rm=T)))
-summarise(df,across(all_of(coded), ~ sum(.==1,na.rm=T) / sum(.!=1,na.rm=T)))
-
-# get number of documents rated as irrelevant
-summarise(df,across(all_of(coded), ~ sum(.==0,na.rm=T)))
-
-
-
-
-
-
 
   
 

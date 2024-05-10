@@ -109,9 +109,11 @@ table(dt$r_gender, useNA = "always")
 dt$Gender = ifelse(!dt$r_gender %in% c("Man","Woman"), "Other", dt$r_gender)
 table(dt$Gender, useNA = "always")
 
-dt$GenderWoman = ifelse(dt$Gender=="Woman",1,0)
-dt$GenderMan = ifelse(dt$Gender=="Man",1,0)
-dt$GenderOther = ifelse(dt$Gender=="Other",1,0)
+dt = dt %>% 
+  mutate(
+    Woman = ifelse(Gender=="Woman",1,0),
+    Man = ifelse(Gender=="Man",1,0),
+    OtherGender = ifelse(Gender=="Other",1,0))
 
 
 # Race --------------------------------------------------------------------
@@ -127,8 +129,14 @@ dt = dt %>%
                           r_race_hispanic == 1 ~ "Hispanic",
                           r_race_white == 1 ~ "White",
                           r_race_other == 1 ~ "Other",
-                          r_race_refuse == 1 ~ "Other"))
+                          r_race_refuse == 1 ~ "Other")) %>% 
+  rename(Asian = r_race_asian,
+         Black = r_race_black,
+         Hispanic = r_race_hispanic, 
+         White = r_race_white) %>% 
+  mutate(OtherRace = r_race_other+r_race_refuse)
 table(dt$Race, useNA = "always")
+distinct(dt,OtherRace,r_race_refuse,r_race_other)
 
 
 
@@ -136,15 +144,34 @@ table(dt$Race, useNA = "always")
 
 # Marital status ----------------------------------------------------------
 table(dt$r_marstat, useNA = "always") 
-dt$MaritalStatus = dt$r_marstat
+dt = dt %>% mutate(
+  MaritalStatus = r_marstat, 
+  Married = ifelse(MaritalStatus=="Married",1,0),
+  NeverMarried = ifelse(MaritalStatus=="Never married",1,0),
+  Separated = ifelse(MaritalStatus=="Separated",1,0),
+  Widowed = ifelse(MaritalStatus=="Widowed",1,0),
+  Divorced = ifelse(MaritalStatus=="Divorced",1,0),
+  MaritalNoAnswer = ifelse(MaritalStatus=="Prefer not to answer",1,0),
+  )
+
+summarize(dt,across(matches("MaritalStatus[a-zA-Z]+"), ~ sum(.==1)))
 
 
 # Religion ----------------------------------------------------------------
 table(dt$r_religion,useNA = "always")
 dt = dt %>% 
   mutate(Religion = case_when(r_religion %in% c("Atheist or Agnostic","No Religion") ~ "Not religious",
-                              r_religion %in% c(NA, "Prefer not to answer") ~ "Not available", 
-                              TRUE ~ r_religion))
+                              r_religion %in% c(NA, "Prefer not to answer") ~ "No answer", 
+                              TRUE ~ r_religion), 
+         EvangelicalProtestant = ifelse(r_religion=="Evangelical Protestant",1,0),
+         MainlineProtestant = ifelse(r_religion=="Mainline Protestant",1,0),
+         Mormon = ifelse(r_religion=="Mormon",1,0),
+         Catholic = ifelse(r_religion=="Catholic",1,0),
+         Jewish = ifelse(r_religion == "Jewish", 1, 0), 
+         Muslim = ifelse(r_religion == "Muslim", 1, 0), 
+         NotReligious = ifelse(r_religion == "Not religious", 1, 0), 
+         ReligionNoAnswer = ifelse(r_religion == "No answer", 1, 0), 
+         OtherReligion = ifelse(r_religion == "Other Religion", 1, 0))
 table(dt$Religion,useNA = "always")
 
 
@@ -370,7 +397,8 @@ dt_DvsNonDmd = dt %>%
 
 
 # Likes count comment -----------------------------------------------------
-dt$target_likes_count = log(dt$target_likes_count+1)
+dt$TargetLikesCount = log(dt$target_likes_count+1)
+dt$TargetLikesCount2Sd = scale2(dt$TargetLikesCount)
 
 # grand mean center variables 
 numeric_vars = c(DVs,Covs)[ sapply(dt[c(DVs,Covs)], is.numeric) ] 
@@ -406,12 +434,13 @@ di = read_csv(list.files(pattern="target_ideology.csv",recursive=T)) %>%
   rename(target_id=comment_id, target_user_id=user_id, ideo_commenterB=ideology) %>% 
   mutate(target_id = paste0("T",target_id)) %>% 
   group_by(target_id,target_user_id) %>%
-  summarise(ideo_commenterB=mean(ideo_commenterB)) %>% 
+  summarise(IdeoCommenterB=mean(ideo_commenterB)) %>% 
   ungroup() %>% 
-  mutate(ideo_commenterB = ideo_commenterB %>% ifelse(is.na(.),mean(.,na.rm=T),.))
+  mutate(IdeoCommenterB = IdeoCommenterB %>% ifelse(is.na(.),mean(.,na.rm=T),.), 
+         IdeoCommenterB2Sd = scale2(IdeoCommenterB))
   
 all(count(di,target_id)$n==1)
-sum(is.na(di$ideo_commenterB))
+sum(is.na(di$IdeoCommenterB))
 
  
 # Load data on ideology of those who liked comments -----------------------
@@ -420,12 +449,13 @@ dl = read_csv(list.files(pattern="target_like_ideology.csv",recursive=T)) %>%
   rename(target_id=comment_id, ideo_like=ideology) %>% 
   mutate(target_id = paste0("T",target_id)) %>% 
   group_by(target_id) %>%
-  summarise(ideo_like=mean(ideo_like,na.rm=T)) %>% 
+  summarise(IdeoLike=mean(ideo_like,na.rm=T)) %>% 
   ungroup() %>% 
-  mutate(ideo_like = ideo_like %>% ifelse(is.na(.), mean(.,na.rm=T),.))
+  mutate(IdeoLike = IdeoLike %>% ifelse(is.na(.), mean(.,na.rm=T),.),
+         IdeoLike2Sd = scale2(IdeoLike))
 
 all(count(dl,target_id,sort=T)$n==1)
-sum(is.na(dl$ideo_like))
+sum(is.na(dl$IdeoLike))
 
 
 # LIWC  -------------------------------------------------------------------
@@ -460,11 +490,16 @@ dt = dt %>%
          Partisanship, PartisanshipNum, 
          PolIdComp, PolIdComp2Sd,
          Age, Age2Sd, AgeCat, 
-         Gender, GenderMan,GenderWoman,GenderOther,
+         Gender, Man,Woman,OtherGender,
          Education, EducationNum,EducationNum2Sd,
-         Race, MaritalStatus, Religion, SexualOrientation, HhSize, Region, 
+         Race, Asian,Black,Hispanic,White,OtherRace,
+         MaritalStatus,Married,NeverMarried,Separated, Widowed,Divorced,MaritalNoAnswer,
+         Religion,EvangelicalProtestant,MainlineProtestant,Mormon,Catholic,
+         Jewish,Muslim,NotReligious,ReligionNoAnswer,OtherReligion,
+         SexualOrientation, HhSize, Region, 
          Income, Income1k, Income2Sd,
          Toxicity,BToxicNum,Productive,ProductiveNum,
+         TargetLikesCount,TargetLikesCount2Sd,
          all_of(DVs), 
          all_of(BinaryDVs),
   ) %>% 
