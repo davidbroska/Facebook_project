@@ -4,34 +4,58 @@
 \usepackage{cite}
 \usepackage{natbib}
 \usepackage{dcolumn}
+\usepackage{epigraph} % Required for inspirational quote
+\renewcommand{\epigraphsize}{\small}
+\setlength{\epigraphwidth}{0.51\textwidth}
+\renewcommand{\textflush}{flushright}
+\renewcommand{\sourceflush}{flushright}
 
 
-
-
-\date{Draft -- please do not circulate.}
+%\date{Draft -- please do not circulate.}
 
 \title{(In)civility on Display: Social Media Discourse through the Ideological Lens}
 
 \author[1]{David Broska}
-\author[2]{Byungkyu Lee}
-\author[3]{Barum Park}
-\author[4]{Daniel A. McFarland}
-\affil[1,4]{Stanford University}
-\affil[2]{New York University}
-\affil[2]{Cornell University}
+%\author[2]{Byungkyu Lee}
+%\author[3]{Barum Park}
+%\author[4]{Daniel A. McFarland}
+%\affil[1,4]{Stanford University}
+%\affil[2]{New York University}
+%\affil[2]{Cornell University}
 
 \begin{document}
 
 \maketitle
 
+\epigraph{Civility costs nothing and buys everything.}{Mary Wortley Montagu 1756}
+\epigraph{Civility is on the ballot.}{Barack Obama 2016}
+%Respect for women is on the ballot. Tolerance is on the ballot. Justice is on the ballot. Equality is on the ballot. Democracy is on the ballot.
+
 \section{Introduction}
 
-Conversations are at the heart of democracies. Discussions of everyday and fundamental issues in parliaments, media, and kitchen tables inform the political process. An exchange based on reason rather than content and ignorance is even considered a benchmark for achieving the ideal of a democracy \citep{sanders_against_1997}. ``Interpersonal discussions across social divides can help diverse groups of people peacefully identify solutions to shared problems, avoid violent conflict, and come to understand one another better" \citep{argyle_leveraging_2023}. Most of these outcomes require civility of interlocutors, defined as ``a means of demonstrating mutual respect" \citep{mutz_inyourface_2016}. While there was once hope that social media could advance democratic deliberation through open discourse, diverse perspectives, and broad participation, the crucial ingredient of civility is lacking. ``Concern about civil discourse accompanies any technological advance that lowers the cost of information production and distribution" \citep{munger_dont_2021}. 
+Conversations are at the heart of democracies. Discussions of everyday and fundamental issues in parliaments, media, and kitchen tables inform the political process, help identify solutions to problems, avoid violent conflict, and foster a better understanding of each other. Some consider conversations based on reason rather than content and ignorance even a benchmark for achieving a democracy \citep{sanders_against_1997}. Achieving these outcomes requires \textit{civility} from the interlocutors because it sets the stage for productive conversations. 
+At a minimum,  civility means ``demonstrating mutual respect" \citep{mutz_inyourface_2016} or ``politeness" \citep{frimer_montagu_2018}. A maximalist definition of civility does not only require being respectful and polite but also critical engagement \citep{kant_enlightenment_1784}\footnote{Kant does not only argue that individuals should not only have the freedom but also the courage to make use of their own understanding -- i.e., to actively engage. For example, the clergyman is required to teach lessons aligned with the ``creed of the church he serves, for he was employed by it on that condition. But as a scholar he has complete freedom and is even called upon to communicate to the public all his carefully examined and well-intentioned thoughts about what is erroneous in that creed and his suggestions for a better arrangement of the religious and ecclesiastical body."} and requires individuals to give rationales in conversation \citep{habermas1985theory}. In other words, this expanded definition of civility demands contributions to conversations to be productive above and beyond avoiding offense.
+
+While this distinction is grounded in venerable theoretical traditions, it remains unclear how these perspectives align with the public's perception of desirable norms in conversations. Civility is a \textit{social praxis} embedded in what people know, who they are, what they do, and what they value. Extant literature does not sufficiently address how the broader public applies norms to conversations, and the social and psychological factors that shape the perceptions of conversations are not well understood. \textit{To what extent does the perception of civility depend on individual factors} (e.g. political ideology, partisanship, age, etc.), \textit{the social context} (e.g. the topic of the conversation), \textit{or both} (e.g. some people in some contexts may perceive conversations differently than others in other contexts)? For this manuscript, we\footnote{A future version of this manuscript will be coauthored but this version is solely written by David Broska.} will focus on perceived toxicity, defined as a comment considered disrespectful, hateful, or that makes someone more likely to leave a discussion or give up sharing their perspective. 
+
+This project studies the determinants of perceived civility in the context of the 2016 US presidential election campaign. Across 9,994 conversations held between 2015 and 2017 in political Facebook groups, we study how 4,675 American survey respondents evaluate comments given by discussants in terms of perceived toxicity, hostility, disagreement, intolerance, and other features. The 2016 presidential campaign is an insightful case for the study of conversational norms because the discussions happened ``during a time of rapidly changing norms of political civility" \citep{munger_dont_2021}, and these exchanges were experienced ``first-hand" through broadcasting and online \citep{mutz_inyourface_2016}. Studying social media around this time offers a unique lens into the public sphere because an estimated 68\% of US adults were on a social network, up from 25\% in 2008 \citep{duggan_social_2016}.
+
+%While there was once hope that social media could advance democratic deliberation through open discourse, diverse perspectives, and broad participation, many observers note that social media discussions lack the crucial ingredient of civility. Concerns about declining civility are not new. From the printing press during the Reformation \citep{bejan_mere_2017} to the invention of cable news with its personalized news reporting \citep{mutz_inyourface_2016,berry2014outrage}, history is filled with examples of concerns about incivility of discourse. However, the 2016 US presidential election may have marked another critical turning point in recent history. 
+
+\section{Hypotheses}
+
+\textit{Random intercept hypothesis:} Multilevel models allow for assessing how much variation in perceived toxicity is attributable to survey respondents (e.g. political ideology) and to the context (e.g. the topic of a conversation). we hypothesize that a larger share in the dependent variable is attributable to the context than the individual.
+
+\textit{Individual-level hypothesis:} This study is exploratory and considers a broad range of individual predictors of perceived toxicity. That said, perceptions of conversational norms likely depend on demographic factors such as political ideology, partisanship, education, age, race, and religiosity. These demographics reflect socialization processes that shape what is considered appropriate in a conversation. 
+
+\textit{Context-level hypothesis:} Some topics will be considered more toxic than others. In particular, topics related to ``moral convictions"-- i.e., judgments informed by ``perceptions of morality and immorality, right or wrong" \citep{skitka_conviction_2010} -- may elicit particularly strong reactions. Attitudes toward gun control and abortion are more strongly held than attitudes toward other issues; they may create more intense emotions, motivate people to justify their actions, and lead them to believe that their views are objective and universal. 
+
+\textit{Random slope hypothesis:} Not all comments cause variation in perceived toxicity. Some comments may be irrelevant to the observer, too short to elicit strong reactions, or unintelligible. we hypothesize that the random slopes for individual-level characteristics, coupled with random intercepts for topics, will cover zero. Beyond this, it is interesting to assess the range of the most effects (e.g. 95\%). That is, if the effect for an individual-level characteristic is $\hat \beta$, what is $\beta\pm 1.96$?
+
+\textit{A cross-level interaction hypothesis:} Some topics are perceived as more toxic among Republicans/conservatives than liberals, and vice versa. For example, social identity theory predicts that individuals favor members of the ingroup over the outgroup \citep{tafjelturner_identity_2004}. Hence, individuals who identify as Democrats may be more likely to perceive a negative characterization of Hillary Clinton as toxic. Conversely, Republicans might negative comments about Donald Trump as more toxic than comments on other topics.
 
 
 
-From the printing press during the Reformation (Bejan 2017) to the invention of cable news with its personalized news reporting \citep{mutz_inyourface_2016,berry2014outrage}, history is filled with examples of concerns about incivility of discourse. ``The 2016 US presidential election took place during a time of rapidly changing civility \citep{munger_dont_2021}, these uncivil exchanges were experienced ``first-hand" through broadcasting and online 
-\citep{mutz_inyourface_2016}, with an estimated 68\% of US adults on a social network, up from 25\% in 2008 \citep{duggan_social_2016}, and the hyper-competitve environment of 2016 election politics.
 
 
 
@@ -41,87 +65,193 @@ From the printing press during the Reformation (Bejan 2017) to the invention of 
 
 % Social scientists have long observed that “conversation is the soul of democracy” (1, 2). Interpersonal discussions across social divides can help diverse groups of people peacefully identify solutions to shared problems, avoid violent conflict, and come to understand one another better (2–8). Historically, these conversations have occurred face-to-face (8), but online conversations now play a central role in public dialogue. More than 100 billion messages are sent every day on Facebook and Instagram alone (9), and approximately 7 billion conversations occur daily on Facebook Messenger (10). Such conversations can have far-reaching impact. Some of the largest social movements in human history have emerged out of sprawling conversations on social media, and discussions between high-profile social media users can shape the stock market, politics, and many other aspects of human experience (11–14). The internet thus has the capacity to empower an ever-increasing number of people to communicate and deliberate together
 
-\section{Data}
+\section{Data and Methods}
 
-4,675 survey respondents evaluated a total of 9,994 comments from Facebook conversations in terms of toxicity, perceived hostility, disagreement, intolerance, and other characteristics. 
+To study the determinants of perceived civility in conversations, we rely on responses from 4,475 American adults to a survey asking them to evaluate Facebook conversations regarding perceived toxicity and other features. Respondents who did not pass an attention check were not allowed to take the survey. Compared to demographic quotas from the American National Election Studies (ANES), this sample of 4,475 adults recruited via Prolific consists of more college-educated (+10.7 percentage points) and individuals with a high school degree or less (-7.3pp). We over-sampled Democrats (+10.7pp), under-sampled Republicans (-14.6pp), over-sampled those aged 33 to 44 (+9.4pp), and under-sampled those aged 60 and older (-12.3pp). The sample is otherwise representative on these demographic dimensions. In a future analysis, we will consider whether results change if post-stratification techniques are applied allowing us to make more credible inferences about the population of American adults.
 
-The data is cross-classified. Each respondent was given a random sample of seven comments to evaluate, and not all comments were reviewed by all respondents. On average, each comment was evaluated 3.27 times. 
+Each of the 4,475 respondents was randomly assigned to evaluate 7 conversations. Excluding missing values\footnote{There is no evidence of differential attrition.}, the total sample size is 32,597 observations. Not every respondent evaluated each conversation; each one was evaluated 3.27 times on average. The 9,994 conversations are a stratified random sample of conversations from 1,058 public Facebook pages retrieved during the 2016 US presidential election via the official Facebook API v2.7. To ensure variation across the ideological spectrum on Facebook, we first obtained a list of the 500 most active political pages of the platform as identified by \citet{bakshy_exposure_2015}, as well as 37 pages identified as representative online and offline news sources by Pew Research Center’s American Trends Panel in 2014. These pages make up our media samples.
 
-We have constructed a unique multilevel data set of 1,058 online foci (i.e., public pages) on Facebook during the 2016 US presidential election campaign from 2015 to 2017 February. In order to secure enough variation across the whole ideological spectrum on Facebook, we first obtained a list of the 500 most active political pages of the platform as identified by \citep{bakshy_exposure_2015} in an article published in Science, as well as 37 pages identified as representative online and offline news sources by Pew Research Center’s American Trends Panel in 2014. These pages make up our media samples. For our politician samples, we obtain a list of all legislators in both the House and Senate from the 113rd to the 115th Congresses. In total, we identified 476 Facebook media pages and 582 legislators’ official Facebook pages that were active in March 2017 and subsequently collected all public posts, public comments, and user-reactions in these forums using the official Facebook API v2.7 (see Data Management Plan). Our forum data has a hierarchical structure: each page (i) includes multiple posts (ii), which in turn contain comments (iii) and their subcomments (iv). Across all of these levels, users are able to react or comment on the material other users have posted. The main online foci we focus on in this project are the pages, as they tend to have stronger and more readily identifiable identities than posts or comments.
+Table \ref{tab:summ-tab1} provides summary statistics of the characteristics of survey respondents.
+
+
+Table \ref{tab:summ-tab2} provides summary statistics of variables measured for conversations. The first set of variables in the \textit{Topic} category refers to categorizations of whether a particular comment is related to a topic or not. The comments were classified with a Large Language Model.
+The second set of variables in the \textit{LIWC} category refers to the count of words for a category in the LIWC dictionary \citep{pennebaker_linguistic_2022}. These counts were transformed with $\log(1+x)$ to account for the right-skew of count variables. Finally, the \textit{Other} variables denote predictors unrelated to the language of the comment. 
+
+\begin{itemize}
+    \item Order: how many conversations a respondent evaluate before rating the focal one
+    \item BToxicNum01: toxicity of B's comment rated by surveys respondent. The four levels Not Toxic (-1), Maybe not sure (0), Toxic (1), and Very toxic (2) were rescaled to range from 0 to 1 and will be treated as a continuous dependent variable.
+    \item ideocommenterB: the political ideology of commenter B is estimated based on the Facebook pages that the user visited. Negative values denote liberal political ideology while positive values represent conservatism.
+\end{itemize}
+
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tables % 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
+\begin{table}[h]
+\centering
+\caption{\label{tab:summ-tab1}Summary statistics on characteristics of survey respondents}
+\centering
+\begin{tabular}[t]{l|l|r|r|r|r|r|r}
+\hline
+Type & Variable & Min & Q25 & Mean & Median & Q75 & Max\\
+\hline
+ & BToxicNum & -1.00 & -1.00 & 0.25 & 0.00 & 1.00 & 2.00\\
+\cline{2-8}
+\multirow{\raggedright\arraybackslash Dependent Variable} & BToxicNum01 & -0.42 & -0.42 & 0.00 & -0.08 & 0.25 & 0.58\\
+\cline{1-8}
+ & EducationNum & 1.00 & 3.00 & 3.05 & 3.00 & 3.00 & 5.00\\
+\cline{2-8}
+ & GenderMan & 0.00 & 0.00 & 0.49 & 0.00 & 1.00 & 1.00\\
+\cline{2-8}
+ & GenderOther & 0.00 & 0.00 & 0.02 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+ & GenderWoman & 0.00 & 0.00 & 0.48 & 0.00 & 1.00 & 1.00\\
+\cline{2-8}
+ & Income2Sd & -0.58 & -0.30 & 0.00 & -0.13 & 0.38 & 1.79\\
+\cline{2-8}
+\multirow{\raggedright\arraybackslash Demographics} & PolIdComp & 1.00 & 1.50 & 3.18 & 3.00 & 4.50 & 7.00\\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+\clearpage
+
+\begin{table}[h]
+\centering
+\caption{\label{tab:summ-tab2}Summary statistics on conversation characteristics}
+\centering
+\begin{tabular}[t]{l|l|r|r|r|r|r|r}
+\hline
+Type & Variable & Min & Q25 & Mean & Median & Q75 & Max\\
+\hline
+ & antiabortion & 0.00 & 0.00 & 0.01 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+ & antiamerica & 0.00 & 0.00 & 0.15 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+ & antichristianity & 0.00 & 0.00 & 0.01 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+ & anticlinton & 0.00 & 0.00 & 0.13 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+ & antigun & 0.00 & 0.00 & 0.01 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+ & antiimmigrant & 0.00 & 0.00 & 0.12 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+ & antitrump & 0.00 & 0.00 & 0.12 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+ & drugs & 0.00 & 0.00 & 0.02 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+ & proabortion & 0.00 & 0.00 & 0.01 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+ & proclinton & 0.00 & 0.00 & 0.02 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+ & progun & 0.00 & 0.00 & 0.01 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+ & proimmigrant & 0.00 & 0.00 & 0.01 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+ & protrump & 0.00 & 0.00 & 0.06 & 0.00 & 0.00 & 1.00\\
+\cline{2-8}
+\multirow{\raggedright\arraybackslash Topic} & suggestive & 0.00 & 0.00 & 0.13 & 0.00 & 0.00 & 1.00\\
+\cline{1-8}
+ & Emoji & 0.00 & 0.00 & 0.03 & 0.00 & 0.00 & 6.22\\
+\cline{2-8}
+ & achieve & 0.00 & 0.00 & 0.21 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & cogproc & 0.00 & 0.00 & 1.62 & 2.16 & 2.77 & 4.62\\
+\cline{2-8}
+ & comm & 0.00 & 0.00 & 0.28 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & conflict & 0.00 & 0.00 & 0.18 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & death & 0.00 & 0.00 & 0.10 & 0.00 & 0.00 & 3.93\\
+\cline{2-8}
+ & emo\_neg & 0.00 & 0.00 & 0.22 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & emo\_pos & 0.00 & 0.00 & 0.20 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & ethnicity & 0.00 & 0.00 & 0.25 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & female & 0.00 & 0.00 & 1.04 & 0.00 & 2.40 & 4.62\\
+\cline{2-8}
+ & food & 0.00 & 0.00 & 0.08 & 0.00 & 0.00 & 4.21\\
+\cline{2-8}
+ & home & 0.00 & 0.00 & 0.07 & 0.00 & 0.00 & 3.93\\
+\cline{2-8}
+ & i & 0.00 & 0.00 & 0.42 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & leisure & 0.00 & 0.00 & 0.07 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & male & 0.00 & 0.00 & 0.28 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & money & 0.00 & 0.00 & 0.15 & 0.00 & 0.00 & 3.93\\
+\cline{2-8}
+ & moral & 0.00 & 0.00 & 0.36 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & polite & 0.00 & 0.00 & 0.12 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & politic & 0.00 & 0.00 & 0.39 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & power & 0.00 & 0.00 & 0.60 & 0.00 & 1.35 & 4.62\\
+\cline{2-8}
+ & prosocial & 0.00 & 0.00 & 0.15 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & relig & 0.00 & 0.00 & 0.19 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & sexual & 0.00 & 0.00 & 0.19 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & shehe & 0.00 & 0.00 & 0.75 & 0.00 & 1.83 & 4.62\\
+\cline{2-8}
+ & substances & 0.00 & 0.00 & 0.01 & 0.00 & 0.00 & 3.93\\
+\cline{2-8}
+ & swear & 0.00 & 0.00 & 0.54 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & tech & 0.00 & 0.00 & 0.19 & 0.00 & 0.00 & 4.62\\
+\cline{2-8}
+ & they & 0.00 & 0.00 & 0.35 & 0.00 & 0.00 & 3.93\\
+\cline{2-8}
+ & tone\_neg & 0.00 & 0.00 & 1.03 & 0.00 & 2.13 & 4.62\\
+\cline{2-8}
+ & tone\_pos & 0.00 & 0.00 & 0.62 & 0.00 & 1.30 & 4.62\\
+\cline{2-8}
+ & we & 0.00 & 0.00 & 0.23 & 0.00 & 0.00 & 3.93\\
+\cline{2-8}
+ & work & 0.00 & 0.00 & 0.23 & 0.00 & 0.00 & 3.93\\
+\cline{2-8}
+\multirow{\raggedright\arraybackslash LIWC} & you & 0.00 & 0.00 & 0.52 & 0.00 & 0.00 & 4.62\\
+\cline{1-8}
+ & Order & -3.00 & -2.00 & 0.00 & 0.00 & 2.00 & 3.00\\
+\cline{2-8}
+ & ideo\_commenterB & -0.96 & -0.37 & 0.14 & 0.14 & 0.76 & 1.01\\
+\cline{2-8}
+\multirow{\raggedright\arraybackslash Other} & target\_likes\_count & 0.00 & 0.00 & 0.53 & 0.00 & 0.69 & 7.18\\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% End tables 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
 
 \section{Methods}
 
-\newpage
+Multilevel models, also known as mixed-effects models, are statistical models used for analyzing data that have a nested structure (see Table \ref{sample-table}  for illustration). This means that the data is organized into groups, and there is variability both within each group and between groups \citep{hox2017multilevel}. Multilevel models can account for correlation within each group. In the present case, evaluations of conversations may correlated within each individual (because it is the same rater), and conversations may be evaluated similarly (because it is the entity). This does not imply a strictly hierarchical structure since each respondent evaluated multiple conversations but not all conversations have been evaluated by the same respondents. 
+
+
 \section{Results}
 
 
 
-\begin{table}[!htbp] \centering 
-  \caption{} 
-  \label{} 
-\small 
-\begin{tabular}{@{\extracolsep{-11pt}}lD{.}{.}{-2} D{.}{.}{-2} D{.}{.}{-2} D{.}{.}{-2} } 
-\\[-1.8ex]\hline 
-\hline \\[-1.8ex] 
- & \multicolumn{4}{c}{Dependent variable} \\ 
-\cline{2-5} 
-\\[-1.8ex] & \multicolumn{4}{c}{BToxicNum01} \\ 
-\\[-1.8ex] & \multicolumn{1}{c}{(1)} & \multicolumn{1}{c}{(2)} & \multicolumn{1}{c}{(3)} & \multicolumn{1}{c}{(4)}\\ 
-\hline \\[-1.8ex] 
- PolIdComp2Sd &  & -0.06^{***} & -0.06^{***} & -0.06^{***} \\ 
-  Age2Sd &  &  & -0.03^{***} & -0.03^{***} \\ 
-  GenderOther &  &  & -0.01 & -0.01 \\ 
-  GenderWoman &  &  & 0.001 & 0.0001 \\ 
-  EducationNum2Sd &  &  & 0.02^{***} & 0.02^{***} \\ 
-  MaritalStatusMarried &  &  & 0.0002 & -0.0001 \\ 
-  MaritalStatusNever married &  &  & 0.002 & 0.002 \\ 
-  MaritalStatusPrefer not to answer &  &  & -0.01 & -0.01 \\ 
-  MaritalStatusSeparated &  &  & 0.04 & 0.04 \\ 
-  MaritalStatusWidowed &  &  & -0.01 & -0.01 \\ 
-  ReligionEvangelical Protestant &  &  & -0.01 & -0.01 \\ 
-  ReligionJewish &  &  & -0.02 & -0.02 \\ 
-  ReligionMainline Protestant &  &  & -0.02^{**} & -0.02^{**} \\ 
-  ReligionMormon &  &  & -0.02 & -0.02 \\ 
-  ReligionMuslim &  &  & 0.03 & 0.03 \\ 
-  ReligionNot available &  &  & -0.01 & -0.01 \\ 
-  ReligionNot religious &  &  & -0.01 & -0.01 \\ 
-  ReligionOther Religion &  &  & 0.001 & -0.0002 \\ 
-  SexualOrientationGay or lesbian &  &  & -0.001 & -0.001 \\ 
-  SexualOrientationHeterosexual / straight &  &  & -0.01 & -0.01 \\ 
-  SexualOrientationOther &  &  & 0.02 & 0.02 \\ 
-  HhSizeHh2 &  &  & 0.004 & 0.004 \\ 
-  HhSizeHh3 &  &  & 0.01 & 0.01 \\ 
-  HhSizeHh4 &  &  & 0.01 & 0.01 \\ 
-  HhSizeHh5 &  &  & 0.002 & 0.003 \\ 
-  HhSizeHh6 or more &  &  & 0.01 & 0.01 \\ 
-  HhSizeHhOther &  &  & 0.003 & 0.004 \\ 
-  RegionNortheast &  &  & -0.01^{*} & -0.01^{*} \\ 
-  RegionSouth &  &  & -0.004 & -0.004 \\ 
-  RegionWest &  &  & -0.003 & -0.003 \\ 
-  Income2Sd &  &  & -0.01 & -0.01 \\ 
-  RaceBlack &  &  & 0.01 & 0.01 \\ 
-  RaceHispanic &  &  & 0.03^{**} & 0.03^{**} \\ 
-  RaceOther &  &  & -0.01 & -0.01 \\ 
-  RaceWhite &  &  & 0.02^{**} & 0.02^{**} \\ 
-  Order &  &  & -0.01^{***} & -0.01^{***} \\ 
-  anticonservative &  &  &  & 0.10^{***} \\ 
-  america &  &  &  & 0.02^{***} \\ 
-  christianity &  &  &  & -0.04 \\ 
-  suggestive &  &  &  & 0.18^{***} \\ 
-  drugs &  &  &  & -0.06^{***} \\ 
-  ideo\_commenterB &  &  &  & 0.07^{***} \\ 
-  target\_likes\_count &  &  &  & -0.0003^{**} \\ 
-  Constant & -0.0000 & 0.0000 & -0.01 & -0.08^{***} \\ 
- \hline \\[-1.8ex] 
-Observations & \multicolumn{1}{c}{32,695} & \multicolumn{1}{c}{32,695} & \multicolumn{1}{c}{32,695} & \multicolumn{1}{c}{32,695} \\ 
-Log Likelihood & \multicolumn{1}{c}{-11,041.93} & \multicolumn{1}{c}{-10,956.70} & \multicolumn{1}{c}{-10,774.14} & \multicolumn{1}{c}{-10,137.60} \\ 
-Akaike Inf. Crit. & \multicolumn{1}{c}{22,091.85} & \multicolumn{1}{c}{21,923.40} & \multicolumn{1}{c}{21,628.28} & \multicolumn{1}{c}{20,369.19} \\ 
-Bayesian Inf. Crit. & \multicolumn{1}{c}{22,125.43} & \multicolumn{1}{c}{21,965.38} & \multicolumn{1}{c}{21,964.08} & \multicolumn{1}{c}{20,763.76} \\ 
-\hline 
-\hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{4}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\end{tabular} 
-\end{table} 
+
+
+
 
 
 
@@ -131,6 +261,48 @@ Bayesian Inf. Crit. & \multicolumn{1}{c}{22,125.43} & \multicolumn{1}{c}{21,965.
 \bibliographystyle{asr}
 \bibliography{bib}
 
+\clearpage
 \section{Supplementary Material}
 
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{|c|c|}
+    \hline
+    \textbf{Respondent Id} & \textbf{Conversation Id} \\
+    \hline
+    1 & 1 \\
+    1 & 2 \\
+    1 & 3 \\
+    1 & 4 \\
+    1 & 5 \\
+    1 & 6 \\
+    1 & 7 \\
+    \midrule
+    2 & 3 \\
+    2 & 4 \\
+    2 & 8 \\
+    2 & 9 \\
+    2 & 10 \\
+    2 & 11 \\
+    2 & 12 \\
+    \dots & \dots \\
+    \hline
+    \end{tabular}
+    \caption{Sample table to illustrate the nested data structure}
+    \label{sample-table}
+\end{table}
+
+\clearpage
+
+\pagenumbering{gobble}
+\begin{figure}
+    \centering
+    \includegraphics[width=1\linewidth]{figures/2_AvgPercAgreeing_Partisanship.png}
+    \caption{Variables measuring dimensions of civility by partisanship}
+    \label{fig:civility-partisanship}
+    \vspace{0.25cm}
+    \includegraphics[width=1\linewidth]{figures/2_AvgPercAgreeing_Ideo.png}
+    \caption{Variables measuring dimensions of civility by political ideology}
+    \label{fig:civility-ideology}
+\end{figure}
 \end{document}
