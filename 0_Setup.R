@@ -63,13 +63,24 @@ custom_fa = function(.data, .nfactors,.niter=1, .cor="cor"){
      n.iter = .niter)
 }
 
-Topics = c("antiamerica","antichristianity","suggestive",#"antiwhite",
-  "drugs",#"killing"
-  "antitrump","protrump","anticlinton","proclinton",#"antiobama",
-  "antiimmigrant","proimmigrant","antiabortion","proabortion",
-  "antigun"#,"progun","antirepcons","antidemlib"
-)
 
+
+TopicsTab = tribble(
+  ~ topic, ~ label,
+  "antiamerica",       "Anti-America",
+  "antichristianity",  "Anti-Christianity",
+  "suggestive",        "Suggestive",
+  "drugs",             "Drugs",
+  "antitrump",         "Anti-Trump",
+  "protrump",          "Pro-Trump",
+  "anticlinton",       "Anti-Clinton",
+  "proclinton",        "Pro-Clinton",
+  "antiimmigrant",     "Pro-Immigrant",
+  "antiabortion",      "Anti-Abortion",
+  "proabortion",       "Pro-Abortion",
+  "antigun",           "Pro-Gun"
+)
+TopicsTab
 
 LiwcCats = c("tone_pos","tone_neg","emo_pos","emo_neg","swear",
              "conflict","prosocial","polite","moral","comm",

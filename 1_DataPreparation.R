@@ -109,6 +109,10 @@ table(dt$r_gender, useNA = "always")
 dt$Gender = ifelse(!dt$r_gender %in% c("Man","Woman"), "Other", dt$r_gender)
 table(dt$Gender, useNA = "always")
 
+dt$GenderWoman = ifelse(dt$Gender=="Woman",1,0)
+dt$GenderMan = ifelse(dt$Gender=="Man",1,0)
+dt$GenderOther = ifelse(dt$Gender=="Other",1,0)
+
 
 # Race --------------------------------------------------------------------
 table(dt$r_race_asian)
@@ -364,6 +368,10 @@ dt_DvsNonDmd = dt %>%
   rename_with(~str_c(.,"_NonDmd"), all_of(unique(DVs))) 
 
 
+
+# Likes count comment -----------------------------------------------------
+dt$target_likes_count = log(dt$target_likes_count+1)
+
 # grand mean center variables 
 numeric_vars = c(DVs,Covs)[ sapply(dt[c(DVs,Covs)], is.numeric) ] 
 dt = dt %>% 
@@ -387,7 +395,7 @@ topic_labels = jw %>%
   pivot_wider(id_cols = c(target_id,name),values_fill = NA,
               names_from = annotator, values_from = value) %>% 
   # if there are missing values for annotator db, impute with ne and llm
-  mutate(label = db %>% ifelse(is.na(.),ne,.) %>% ifelse(is.na(.),llm,.)) %>% 
+  mutate(label = db %>% if_else(is.na(.),ne,.) %>% if_else(is.na(.),llm,.) %>% if_else(is.na(.),0,.)) %>% 
   pivot_wider(id_cols = target_id, names_from=name, values_from=label, values_fill=NA)
   
 
@@ -435,6 +443,14 @@ liwc %>%
 length(unique(dt$target_id))
 
 
+
+
+
+
+
+
+
+
 # Create cleaned data ------------------------------------------------
 dt = dt %>% 
   select(ID,ResponseId:inc_prob,
@@ -443,7 +459,8 @@ dt = dt %>%
          PolId = r_ideo, PolIdNum, 
          Partisanship, PartisanshipNum, 
          PolIdComp, PolIdComp2Sd,
-         Age, Age2Sd, AgeCat, Gender, 
+         Age, Age2Sd, AgeCat, 
+         Gender, GenderMan,GenderWoman,GenderOther,
          Education, EducationNum,EducationNum2Sd,
          Race, MaritalStatus, Religion, SexualOrientation, HhSize, Region, 
          Income, Income1k, Income2Sd,
@@ -482,6 +499,8 @@ dt = filter(dt,!is.na(BToxicNum01))
 # Export data -------------------------------------------------------------
 fpath_export = strsplit(fpath, fname)[[1]]
 write_csv(dt, paste0(fpath_export, "dt_survey_0625_with_Toxicity_clean.csv"))
+
+
 
 
 # The broader problem with the data is that the 15 variables are on different scales. We have the following: 

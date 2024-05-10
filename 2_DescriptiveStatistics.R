@@ -1,5 +1,6 @@
 # run setup script to load data and functions
 source(list.files(pattern="0_Setup.R", recursive=T))
+library(kableExtra)
 fname = "dt_survey_0625_with_toxicity_clean.csv"
 fpath = list.files(pattern = fname, recursive = T)
 dt = read_csv(fpath, col_types = c("target_id"="character")) %>% 
@@ -8,8 +9,65 @@ dt = read_csv(fpath, col_types = c("target_id"="character")) %>%
          Toxicity=factor(Toxicity,levels=c("Not toxic","Maybe, not sure","Toxic","Very toxic")),
          Education = factor(Education, levels=c("High School or less","Some college","Postgraduate")))
 
-# Descriptive statistics #######################################################
 
+# Descriptive statistics --------------------------------------------------
+
+
+summ_covs = dt %>% 
+  select(
+    BToxicNum,BToxicNum01,
+    # Demographics
+    PolIdComp,GenderMan,GenderWoman,GenderOther,EducationNum,Income2Sd,#MaritalStatus,
+    # Topics
+    antiamerica,antichristianity,suggestive,drugs,# antiwhite,killing,
+    antitrump,protrump,anticlinton,proclinton, #"antiobama,
+    antiimmigrant,proimmigrant,antiabortion,proabortion,antigun,
+    progun,#,antirepcons,antidemlib"
+    # Other conversation-level predictors
+    Order,ideo_commenterB,target_likes_count,
+    #LIWC
+    tone_pos,tone_neg,emo_pos,emo_neg,swear,
+    conflict,prosocial,polite,moral,comm,
+    cogproc,politic,ethnicity,tech,
+    leisure,home,work,money,relig,  
+    substances,sexual,food,death,    
+    male,female,shehe,they,you,i,we,Emoji,
+    power,achieve) %>% 
+  pivot_longer(cols = everything()) %>% 
+  filter(!is.na(value)) %>% 
+  group_by(Variable=name) %>% 
+  summarise(Min=min(value),Q25=quantile(value,.25), Mean=mean(value),Median=median(value),Q75=quantile(value,.75),Max=max(value)) %>% 
+  mutate(Type = case_when(
+    Variable %in% c("BToxicNum","BToxicNum01") ~ "Dependent Variable",
+    Variable %in% c("PolIdComp","GenderMan","GenderWoman","GenderOther","EducationNum","Income2Sd") ~ "Demographics",
+    Variable %in% c("antiamerica","antichristianity","suggestive","drugs",# antiwhite,killing,
+                    "antitrump","protrump","anticlinton","proclinton", #"antiobama,
+                    "antiimmigrant","proimmigrant","antiabortion","proabortion","antigun",
+                    "progun") ~ "Topic",#,antirepcons,antidemlib"),
+    Variable %in% c("tone_pos","tone_neg","emo_pos","emo_neg","swear","conflict","prosocial","polite","moral","comm",
+    "cogproc","politic","ethnicity","tech","leisure","home","work","money","relig","substances","sexual","food","death","male",
+    "female","shehe","they","you","i","we","Emoji","power","achieve") ~ "LIWC",
+    Variable %in% c("Order","ideo_commenterB","target_likes_count") ~ "Other") %>% 
+      factor(levels=c("Dependent Variable","Demographics","Topic","LIWC","Other"))) %>% 
+  select(Type,everything()) %>% 
+  arrange(Type)
+summ_covs 
+
+summ_covs %>% 
+  filter(Type %in% c("Dependent Variable","Demographics")) %>% 
+  knitr::kable(format = 'latex',digits = 2, label = "summ-tab1",
+               caption = "Summary statistics on characteristics of survey respondents") %>% 
+  kableExtra::kable_styling(latex_options = "hold_position") %>% 
+  kableExtra::collapse_rows(columns = 1) %>% 
+  writeLines('Tables/summary_stats1.tex')
+
+summ_covs %>% 
+  filter(Type %in% c("Topic","LIWC","Other")) %>% 
+  knitr::kable(format = 'latex',digits = 2,label = "summ-tab2",
+               caption = "Summary statistics on conversation characteristics") %>% 
+  kableExtra::kable_styling(latex_options = "hold_position") %>% 
+  kableExtra::collapse_rows(columns = 1) %>% 
+  writeLines('Tables/summary_stats2.tex')
 
 # confirm that ID is unique
 dt %>% 
@@ -119,7 +177,7 @@ p_avgp_Partisanship = dt %>%
   labs(x="Partisan identity",y="Average rating",
        caption="Note: We take the average agreement per comment because we have more ratings from liberals than from moderates and conservatives.")
 p_avgp_Partisanship
-ggsave("Figures/2_AvgPercAgreeing_Partisanship.png",p_avgp_Partisanship,width = PlotWidth, height=PlotHeight)
+ggsave("Figures/2_AvgAgreement_Partisanship.png",p_avgp_Partisanship,width = PlotWidth, height=PlotHeight)
 
 p_avgp_ideo = dt %>% 
   select(PolId,target_id, all_of(DVsDmd)) %>% 
@@ -138,14 +196,15 @@ p_avgp_ideo = dt %>%
   labs(x="Political ideology",y="Average rating",
        caption="Note: We take the average agreement per comment because we have more ratings from liberals than from moderates and conservatives.")
 p_avgp_ideo
-ggsave("Figures/2_AvgPercAgreeing_Ideo.png",p_avgp_ideo,width = PlotWidth, height=PlotHeight)
+ggsave("Figures/2_AvgAgreement_Ideo.png",p_avgp_ideo,width = PlotWidth, height=PlotHeight)
 
 
 
 
 
 
-# ------------------------------------------------------------------------------
+
+# --------------Covs# ------------------------------------------------------------------------------
 # DEPENDENT VARIABLES ON NUMERIC SCALE
 p_avg_nobinary_Partisanship = dt %>%
   select(Partisanship,target_id,ToxicityNum,ProductiveNum) %>%
