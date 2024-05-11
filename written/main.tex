@@ -26,6 +26,30 @@
 \renewcommand{\textflush}{flushright}
 \renewcommand{\sourceflush}{flushright}
 
+% display code
+\usepackage{listings}
+\usepackage{color}
+
+\definecolor{dkgreen}{rgb}{0,0.6,0}
+\definecolor{gray}{rgb}{0.5,0.5,0.5}
+\definecolor{mauve}{rgb}{0.58,0,0.82}
+\lstset{frame=tb,
+  language=Java,
+  aboveskip=3mm,
+  belowskip=3mm,
+  showstringspaces=false,
+  columns=flexible,
+  basicstyle={\small\ttfamily},
+  numbers=none,
+  numberstyle=\tiny\color{gray},
+  keywordstyle=\color{blue},
+  commentstyle=\color{dkgreen},
+  stringstyle=\color{mauve},
+  breaklines=true,
+  breakatwhitespace=true,
+  tabsize=3
+}
+
 
 %\date{Draft -- please do not circulate.}
 
@@ -52,9 +76,9 @@
 Conversations are at the heart of democracies. Discussions in parliaments, the media, and kitchen tables inform political processes, help identify solutions to problems, avoid violent conflict, and foster a better understanding of each other. Some consider conversations based on reason rather than content and ignorance even a benchmark for achieving a democracy \citep{sanders_against_1997}. Attaining these outcomes requires \textit{civility} from the interlocutors because it sets the stage for productive conversations. 
 At a minimum,  civility means ``demonstrating mutual respect" \citep{mutz_inyourface_2016} or ``politeness" \citep{frimer_montagu_2018}. A maximalist definition of civility does not only require being respectful and polite but also critical engagement \citep{kant_enlightenment_1784}\footnote{Kant does not only argue that individuals should not only have the freedom but also the courage to make use of their own understanding -- i.e., to actively engage. For example, the clergyman is required to teach lessons aligned with the ``creed of the church he serves, for he was employed by it on that condition. But as a scholar he has complete freedom and is even called upon to communicate to the public all his carefully examined and well-intentioned thoughts about what is erroneous in that creed and his suggestions for a better arrangement of the religious and ecclesiastical body."} and requires individuals to give rationales in conversation \citep{habermas1985theory}. In other words, this expanded definition of civility demands contributions to conversations to be productive above and beyond avoiding offense.
 
-While this distinction is grounded in venerable theoretical traditions, it remains unclear how these perspectives align with the public's perception of desirable norms in conversations. Civility is a \textit{social praxis} embedded in what people know, who they are, what they do, and what they value. Extant literature does not sufficiently address how the broader public applies norms to conversations, and the social and psychological factors that shape the perceptions of conversations are not well understood. \textit{To what extent does the perception of civility depend on individual factors} (e.g. political ideology, partisanship, age, etc.), \textit{the social context} (e.g. the topic of the conversation), \textit{or both} (e.g. some people in some contexts may perceive conversations differently than others in other contexts)? For this manuscript, we\footnote{A future version of this manuscript will be coauthored but this version is solely written by David Broska.} will focus on perceived toxicity, defined as a comment considered disrespectful, hateful, or that makes someone more likely to leave a discussion or give up sharing their perspective. 
+While this distinction is grounded in theoretical traditions, it remains unclear how these perspectives align with the public's perception of desirable norms in conversations. Civility is a \textit{social praxis} embedded in what people know, who they are, what they do, and what they value. Extant literature does not sufficiently address how the broader public applies norms to conversations, and the social and psychological factors that shape the perceptions of conversations are not well understood. \textit{To what extent does the perception of civility depend on individual factors} (e.g. political ideology, partisanship, age, etc.), \textit{the social context} (e.g. the topic of the conversation), \textit{or both} (e.g. some people in some contexts may perceive conversations differently than others in other contexts)? For this manuscript, we\footnote{A future version of this manuscript will be coauthored but this version is solely written by David Broska.} will focus on perceived toxicity, defined as a comment considered disrespectful, hateful, or that makes someone more likely to leave a discussion or give up sharing their perspective. 
 
-This project studies the determinants of perceived civility in the context of the 2016 US presidential election campaign. Across 9,994 conversations held between 2015 and 2017 in political Facebook groups, we study how 4,675 American survey respondents evaluate comments given by discussants in terms of perceived toxicity. The 2016 presidential campaign is an insightful case for the study of conversational norms because the discussions happened ``during a time of rapidly changing norms of political civility" \citep{munger_dont_2021}, and these exchanges were experienced ``first-hand" through broadcasting and online \citep{mutz_inyourface_2016}. Studying social media around this time offers a unique lens into the public sphere because an estimated 68\% of US adults were on a social network, up from 25\% in 2008 \citep{duggan_social_2016}.
+This project studies the determinants of perceived civility -- and toxicity in particular -- in the context of the 2016 US presidential election campaign. Across 9,994 conversations held between 2015 and 2017 in political Facebook groups, we study how 4,675 American survey respondents evaluate comments given by discussants in terms of perceived toxicity. The 2016 presidential campaign is an insightful case for the study of conversational norms because the discussions happened ``during a time of rapidly changing norms of political civility" \citep{munger_dont_2021}, and these exchanges were experienced ``first-hand" through broadcasting and online \citep{mutz_inyourface_2016}. Studying social media around this time offers a unique lens into the public sphere because an estimated 68\% of US adults were on a social network, up from 25\% in 2008 \citep{duggan_social_2016}.
 
 %While there was once hope that social media could advance democratic deliberation through open discourse, diverse perspectives, and broad participation, many observers note that social media discussions lack the crucial ingredient of civility. Concerns about declining civility are not new. From the printing press during the Reformation \citep{bejan_mere_2017} to the invention of cable news with its personalized news reporting \citep{mutz_inyourface_2016,berry2014outrage}, history is filled with examples of concerns about incivility of discourse. However, the 2016 US presidential election may have marked another critical turning point in recent history. 
 
@@ -64,11 +88,11 @@ This project studies the determinants of perceived civility in the context of th
 
 \textit{Individual-level hypothesis:} This study is exploratory and considers a broad range of individual predictors of perceived toxicity. That said, perceptions of conversational norms likely depend on demographic factors such as political ideology, partisanship, education, age, race, and religiosity. These demographics reflect socialization processes that shape what is considered appropriate in a conversation. 
 
-\textit{Context-level hypothesis:} Some topics will be considered more toxic than others. In particular, topics related to ``moral convictions"-- i.e., judgments informed by ``perceptions of morality and immorality, right or wrong" \citep{skitka_conviction_2010} -- may elicit particularly strong reactions. Attitudes toward gun control and abortion are more strongly held than attitudes toward other issues; they may create more intense emotions, motivate people to justify their actions, and lead them to believe that their views are objective and universal. 
+\textit{Context-level hypothesis:} Some topics will be considered more toxic than others. In particular, topics related to ``moral convictions"-- i.e., judgments informed by ``perceptions of morality and immorality, right or wrong" \citep{skitka_conviction_2010} -- may elicit particularly strong reactions. Attitudes toward gun control and abortion may be more strongly held than attitudes toward other issues; these topics may create more intense emotions, motivate people to justify their actions, and lead them to believe that their views are objective and universal. 
 
 \textit{Random slope hypothesis:} Not all comments cause variation in perceived toxicity. Some comments may be irrelevant to the observer, too short to elicit strong reactions, or unintelligible. We hypothesize that the random slopes for individual-level characteristics, coupled with random intercepts for topics, will cover zero. Beyond this, it is interesting to assess the range of the most effects (e.g. 95\%). That is, if the effect for an individual-level characteristic is $\hat \beta$, what is $\beta\pm 1.96$?
 
-\textit{A cross-level interaction hypothesis:} Some topics are perceived as more toxic among Republicans/conservatives than liberals, and vice versa. For example, social identity theory predicts that individuals favor members of the ingroup over the outgroup \citep{tafjelturner_identity_2004}. Hence, individuals who identify as Democrats may be more likely to perceive a negative characterization of Hillary Clinton as toxic. Conversely, Republicans might perceive negative comments about Donald Trump as more toxic than comments on other topics.
+\textit{Cross-level interaction hypothesis:} Some topics are perceived as more toxic among Republicans/conservatives than liberals, and vice versa. For example, social identity theory predicts that individuals favor members of the ingroup over the outgroup \citep{tafjelturner_identity_2004}. Hence, Democrats may perceive negative characterizations of Hillary Clinton as more toxic than Republicans. Conversely, Republicans might perceive negative comments about Donald Trump as more toxic than Democrats.
 
 
 
@@ -80,21 +104,24 @@ This project studies the determinants of perceived civility in the context of th
 
 % Social scientists have long observed that “conversation is the soul of democracy” (1, 2). Interpersonal discussions across social divides can help diverse groups of people peacefully identify solutions to shared problems, avoid violent conflict, and come to understand one another better (2–8). Historically, these conversations have occurred face-to-face (8), but online conversations now play a central role in public dialogue. More than 100 billion messages are sent every day on Facebook and Instagram alone (9), and approximately 7 billion conversations occur daily on Facebook Messenger (10). Such conversations can have far-reaching impact. Some of the largest social movements in human history have emerged out of sprawling conversations on social media, and discussions between high-profile social media users can shape the stock market, politics, and many other aspects of human experience (11–14). The internet thus has the capacity to empower an ever-increasing number of people to communicate and deliberate together
 
-\section{Data and Methods}
+\section{Data}
 
-To study the determinants of perceived civility in conversations, we rely on responses from 4,475 American adults to a survey asking them to evaluate Facebook conversations regarding perceived toxicity and other features. Respondents who did not pass an attention check were not allowed to take the survey. Compared to demographic quotas from the American National Election Studies (ANES), this sample of 4,475 adults recruited via Prolific consists of more college-educated (+10.7 percentage points) and individuals with a high school degree or less (-7.3pp). We over-sampled Democrats (+10.7pp), under-sampled Republicans (-14.6pp), over-sampled those aged 33 to 44 (+9.4pp), and under-sampled those aged 60 and older (-12.3pp). The sample is otherwise representative on these demographic dimensions. In a future analysis, we will consider whether results change if post-stratification techniques are applied, allowing us to make more credible inferences about the population of American adults.
+To study the determinants of perceived civility in conversations, we recruit 4,675 American adults via Prolific to fill out a survey asking them to evaluate Facebook conversations regarding perceived toxicity and other features. Respondents who did not pass an attention check were not allowed to take the survey. Excluding missing values\footnote{There is no evidence of differential attrition.}, the total sample size is 32,597 observations. Those who passed the attention check were randomly assigned to evaluate 7 conversations. Not every respondent evaluated each conversation; each one was evaluated 3.27 times on average. 
 
-Respondents were randomly assigned to evaluate 7 conversations. Excluding missing values\footnote{There is no evidence of differential attrition.}, the total sample size is 32,597 observations. Not every respondent evaluated each conversation; each one was evaluated 3.27 times on average. The 9,994 conversations are a stratified random sample of conversations from 1,058 public Facebook pages retrieved during the 2016 US presidential election via the official Facebook API v2.7. To ensure variation across the ideological spectrum on Facebook, we first obtained a list of the 500 most active political pages of the platform according to \citet{bakshy_exposure_2015}, as well as 37 pages identified as representative online and offline news sources by Pew Research Center’s American Trends Panel in 2014. These pages make up our media samples.
+The 9,994 conversations are a stratified random sample of conversations from 1,058 public Facebook pages retrieved during the 2016 US presidential campaign via the official Facebook API v2.7. To ensure variation across the ideological spectrum on Facebook, we first obtained a list of the 500 most active political pages of the platform according to \citet{bakshy_exposure_2015}, as well as 37 pages identified as representative online and offline news sources by Pew Research Center’s American Trends Panel in 2014. These pages make up our media samples.
 
-Table \ref{tab:summ-tab1} provides summary statistics of the characteristics of survey respondents.
-Table \ref{tab:summ-tab2} provides summary statistics of variables measured for conversations. The first set of variables in the \textit{Topic} category refers to categorizations of whether a particular comment is related to a topic or not. The comments were classified with a Large Language Model.
-The second set of variables in the \textit{LIWC} category refers to the count of words for a category in the LIWC dictionary \citep{pennebaker_linguistic_2022}. The second set of \textit{Other} variables denote predictors unrelated to the language of the comment.These counts were transformed with $\log(1+x)$ to account for the right-skew of count variables.  
+Table \ref{tab:summ-tab1} in the Supplementary Material provides summary statistics of the characteristics of survey respondents. Compared to demographic quotas from the American National Election Studies (ANES), this sample of 4,675 adults recruited via Prolific consists of more college-educated individuals (+10.7 percentage points) than those with a high school degree or less (-7.3pp). We over-sampled Democrats (+10.7pp) and under-sampled Republicans (-14.6pp). Finally, we over-sampled those aged 33 to 44 (+9.4pp), and under-sampled those aged 60 and older (-12.3pp). The sample is otherwise representative on these demographic dimensions. In a future analysis, we will consider whether results change if post-stratification techniques are applied, allowing us to make more credible inferences about the population of American adults.
 
-\begin{itemize}
-    \item \textit{Order:} how many conversations a respondent evaluate before rating the focal one
-    \item \textit{BToxicNum01:} toxicity of B's comment rated by survey respondents. The four levels Not Toxic (-1), Maybe not sure (0), Toxic (1), and Very toxic (2) were rescaled to range from 0 to 1 and will be treated as a continuous dependent variable.
-    \item \textit{ideocommenterB}: the political ideology of commenter B is estimated based on the Facebook pages that the user visited. Negative values denote liberal political ideology while positive values represent conservatism.
-\end{itemize}
+
+Table \ref{tab:summ-tab2} provides summary statistics of variables measured for conversations; the first set of variables in the \textit{Topic} category refers to categorizations of whether a particular comment is related to a topic or not. The Facebook comments were classified with a Large Language Model (LLM) to create predictor variables for the regression analysis (please refer to Figure \ref{fig:intercoder-reliability} for more details). The \textit{Other} variables denote predictors unrelated to the language of the comment.
+
+%\begin{itemize}
+%    \item \textit{Order:} how many conversations a respondent evaluate before rating the focal one
+%    \item \textit{BToxicNum01:} toxicity of B's comment rated by survey respondents. The four levels Not Toxic (-1), Maybe not sure (0), Toxic (1), and Very toxic (2) were rescaled to range from 0 to 1 and will be treated as a continuous dependent variable.
+%    \item \textit{ideocommenterB}: the political ideology of commenter B is estimated based on the Facebook pages that the user visited. Negative values denote liberal political ideology while positive values represent conservatism.
+%\end{itemize}
+
+Table \ref{tab:summ-tab3} presents the word frequencies per category in the LIWC dictionary \citep{pennebaker_linguistic_2022}. The counts were transformed with $\log(1+x)$ to account for the right-skew of count variables. These dictionary counts will be included as control variables but they do not represent the focus of the analysis.
 
 \section{Methods}
 
@@ -102,33 +129,39 @@ Multilevel models, also known as mixed-effects models, are statistical models us
 
 \section{Results}
 
-\textit{Random intercept hypothesis:} The intraclass correlation indicates that approximately 11\% of the variation in perceived toxicity is attributable to individual factors whereas 39\% of the variation comes from features of the comments. 
+In the following, I will refer to the models reported in the table on pp.13.
 
-\textit{Individual-level hypothesis:} Several individual-level predictors are associated with perceived toxicity. For example, a 2 standard deviation increase in political ideology -- i.e., an increase of approximately 3.5 points on a 1 to 7 scale corresponding to a shift from extremely liberal to moderate or from moderate to extremely conservative -- is associated with an approximate decrease of 6 percentage points in average perceived toxicity, controlling for other variables in the model. More broadly, this association suggests that liberals are more sensitive while conservatives are less so. The magnitude of this association is comparable to a 20-year increase in age. While older folks tend to be less sensitive, more educated people tend to rate comments as more toxic on average. Finally, the coefficient for \textit{Order} suggests that processes by which people get numbed partially explain insensitivity. Having been exposed to six comments before rating the 7th is comparable to the magnitude of the association with political ideology.
+\textit{Random intercept hypothesis:} The intraclass correlation indicates that approximately 11\% of the variation in perceived toxicity is attributable to individual factors whereas 39\% of the variation comes from features of the comments (see Model 1). 
 
-\textit{Context-level hypothesis:} Comments on the following topics are considered significantly more toxic (example Facebook comments in parenthesis): 
+\textit{Individual-level hypothesis:} Several individual-level predictors are associated with perceived toxicity. For example, a 2 standard deviation increase in political ideology -- i.e., an increase of approximately 3.5 points on a 1 to 7 scale corresponding to a shift from extremely liberal to moderate or from moderate to extremely conservative -- is associated with an approximate decrease of 6 percentage points in average perceived toxicity, controlling for other variables in the model. More broadly, this association suggests that liberals are more sensitive while conservatives are less so. The magnitude of this association is comparable to a 20-year increase in age. While older folks tend to be less sensitive, more educated people tend to rate comments as more toxic on average. Finally, the coefficient for \textit{Order} suggests that processes by which people get numbed partially explain insensitivity. Having been exposed to six comments before rating the 7th is comparable to the magnitude of the association with political ideology. In total, the individual-level predictors in Model 2 explain 9\% of the variance at the individual level -- i.e. 9\% of 11\%.
+
+\textit{Context-level hypothesis:} Comparing model 3 to the null model, we find that these topics, together with controls and individual-level predictors, explain about 47\% of the variance attributable to the conversations -- i.e., 47\% of 39\%. In particular, the comments on the following topics are considered significantly more toxic (example Facebook comments in parenthesis): 
 \begin{itemize}
-    \item Negative characterization of America and the Government (e.g. ``The problem is that the US is governed by incompetent politicians")
+    \item Negative characterization of America (e.g. ``The US is governed by incompetent politicians")
     \item Suggestive content (e.g. ``Prostitutes will be like ...")
     \item Negative characterization of Hillary Clinton (e.g. ``Hillary is a liar and she will never be president of the United States")
+    \item Drugs (e.g. ``She's high on drugs of stupidity", ``And who's fault is it that the cartels exist?? Your people")
     \item Negative characterization of immigrants (e.g. ``The immigrants steal our jobs")
 \end{itemize}
 
-Only one topic is perceived as significantly less toxic on average.
+Only two topics are perceived as significantly less toxic on average.
 
 \begin{itemize}
+    \item Positive characterization of Hillary Clinton (e.g. ``During the debates, Hillary will mop Donald Trump off of the floor and him into the sewer because she is 20x smarter")
     \item Positive characterization of immigrants (e.g. ``Most immigrants are actually highly educated doctors, lawyers, and computer engineers")
 \end{itemize}
 
-\textit{Random slope hypothesis:} The standard deviation of the random slopes for political ideology estimated for each comment is 0.085. Based on this, we estimate that 95\% of the slopes are between $-0.065 - 1.96\times 0.085=-0.23$ and  $-0.0645 + 1.96 \times 0.085=0.10$. In line with my hypothesis above, this means that the relationship between the association between political and perceived toxicity is zero for comments. In other words, some comments do not elicit a reaction across the ideological spectrum. These comments might be too short, unintelligible, or uncontroversial. 
 
-\textit{Cross-level interaction hypothesis:} Figure \ref{fig:topic-polid-interaction} presents interactions effects. Across topics and with few exceptions, liberals perceive comments as more toxic than conservatives. This is represented by the negative slope of the green line for varying scores of political ideology from extremely liberal to extremely conservative. Only comments that support abortion, endorse immigration, and characterize Trump negatively are considered slightly more toxic among conservatives. Liberals, for example, rate comments as significantly more toxic that portray immigrants, abortion, and Hillary Clinton negatively. In sum, I find support for the hypothesis that the association between political ideology and perceived toxicity depends on the topic.
+
+\textit{Random slope hypothesis:} According to model 4,\footnote{Model 4 did not converge when using both random slopes and control variables.} the standard deviation of the random slopes for political ideology estimated for each comment is 0.085. Based on this, we estimate that 95\% of the slopes are between $-0.065 - 1.96\times 0.085=-0.23$ and  $-0.0645 + 1.96 \times 0.085=0.10$. In line with our hypothesis above, this means that the relationship between political and perceived toxicity is zero for some comments. In other words, some comments do not elicit a reaction across the ideological spectrum. These comments might be too short, unintelligible, or uncontroversial.
+
+\textit{Cross-level interaction hypothesis:} Model 5 estimates interactions effects. For a given topic, a negative effects means that conservatives perceive a comment as less toxic than liberals. Conservatives find comments that endorse abortion, immigration, Hillary Clinton, and that characterize Trump negatively significantly more toxic than liberals. Conservatives perceive comments related to anti-America rhetoric, pro-Trump, anti-Clinton, and anti-abortion as less toxic. In sum, I find support for the hypothesis that the association between political ideology and perceived toxicity depends on the topic. These interaction effects were estimated in a single model. Estimates are from separate models are very similar in terms of the sign and statistical significance of the coefficients (see Table \ref{tab:interaction-effects-comparison}).
 
 \section{Conclusion and Discussion}
 
-Conversations are a crucial element in the democratic process. If someone perceives a conversation as toxic, they might be reluctant to share their perspective or disengage altogether. This study offers preliminary results on the determinants of perceived toxicity in conversations. The key results are the following. More variation in perceived toxicity is attributable to the features of comments than to individual-level factors (approximately 3.5 times more variation). Why are conservatives less sensitive? Before filling out the survey, conservatives have been exposed to more irritating content on social media. \citet{bakshy_exposure_2015} find that conservatives encounter more content that cuts across ideological lines than liberals through friends, their user feed, and the content they click on. The relationship between political ideology and perceived toxicity is not uniform, however. In line with social identity theory, for example, liberals perceive negative comments on Hillary Clinton as more toxic and conservatives are more sensitive towards negative portrayals of Donald Trump. 
+Conversations are a crucial element in the democratic process. If someone perceives a conversation as toxic, they might be reluctant to share their perspective or disengage altogether. This study offers preliminary results on the determinants of perceived toxicity in conversations. We find that more variation in perceived toxicity is attributable to the features of comments than to individual-level factors (approximately 3.5 times more variation). Across comments, liberals are more sensitive than conservatives, and this effect seems sizable compared to other predictors' effects. Why are conservatives less sensitive? On average, conservatives have been exposed to more irritating content on social media more often than liberals. For example, \citet{bakshy_exposure_2015} find that conservatives encounter more content that cuts across ideological lines than liberals through friends, their user feed, and the content they click on. That said, the relationship between political ideology and perceived toxicity is not uniform. Both conservatives and liberals are more sensitive when it comes to certain issues. In line with social identity theory, for instance, liberals perceive negative comments on Hillary Clinton as more toxic and conservatives are more sensitive towards negative portrayals of Donald Trump. 
 
-While these results are promising, we would be remiss not to mention this work's shortcomings. Toxicity is only one dimension of civility and similar analyses can be conducted for other dependent variables in this dataset, including perceived hate speech or perceived productivity of a conversation. A similar point can be made about the independent variables in this study; many more deserve closer attention than was given in this short report. Last, this analysis has raised more questions than it provides answers. What are the social and psychological processes that underlie differences in perceived toxicity between liberals and conservatives? I will address this question in an expanded version of this research project. 
+While these results are promising, we would be remiss not to mention this work's shortcomings. Toxicity is only one dimension of civility and similar analyses can be conducted for other dependent variables in this dataset, including perceived hate speech or perceived productivity of a conversation. A similar point can be made about the independent variables in this study; many more deserve closer attention than was given in this short report. Last, this analysis has raised more questions than it provides answers. What are the social and psychological processes that underlie differences in perceived toxicity between liberals and conservatives? We will address this question in an expanded version of this research project. 
 
 \newpage
 \bibliographystyle{asr}
@@ -235,6 +268,797 @@ The interaction effects reported in the main text were estimated with a single m
 \end{figure}
 \clearpage
 
+%\include{written/codebook}
+
+\textbf{Example prompt: Pro-immigration}
+
+In this task, you will be shown a Facebook post and two comments on this post. One comment is from person A and the other comment is from person B. 
+
+Your job is to determine if the comment by B is related to the positive characterization of immigrants, individuals who relocate from their native country to another. This involves portraying the immigrants in a favorable light, highlighting perceived strengths, qualities, and virtues.
+Your answer must be a single number: 0 if irrelevant, 1 if relevant.
+
+Here are some examples with reasoning. Use the following format for your output:
+
+Example 1:
+Comment by B: "Most immigrants are actually highly educated doctors, lawyers, computer engineers."
+Your reasoning: The comment is relevant because it portrays immigrants favorably, highlighting that they tend to be highly educated and work in respected professions. 
+Your answer: 1
+
+Example 2:
+Comment by B: "America was built on the backs of immigrants, the indigenous people were treated and still to this day treated worst than the Buffalo."
+Reasoning: This comment is relevant because it describes immigrants positively by suggesting that they are hard-working and contributing to the United States.
+Your answer: 1
+
+Example 3:
+Comment by B: "Take her AWAY"
+Reasoning: This comment is irrelevant because it does not directly refer to immigrants.
 
 
+
+\clearpage
+
+\begin{lstlisting}
+# run setup script to load data and functions
+source(list.files(pattern="0_Setup.R", recursive=T))
+
+set.seed(04162024)
+is_REML = F
+
+fname = "dt_survey_0625_with_toxicity_clean.csv"
+fpath = list.files(pattern = fname, recursive = T)
+
+dt = read_csv(fpath, col_types = c("target_id"="character")) %>% 
+  mutate(Partisanship = factor(Partisanship, levels=PartisanshipLevels), 
+         PolId = factor(PolId,levels=PolIdLevels), 
+         # subtract out grand mean
+         BToxicNum01 = BToxicNum01 - mean(BToxicNum01),
+         ProductiveNum01 = ProductiveNum01 - mean(ProductiveNum01),
+         Order = Order+3)
+
+vars = c("BToxicNum01","ProductiveNum01","ResponseId","target_id","PolIdComp2Sd","Age2Sd","Gender","EducationNum2Sd",
+         "MaritalStatus","Religion","SexualOrientation","HhSize","Region","Income2Sd","Race","Order",
+         "IdeoCommenterB2Sd","TargetLikesCount2Sd",
+         "antiamerica","antichristianity","suggestive",#"antiwhite.csv",
+         "drugs",#"killing.csv"
+         "antitrump","protrump","anticlinton","proclinton",#"antiobama.csv",
+         "antiimmigrant","proimmigrant","antiabortion","proabortion",
+         "antigun")#,"progun.csv","antirepcons.csv","antidemlib.csv")
+
+
+# check for NAs
+summarise(dt, across(all_of(vars), ~ sum(is.na(.)))) %>% 
+  select_if(~ any(. > 0))
+
+
+dt %>%
+  select(all_of(c(LiwcCats,Topics))) 
+
+
+###########
+# TOXICITY
+########### 
+
+# Null model -------------------------------------------------------------------
+# 1. There is a correlation within individuals and within comments on perceived toxicity
+m0_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id), data=dt, REML=is_REML)
+summary(m0_tox)
+icc(m0_tox,by_group = T)
+
+# Q: How large are these variances, and the icc?
+# 10% enough + substantive question
+
+# Level 1 predictors --------------------------------------------------
+# 2. Liberals perceive comments overall as more toxic than conservatives
+m1a_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + PolIdComp2Sd, 
+               data=dt, REML=is_REML)
+
+summary(m1a_tox)
+
+
+m1b_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                 PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                 MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                 Income2Sd + Race + Order2Sd, 
+               data=dt, REML=is_REML)
+summary(m1b_tox)
+
+
+m1a_pid = fixef(m1a_tox)["PolIdComp2Sd"]
+m1b_pid = fixef(m1b_tox)["PolIdComp2Sd"]
+
+# percent of the effect size that is left after controlling for individual level predictors
+1 - ((m1a_pid - m1b_pid) / m1a_pid)
+
+
+# 9% of variation in 
+(0.01595 - 0.01445) / 0.01595
+
+
+# Likelihood ratio test is significant but the improvement in BIC is not much
+#anova(m0_tox, m1b_tox)
+# Q: Again, the variance in random intercepts for individuals does not go down by much
+
+
+
+dt$achieve
+# Comment predictors ------------------------------------------------------
+
+# Adding just comment predictors
+m2a_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+               # Comment predictors
+               antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+               antitrump+protrump+anticlinton+proclinton+ #"antiobama
+               antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+               IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+               tone_pos+tone_neg+emo_pos+emo_neg+swear+
+               conflict+prosocial+polite+moral+comm+
+               cogproc+politic+ethnicity+tech+
+               leisure+home+work+money+relig+
+               substances+sexual+food+death+
+               male+female+shehe+they+you+i+we+Emoji+
+               power+achieve, 
+              data=dt, REML=is_REML)
+summary(m2a_tox)
+
+# Variance explained
+(0.05408-0.02849) / 0.05408
+
+m2b_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                 # Person predictors
+                 PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                 MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                 Income2Sd + Race + Order2Sd + 
+                   # Comment predictors  
+                   antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                   antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                   antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                   IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                   tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                   conflict+prosocial+polite+moral+comm+
+                   cogproc+politic+ethnicity+tech+
+                   leisure+home+work+money+relig+  
+                   substances+sexual+food+death+    
+                   male+female+shehe+they+you+i+we+Emoji+
+                   power+achieve, 
+               data=dt, REML=is_REML)
+summary(m2b_tox)
+
+m2b_pid = fixef(m2b_tox)["PolIdComp2Sd"]
+
+# percent of the effect size that is left after controlling for individual AND comment level predictors
+1 - ((m1a_pid - m2b_pid) / m1a_pid)
+
+
+
+# Q: The variance in random intercepts for comments goes down by 0.02
+
+# Random slopes ----------------------------------------------------------------
+# The relationship between perceived toxicity and political ideology is not the same for all comments
+m3a_tox = lmer(BToxicNum01 ~ PolIdComp2Sd + (1|ResponseId) + 
+                 (1+PolIdComp2Sd|target_id), data=dt, REML=is_REML)
+#anova(m1a_tox, m3a_tox)
+summary(m3a_tox)
+
+# 95% of the slopes are between
+-0.064491 - 1.96*0.08503 
+-0.064491 + 1.96*0.08503
+# for some comments, the association is zero
+
+
+# Q: Is the conclusion that the relationship between perceived toxicity does not strongly vary political ideology
+# Liberals and conservative perceive each post similarly
+
+
+# do I run random slopes in the fully specified model?
+m3b_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                 # Person predictors
+                 PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                 MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                 Income2Sd + Race + Order2Sd + 
+                   # Comment predictors  
+                   antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                   antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                   antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                   IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                   tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                   conflict+prosocial+polite+moral+comm+
+                   cogproc+politic+ethnicity+tech+
+                   leisure+home+work+money+relig+  
+                   substances+sexual+food+death+    
+                   male+female+shehe+they+you+i+we+Emoji+
+                   power+achieve+
+                     # random slopes
+                     (1+PolIdComp2Sd|target_id),
+               data=dt, REML=is_REML)
+summary(m3b_tox)
+#anova(m2b_tox, m3b_tox)
+#anova(m3a_tox, m3b_tox)
+
+# Q: did not converge
+colnames(dt)
+
+# Cross-level interaction ------------------------------------------------------
+m4_tox_all = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                        # Person predictors
+                        PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                        MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                        Income2Sd + Race + Order2Sd + 
+                          # Comment predictors  
+                          antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                          antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                          antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                          IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                          tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                          conflict+prosocial+polite+moral+comm+
+                          cogproc+politic+ethnicity+tech+
+                          leisure+home+work+money+relig+  
+                          substances+sexual+food+death+    
+                          male+female+shehe+they+you+i+we+Emoji+
+                          power+achieve+
+                            # Interaction
+                            (antiamerica*PolIdComp2Sd) +
+                            (antichristianity*PolIdComp2Sd) +
+                            (suggestive*PolIdComp2Sd) +
+                            (drugs*PolIdComp2Sd) +
+                            (antitrump*PolIdComp2Sd) +
+                            (protrump*PolIdComp2Sd) +
+                            (anticlinton*PolIdComp2Sd) +
+                            (proclinton*PolIdComp2Sd) +
+                            (antiimmigrant*PolIdComp2Sd) +
+                            (proimmigrant*PolIdComp2Sd) +
+                            (antiabortion*PolIdComp2Sd) +
+                            (proabortion*PolIdComp2Sd) +
+                            (antigun*PolIdComp2Sd) +
+                            (progun*PolIdComp2Sd) +
+                            (IdeoCommenterB2Sd*PolIdComp2Sd) +
+                            (TargetLikesCount2Sd*PolIdComp2Sd) +
+                            (Age2Sd*PolIdComp2Sd) +
+                            (EducationNum2Sd*PolIdComp2Sd) +
+                            (Income2Sd*PolIdComp2Sd) +
+                            (Order2Sd*PolIdComp2Sd),
+                  data=dt, REML=is_REML)
+
+pint = plot_model(m4_tox_all,type = "int")
+
+
+
+plotint = function(.m, .xaxis, .topic,.lab) {
+  lab = unlist(unname(.lab))
+  topic = unlist(unname(.topic))
+  
+  ggp = ggpredict(.m,terms = c(.xaxis,topic))
+  
+  p = plot(ggp) +
+    scale_color_manual(breaks = factor(c(1,0)),
+                       values=c("darkgreen","grey"),
+                       labels=c(lab,"Other topic            ")) +
+    labs(title=lab, color="",
+         x="Political ideology composite",
+         y="Perceived toxicity") +
+    scale_y_continuous(limits = c(-0.3,0.3)) +
+    scale_x_continuous(limits = c(-0.6,1)) +
+    coord_fixed()
+  ggsave(paste0("Figures/",topic,"_inter.pdf"),width = 6,height = 5)
+  l = list(topic = topic, data = ggp,plot = p)
+  
+  return(l)
+}
+
+tribble(
+  ~ topic, ~label,
+  "IdeoCommenterB2Sd","Political Ideology B",
+  "IdeoCommenterB2Sd","Political Ideology B",
+  
+)
+
+predicted = apply(TopicsTab, 1, function(tt)  plotint(m4_tox_all,.xaxis="PolIdComp2Sd",.topic=tt[1],.lab=tt[2]))
+pd = predicted %>% 
+  lapply(., function(d){
+    d$data %>% 
+      mutate(topic = d$topic)
+  }) %>% 
+  do.call(bind_rows,.)
+pp = lapply(predicted, function(p) p$plot)
+plot(pd[[1]])
+ggpubr::ggarrange(
+  pp[[1]]+labs(x=""),pp[[2]]+labs(x="",y=""),
+  pp[[3]]+labs(x=""),pp[[4]]+labs(x="",y=""),
+  pp[[5]]+labs(x=""),pp[[6]]+labs(x="",y=""),
+  pp[[7]]+labs(x=""),pp[[8]]+labs(x="",y=""),
+  pp[[9]]+labs(x=""),pp[[10]]+labs(x="",y=""),
+  pp[[11]],pp[[12]]+labs(y=""),
+  ncol=2, nrow=6)
+ggsave("Figures/topic_interactions.pdf",width=8.27, height=11.69,bg="white")
+
+library(sjPlot)
+tab_model(m0_tox,m1b_tox,m2b_tox,m3a_tox,m4_tox_all, file = "tox.html")
+
+
+
+
+m=lm(mpg ~  wt*am+wt*am2, mutate(mtcars,am2=rbinom(nrow(mtcars),1,prob = .5)))
+TT = tribble(
+  ~topic,~label,
+  "am","amer",
+  "am2","amer2"
+)
+
+predicted = apply(TT, 1, function(tt)  plotint(m,.xaxis="wt",.topic=tt[1],.lab=tt[2]))
+pd = predicted %>% 
+  lapply(., function(d){
+    d$data %>% 
+      mutate(topic = d$topic)
+    }) %>% 
+  do.call(bind_rows,.)
+pp = lapply(predicted, function(p) p$plot)
+
+
+
+
+
+#plotlist = apply(TopicsTab,1, function(tt) plotint(m4_tox_all,.xaxis="PolIdComp2Sd",.topic=tt[1],.lab=tt[2]))
+
+
+
+
+
+plist
+m4_tox_antiamerica = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                            # Person predictors
+                            PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                            MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                            Income2Sd + Race + Order2Sd + 
+                            # Comment predictors  
+                            antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                            antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                            antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                            IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                            tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                            conflict+prosocial+polite+moral+comm+
+                            cogproc+politic+ethnicity+tech+
+                            leisure+home+work+money+relig+  
+                            substances+sexual+food+death+    
+                            male+female+shehe+they+you+i+we+Emoji+
+                            power+achieve+
+                            # Interaction
+                            (antiamerica*PolIdComp2Sd),
+                      data=dt, REML=is_REML)
+
+m4_tox_antichristianity = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                                 # Person predictors
+                                 PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                                 MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                                 Income2Sd + Race + Order2Sd + 
+                                 # Comment predictors  
+                                 antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                                 antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                                 antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                                 IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                                 tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                                 conflict+prosocial+polite+moral+comm+
+                                 cogproc+politic+ethnicity+tech+
+                                 leisure+home+work+money+relig+  
+                                 substances+sexual+food+death+    
+                                 male+female+shehe+they+you+i+we+Emoji+
+                                 power+achieve+
+                            # Interaction
+                            (antichristianity*PolIdComp2Sd),
+                      data=dt, REML=is_REML)
+
+m4_tox_suggestive = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                           # Person predictors
+                           PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                           MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                           Income2Sd + Race + Order2Sd + 
+                           # Comment predictors  
+                           antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                           antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                           antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                           IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                           tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                           conflict+prosocial+polite+moral+comm+
+                           cogproc+politic+ethnicity+tech+
+                           leisure+home+work+money+relig+  
+                           substances+sexual+food+death+    
+                           male+female+shehe+they+you+i+we+Emoji+
+                           power+achieve+
+                           # Interaction
+                           (suggestive*PolIdComp2Sd),
+                         data=dt, REML=is_REML)
+
+m4_tox_drugs = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                      # Person predictors
+                      PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                      MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                      Income2Sd + Race + Order2Sd + 
+                      # Comment predictors  
+                      antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                      antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                      antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                      IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                      tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                      conflict+prosocial+polite+moral+comm+
+                      cogproc+politic+ethnicity+tech+
+                      leisure+home+work+money+relig+  
+                      substances+sexual+food+death+    
+                      male+female+shehe+they+you+i+we+Emoji+
+                      power+achieve+
+                      # Interaction
+                      (drugs*PolIdComp2Sd),
+                    data=dt, REML=is_REML)
+
+m4_tox_antitrump = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                          # Person predictors
+                          PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                          MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                          Income2Sd + Race + Order2Sd + 
+                          # Comment predictors  
+                          antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                          antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                          antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                          IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                          tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                          conflict+prosocial+polite+moral+comm+
+                          cogproc+politic+ethnicity+tech+
+                          leisure+home+work+money+relig+  
+                          substances+sexual+food+death+    
+                          male+female+shehe+they+you+i+we+Emoji+
+                          power+achieve+
+                          # Interaction
+                          (antitrump*PolIdComp2Sd),
+              data=dt, REML=is_REML)
+
+m4_tox_protrump = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                         # Person predictors
+                         PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                         MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                         Income2Sd + Race + Order2Sd + 
+                         # Comment predictors  
+                         antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                         antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                         antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                         IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                         tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                         conflict+prosocial+polite+moral+comm+
+                         cogproc+politic+ethnicity+tech+
+                         leisure+home+work+money+relig+  
+                         substances+sexual+food+death+    
+                         male+female+shehe+they+you+i+we+Emoji+
+                         power+achieve+
+                         # Interaction
+                         (protrump*PolIdComp2Sd),
+              data=dt, REML=is_REML)
+
+m4_tox_anticlinton = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                            # Person predictors
+                            PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                            MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                            Income2Sd + Race + Order2Sd + 
+                            # Comment predictors  
+                            antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                            antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                            antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                            IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                            tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                            conflict+prosocial+polite+moral+comm+
+                            cogproc+politic+ethnicity+tech+
+                            leisure+home+work+money+relig+  
+                            substances+sexual+food+death+    
+                            male+female+shehe+they+you+i+we+Emoji+
+                            power+achieve+
+                            # Interaction
+                            (anticlinton*PolIdComp2Sd),
+                          data=dt, REML=is_REML)
+
+m4_tox_proclinton = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                           # Person predictors
+                           PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                           MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                           Income2Sd + Race + Order2Sd + 
+                           # Comment predictors  
+                           antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                           antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                           antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                           IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                           tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                           conflict+prosocial+polite+moral+comm+
+                           cogproc+politic+ethnicity+tech+
+                           leisure+home+work+money+relig+  
+                           substances+sexual+food+death+    
+                           male+female+shehe+they+you+i+we+Emoji+
+                           power+achieve+
+                           # Interaction
+                           (proclinton*PolIdComp2Sd),
+                         data=dt, REML=is_REML)
+
+m4_tox_antiimmigrant = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                              # Person predictors
+                              PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                              MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                              Income2Sd + Race + Order2Sd + 
+                              # Comment predictors  
+                              antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                              antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                              antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                              IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                              tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                              conflict+prosocial+polite+moral+comm+
+                              cogproc+politic+ethnicity+tech+
+                              leisure+home+work+money+relig+  
+                              substances+sexual+food+death+    
+                              male+female+shehe+they+you+i+we+Emoji+
+                              power+achieve+
+                           # Interaction
+                           (antiimmigrant*PolIdComp2Sd),
+                         data=dt, REML=is_REML)
+
+m4_tox_proimmigrant = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                             # Person predictors
+                             PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                             MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                             Income2Sd + Race + Order2Sd + 
+                             # Comment predictors  
+                             antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                             antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                             antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                             IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                             tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                             conflict+prosocial+polite+moral+comm+
+                             cogproc+politic+ethnicity+tech+
+                             leisure+home+work+money+relig+  
+                             substances+sexual+food+death+    
+                             male+female+shehe+they+you+i+we+Emoji+
+                             power+achieve+
+                           # Interaction
+                           (proimmigrant*PolIdComp2Sd),
+                         data=dt, REML=is_REML)
+
+m4_tox_antiabortion = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                             # Person predictors
+                             PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                             MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                             Income2Sd + Race + Order2Sd + 
+                             # Comment predictors  
+                             antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                             antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                             antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                             IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                             tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                             conflict+prosocial+polite+moral+comm+
+                             cogproc+politic+ethnicity+tech+
+                             leisure+home+work+money+relig+  
+                             substances+sexual+food+death+    
+                             male+female+shehe+they+you+i+we+Emoji+
+                             power+achieve+
+                           # Interaction
+                           (antiabortion*PolIdComp2Sd),
+                         data=dt, REML=is_REML)
+
+m4_tox_proabortion = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                            # Person predictors
+                            PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                            MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                            Income2Sd + Race + Order2Sd + 
+                            # Comment predictors  
+                            antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                            antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                            antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                            IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                            tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                            conflict+prosocial+polite+moral+comm+
+                            cogproc+politic+ethnicity+tech+
+                            leisure+home+work+money+relig+  
+                            substances+sexual+food+death+    
+                            male+female+shehe+they+you+i+we+Emoji+
+                            power+achieve+
+                           # Interaction
+                           (proabortion*PolIdComp2Sd),
+                         data=dt, REML=is_REML)
+
+m4_tox_antigun = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                        # Person predictors
+                        PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                        MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                        Income2Sd + Race + Order2Sd + 
+                        # Comment predictors  
+                        antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                        antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                        antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                        IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                        tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                        conflict+prosocial+polite+moral+comm+
+                        cogproc+politic+ethnicity+tech+
+                        leisure+home+work+money+relig+  
+                        substances+sexual+food+death+    
+                        male+female+shehe+they+you+i+we+Emoji+
+                        power+achieve+
+                            # Interaction
+                            (antigun*PolIdComp2Sd),
+                      data=dt, REML=is_REML)
+
+m4_tox_progun = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) +
+                       # Person predictors
+                       PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                       MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                       Income2Sd + Race + Order2Sd + 
+                       # Comment predictors  
+                       antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                       antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                       antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                       IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                       tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                       conflict+prosocial+polite+moral+comm+
+                       cogproc+politic+ethnicity+tech+
+                       leisure+home+work+money+relig+  
+                       substances+sexual+food+death+    
+                       male+female+shehe+they+you+i+we+Emoji+
+                       power+achieve+
+                            # Interaction
+                            (progun*PolIdComp2Sd),
+                      data=dt, REML=is_REML)
+
+
+
+
+m4_tox_ideo = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                     # Person predictors
+                     PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                     MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                     Income2Sd + Race + Order2Sd + 
+                     # Comment predictors  
+                     antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                     antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                     antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                     IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                     tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                     conflict+prosocial+polite+moral+comm+
+                     cogproc+politic+ethnicity+tech+
+                     leisure+home+work+money+relig+  
+                     substances+sexual+food+death+    
+                     male+female+shehe+they+you+i+we+Emoji+
+                     power+achieve+
+                     # Interaction
+                     (IdeoCommenterB2Sd*PolIdComp2Sd),
+              data=dt, REML=is_REML)
+m4_tox_like = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                     # Person predictors
+                     PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                     MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                     Income2Sd + Race + Order2Sd + 
+                     # Comment predictors  
+                     antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                     antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                     antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                     IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                     tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                     conflict+prosocial+polite+moral+comm+
+                     cogproc+politic+ethnicity+tech+
+                     leisure+home+work+money+relig+  
+                     substances+sexual+food+death+    
+                     male+female+shehe+they+you+i+we+Emoji+
+                     power+achieve+
+                     # Interaction
+                     (TargetLikesCount2Sd*PolIdComp2Sd),
+              data=dt, REML=is_REML)
+m4_tox_age = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                    # Person predictors
+                    PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                    MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                    Income2Sd + Race + Order2Sd + 
+                    # Comment predictors  
+                    antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                    antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                    antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                    IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                    tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                    conflict+prosocial+polite+moral+comm+
+                    cogproc+politic+ethnicity+tech+
+                    leisure+home+work+money+relig+  
+                    substances+sexual+food+death+    
+                    male+female+shehe+they+you+i+we+Emoji+
+                    power+achieve+
+                     # Interaction
+                     (Age2Sd*PolIdComp2Sd),
+              data=dt, REML=is_REML)
+m4_tox_edu = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                    # Person predictors
+                    PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                    MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                    Income2Sd + Race + Order2Sd + 
+                    # Comment predictors  
+                    antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                    antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                    antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                    IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                    tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                    conflict+prosocial+polite+moral+comm+
+                    cogproc+politic+ethnicity+tech+
+                    leisure+home+work+money+relig+  
+                    substances+sexual+food+death+    
+                    male+female+shehe+they+you+i+we+Emoji+
+                    power+achieve+
+                     # Interaction
+                     (EducationNum2Sd*PolIdComp2Sd),
+              data=dt, REML=is_REML)
+m4_tox_income = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                       # Person predictors
+                       PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                       MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                       Income2Sd + Race + Order2Sd + 
+                       # Comment predictors  
+                       antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                       antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                       antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                       IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                       tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                       conflict+prosocial+polite+moral+comm+
+                       cogproc+politic+ethnicity+tech+
+                       leisure+home+work+money+relig+  
+                       substances+sexual+food+death+    
+                       male+female+shehe+they+you+i+we+Emoji+
+                       power+achieve+
+                     # Interaction
+                     (Income2Sd*PolIdComp2Sd),
+              data=dt, REML=is_REML)
+m4_tox_order = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
+                      # Person predictors
+                      PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
+                      MaritalStatus + Religion + SexualOrientation + HhSize + Region + 
+                      Income2Sd + Race + Order2Sd + 
+                      # Comment predictors  
+                      antiamerica+antichristianity+suggestive+drugs+# antiwhite+killing+
+                      antitrump+protrump+anticlinton+proclinton+ #"antiobama,
+                      antiimmigrant+proimmigrant+antiabortion+proabortion+antigun+
+                      IdeoCommenterB2Sd+TargetLikesCount2Sd+progun+#+antirepcons+antidemlib"
+                      tone_pos+tone_neg+emo_pos+emo_neg+swear+
+                      conflict+prosocial+polite+moral+comm+
+                      cogproc+politic+ethnicity+tech+
+                      leisure+home+work+money+relig+  
+                      substances+sexual+food+death+    
+                      male+female+shehe+they+you+i+we+Emoji+
+                      power+achieve+
+                     # Interaction
+                     (Order2Sd*PolIdComp2Sd),
+              data=dt, REML=is_REML)
+summary(m4_tox_like)
+
+
+# interaction effects estimated with separate models
+mind = list(m4_tox_antiamerica,m4_tox_antichristianity,m4_tox_suggestive,m4_tox_drugs,
+            m4_tox_antitrump,m4_tox_protrump,m4_tox_anticlinton,m4_tox_proclinton,
+            m4_tox_antiimmigrant,m4_tox_proimmigrant,m4_tox_antiabortion,m4_tox_proabortion,
+            m4_tox_antigun,m4_tox_progun,
+            m4_tox_ideo,m4_tox_like,m4_tox_age,m4_tox_edu,m4_tox_income,m4_tox_order) %>% 
+  lapply(., function(m) tidy(m,effects = "fixed",conf.int=T)) %>% 
+  do.call(bind_rows,.) %>% 
+  filter(str_detect(term, "PolIdComp2Sd[:]")) %>% 
+  mutate(sig_ind = ifelse((conf.low<0&conf.high<0)|(conf.low>0&conf.high>0),1,0)) %>% 
+  select(term, estimate_ind = estimate,sig_ind)
+
+# interaction effects estimated in a single model
+mall = tidy(m4_tox_all,effects="fixed",conf.int=T) %>% 
+  filter(str_detect(term, "PolIdComp2Sd[:]")) %>% 
+  mutate(sig_all = ifelse((conf.low<0&conf.high<0)|(conf.low>0&conf.high>0),1,0)) %>% 
+  select(term,estimate_all=estimate,sig_all)
+
+# compare interaction effects
+mcomp = full_join(mind,mall,by="term") %>% 
+  mutate(same_sign  = ifelse((estimate_ind<0&estimate_all<0)|(estimate_ind>0&estimate_all>0),"same sign","different sign"),
+         both_in_sig   = ifelse(sig_ind == sig_all,"both either sig. or insig.","one sig., one insig."),
+         consistent = ifelse((same_sign == "same sign") & (both_in_sig == "both either sig. or insig."),"yes","no"),
+         diff = estimate_ind-estimate_all) %>% 
+  select(-sig_ind,-sig_all) %>% 
+  arrange(desc(consistent),-abs(diff)) 
+
+# export to .tex
+mcomp %>% 
+  knitr::kable(format = "latex",digits = 2,label = "interaction-effects-comparison",booktabs=T,
+               caption = "Comparing interaction effects estimated with separate models with estimated with a single model",
+               col.names = c("Term","Seperate","Single model","Sign","Significance","Consistent","Difference")) %>% 
+  kableExtra::kable_styling(latex_options = "hold_position") %>% 
+  kableExtra::collapse_rows(columns = 1) %>% 
+  writeLines("Tables/InteractionEffectsIndVsAll.tex")
+
+
+\end{lstlisting}
 \end{document}
