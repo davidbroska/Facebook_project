@@ -49,7 +49,7 @@
 
 \section{Introduction}
 
-Conversations are at the heart of democracies. Discussions in parliaments, media, and kitchen tables inform the political process, help identify solutions to problems, avoid violent conflict, and foster a better understanding of each other. Some consider conversations based on reason rather than content and ignorance even a benchmark for achieving a democracy \citep{sanders_against_1997}. Attaining these outcomes requires \textit{civility} from the interlocutors because it sets the stage for productive conversations. 
+Conversations are at the heart of democracies. Discussions in parliaments, the media, and kitchen tables inform political processes, help identify solutions to problems, avoid violent conflict, and foster a better understanding of each other. Some consider conversations based on reason rather than content and ignorance even a benchmark for achieving a democracy \citep{sanders_against_1997}. Attaining these outcomes requires \textit{civility} from the interlocutors because it sets the stage for productive conversations. 
 At a minimum,  civility means ``demonstrating mutual respect" \citep{mutz_inyourface_2016} or ``politeness" \citep{frimer_montagu_2018}. A maximalist definition of civility does not only require being respectful and polite but also critical engagement \citep{kant_enlightenment_1784}\footnote{Kant does not only argue that individuals should not only have the freedom but also the courage to make use of their own understanding -- i.e., to actively engage. For example, the clergyman is required to teach lessons aligned with the ``creed of the church he serves, for he was employed by it on that condition. But as a scholar he has complete freedom and is even called upon to communicate to the public all his carefully examined and well-intentioned thoughts about what is erroneous in that creed and his suggestions for a better arrangement of the religious and ecclesiastical body."} and requires individuals to give rationales in conversation \citep{habermas1985theory}. In other words, this expanded definition of civility demands contributions to conversations to be productive above and beyond avoiding offense.
 
 While this distinction is grounded in venerable theoretical traditions, it remains unclear how these perspectives align with the public's perception of desirable norms in conversations. Civility is a \textit{social praxis} embedded in what people know, who they are, what they do, and what they value. Extant literature does not sufficiently address how the broader public applies norms to conversations, and the social and psychological factors that shape the perceptions of conversations are not well understood. \textit{To what extent does the perception of civility depend on individual factors} (e.g. political ideology, partisanship, age, etc.), \textit{the social context} (e.g. the topic of the conversation), \textit{or both} (e.g. some people in some contexts may perceive conversations differently than others in other contexts)? For this manuscript, we\footnote{A future version of this manuscript will be coauthored but this version is solely written by David Broska.} will focus on perceived toxicity, defined as a comment considered disrespectful, hateful, or that makes someone more likely to leave a discussion or give up sharing their perspective. 
@@ -88,7 +88,7 @@ Respondents were randomly assigned to evaluate 7 conversations. Excluding missin
 
 Table \ref{tab:summ-tab1} provides summary statistics of the characteristics of survey respondents.
 Table \ref{tab:summ-tab2} provides summary statistics of variables measured for conversations. The first set of variables in the \textit{Topic} category refers to categorizations of whether a particular comment is related to a topic or not. The comments were classified with a Large Language Model.
-The second set of variables in the \textit{LIWC} category refers to the count of words for a category in the LIWC dictionary \citep{pennebaker_linguistic_2022}. These counts were transformed with $\log(1+x)$ to account for the right-skew of count variables. Finally, the \textit{Other} variables denote predictors unrelated to the language of the comment. 
+The second set of variables in the \textit{LIWC} category refers to the count of words for a category in the LIWC dictionary \citep{pennebaker_linguistic_2022}. The second set of \textit{Other} variables denote predictors unrelated to the language of the comment.These counts were transformed with $\log(1+x)$ to account for the right-skew of count variables.  
 
 \begin{itemize}
     \item \textit{Order:} how many conversations a respondent evaluate before rating the focal one
@@ -143,21 +143,29 @@ While these results are promising, we would be remiss not to mention this work's
     \hline
     \textbf{Respondent Id} & \textbf{Conversation Id} \\
     \hline
-    1 & 1 \\
-    1 & 2 \\
     1 & 3 \\
-    1 & 4 \\
+    1 & 2 \\
+    1 & 13 \\
+    1 & 23 \\
     1 & 5 \\
     1 & 6 \\
-    1 & 7 \\
+    1 & 56 \\
     \midrule
-    2 & 3 \\
     2 & 4 \\
+    2 & 3 \\
     2 & 8 \\
     2 & 9 \\
     2 & 10 \\
     2 & 11 \\
     2 & 12 \\
+    \midrule
+    3 & 6 \\
+    3 & 22 \\
+    3 & 4 \\
+    3 & 7 \\
+    3 & 9994 \\
+    3 & 11 \\
+    3 & 55 \\
     \dots & \dots \\
     \hline
     \end{tabular}
@@ -168,8 +176,8 @@ While these results are promising, we would be remiss not to mention this work's
 \clearpage
 
 % Dependent variable plot 
-\pagenumbering{gobble}
-\begin{figure}
+
+\begin{figure}[h]
     \centering
     \includegraphics[width=1\linewidth]{figures/2_AvgAgreement_Partisanship.pdf}
     \caption{Variables measuring dimensions of civility by partisanship}
@@ -179,9 +187,9 @@ While these results are promising, we would be remiss not to mention this work's
     \caption{Variables measuring dimensions of civility by political ideology}
     \label{fig:civility-ideology}
 \end{figure}
-
+\clearpage
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Tables % 
+% Summary statistics % 
 \renewcommand{\arraystretch}{0.9}
 \input{Tables/summary_stats1}
 
@@ -189,14 +197,44 @@ While these results are promising, we would be remiss not to mention this work's
 
 \input{Tables/summary_stats3}
 \clearpage
-% End tables 
+% End summary statistics 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 
 % Regression table 
 \clearpage
 \includepdf[pages={1-},scale=0.95]{tox.html.pdf}
 
 
-% Model comparison 
+
+
+% Model comparison interaction effects
+
+The interaction effects reported in the main text were estimated with a single model. To assess the robustness of these results, these effects were also estimated with separate models. Table \ref{tab:interaction-effects-comparison} shows that in all but four cases the interaction effects estimates had the sign and were either both significant or both insignificant. Additionally, in all but one case (\textit{antitrump}), the effects had the same sign.
+
 \include{Tables/InteractionEffectsIndVsAll}
+\clearpage
+
+\clearpage
+
+\begin{figure}[h]
+    \centering
+    \includegraphics[width=1\linewidth]{figures/corrplot_topics.pdf}
+    \caption{Correlation plot. The small Pearson correlations between topics indicate that topics capture distinct dimensions with little overlap. This occurs because most comments are short, communicating only one or few issues.}
+    \label{fig:corrplot-topics}
+\end{figure}
+\clearpage
+
+% Intercoder reliability
+\begin{figure}
+    \centering
+    \includegraphics[width=1.3\linewidth]{figures/classifier_performance.pdf}
+    \caption{Inter-coder reliability for classifying a comment as either relevant or irrelevant to a topic. Reliability is calculated for two human annotators and one LLM (Mistral 8GB). For example, the dark green dots indicate reliability when human annotator DB is considered the 'ground truth'., and these annotated labels are predicted by the LLM (light green) or the human annotators NE (dark red). In general, the LLM accurately identifies comments irrelevant to a topic (near-perfect specificity) and delivers acceptable performance in identifying all relevant comments (recall). The LLM does not perform well at discerning between relevant and irrelevant comments -- i.e., avoiding false positives (low precision). Given the small number of true positives, we will manually label all cases labeled as relevant by the LLM, thereby maximizing specificity.}
+    \label{fig:intercoder-reliability}
+\end{figure}
+\clearpage
+
+
+
 \end{document}
