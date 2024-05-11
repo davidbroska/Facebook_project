@@ -47,27 +47,27 @@ summ_covs = dt %>%
 
 summ_covs %>% 
   filter(Type %in% c("Dependent Variable","Demographics")) %>% 
-  knitr::kable(format = 'latex',digits = 2, label = "summ-tab1",booktabs=T,
+  knitr::kable(format = "latex",digits = 2, label = "summ-tab1",booktabs=T,
                caption = "Summary statistics on characteristics of survey respondents") %>% 
   kableExtra::kable_styling(latex_options = "hold_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
-  writeLines('Tables/summary_stats1.tex')
+  writeLines("Tables/summary_stats1.tex")
 
 summ_covs %>% 
   filter(Type %in% c("Topic","Other")) %>% 
-  knitr::kable(format = 'latex',digits = 2,label = "summ-tab2",booktabs=T,
+  knitr::kable(format = "latex",digits = 2,label = "summ-tab2",booktabs=T,
                caption = "Summary statistics on conversation characteristics (1)") %>% 
   kableExtra::kable_styling(latex_options = "hold_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
-  writeLines('Tables/summary_stats2.tex')
+  writeLines("Tables/summary_stats2.tex")
 
 summ_covs %>% 
   filter(Type %in% c("LIWC")) %>% 
-  knitr::kable(format = 'latex',digits = 2,label = "summ-tab3",booktabs=T,
+  knitr::kable(format = "latex",digits = 2,label = "summ-tab3",booktabs=T,
                caption = "Summary statistics on conversation characteristics (2)") %>% 
   kableExtra::kable_styling(latex_options = "hold_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
-  writeLines('Tables/summary_stats3.tex')
+  writeLines("Tables/summary_stats3.tex")
 
 # confirm that ID is unique
 dt %>% 
