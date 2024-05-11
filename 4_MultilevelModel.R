@@ -743,18 +743,21 @@ mall = tidy(m4_tox_all,effects="fixed",conf.int=T) %>%
 
 # compare interaction effects
 mcomp = full_join(mind,mall,by="term") %>% 
-  mutate(same_sign  = ifelse((estimate_ind<0&estimate_all<0)|(estimate_ind>0&estimate_all>0),"same sign","different sign"),
-         both_in_sig   = ifelse(sig_ind == sig_all,"both either sig. or insig.","one sig., one insig."),
-         consistent = ifelse((same_sign == "same sign") & (both_in_sig == "both either sig. or insig."),"yes","no"),
-         diff = estimate_ind-estimate_all) %>% 
+  mutate(
+    diff = estimate_ind-estimate_all,
+    same_sign  = ifelse((estimate_ind<0&estimate_all<0)|(estimate_ind>0&estimate_all>0),"Yes","No"),
+    both_in_sig   = ifelse(sig_ind == sig_all,"Yes","No"),
+    consistent = ifelse((same_sign == "Yes") & (both_in_sig == "Yes"),"Yes","No")
+  ) %>% 
   select(-sig_ind,-sig_all) %>% 
   arrange(desc(consistent),-abs(diff)) 
 
 # export to .tex
 mcomp %>% 
-  knitr::kable(format = "latex",digits = 2,label = "interaction-effects-comparison",booktabs=T,
-               caption = "Comparing interaction effects estimated with separate models to those estimated with a single model",
-               col.names = c("Term","Seperate","Single model","Sign","Significance","Consistent","Difference")) %>% 
+  mutate(term = str_remove(term,"PolIdComp2Sd.")) %>% 
+  knitr::kable(format = "latex",digits = 2,label = "interaction-effects-comparison",booktabs=T,escape = F,align=c("l",rep("c",ncol(.)-1)), 
+               caption = "Comparing interaction effects estimated with separate models with estimated with a single model",
+               col.names = linebreak(c("Term interacted with\nPolIdComp2Sd","Seperate\nmodels","Single\nmodel","Difference","Same\nsign","Both sig.\nor insig.","Consistent"))) %>% 
   kableExtra::kable_styling(latex_options = "hold_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
   writeLines("Tables/InteractionEffectsIndVsAll.tex")
