@@ -41,6 +41,7 @@ dt %>%
 # Null model -------------------------------------------------------------------
 # 1. There is a correlation within individuals and within comments on perceived toxicity
 m0_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id), data=dt, REML=is_REML)
+summary(m0_tox)
 icc(m0_tox,by_group = T)
 
 # Q: How large are these variances, and the icc?
@@ -70,7 +71,7 @@ m1b_pid = fixef(m1b_tox)["PolIdComp2Sd"]
 
 
 # 9% of variation in 
-(0.01594 - 0.01445) / 0.01594
+(0.01595 - 0.01445) / 0.01595
 
 
 # Likelihood ratio test is significant but the improvement in BIC is not much
@@ -99,6 +100,9 @@ m2a_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) +
               data=dt, REML=is_REML)
 summary(m2a_tox)
 
+# Variance explained
+(0.05408-0.02849) / 0.05408
+
 m2b_tox = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) + 
                  # Person predictors
                  PolIdComp2Sd + Age2Sd + Gender + EducationNum2Sd + 
@@ -124,7 +128,7 @@ m2b_pid = fixef(m2b_tox)["PolIdComp2Sd"]
 # percent of the effect size that is left after controlling for individual AND comment level predictors
 1 - ((m1a_pid - m2b_pid) / m1a_pid)
 
-(0.05408-0.04464) / 0.05408
+
 
 # Q: The variance in random intercepts for comments goes down by 0.02
 
@@ -717,7 +721,7 @@ m4_tox_order = lmer(BToxicNum01 ~ (1|ResponseId) + (1|target_id) +
                      (Order2Sd*PolIdComp2Sd),
               data=dt, REML=is_REML)
 summary(m4_tox_like)
-library("broom.mixed")
+
 
 # interaction effects estimated with separate models
 mind = list(m4_tox_antiamerica,m4_tox_antichristianity,m4_tox_suggestive,m4_tox_drugs,
@@ -739,21 +743,18 @@ mall = tidy(m4_tox_all,effects="fixed",conf.int=T) %>%
 
 # compare interaction effects
 mcomp = full_join(mind,mall,by="term") %>% 
-  mutate(
-    diff = estimate_ind-estimate_all,
-    same_sign  = ifelse((estimate_ind<0&estimate_all<0)|(estimate_ind>0&estimate_all>0),"Yes","No"),
-    both_in_sig   = ifelse(sig_ind == sig_all,"Yes","No"),
-    consistent = ifelse((same_sign == "Yes") & (both_in_sig == "Yes"),"Yes","No")
-         ) %>% 
+  mutate(same_sign  = ifelse((estimate_ind<0&estimate_all<0)|(estimate_ind>0&estimate_all>0),"same sign","different sign"),
+         both_in_sig   = ifelse(sig_ind == sig_all,"both either sig. or insig.","one sig., one insig."),
+         consistent = ifelse((same_sign == "same sign") & (both_in_sig == "both either sig. or insig."),"yes","no"),
+         diff = estimate_ind-estimate_all) %>% 
   select(-sig_ind,-sig_all) %>% 
   arrange(desc(consistent),-abs(diff)) 
 
 # export to .tex
 mcomp %>% 
-  mutate(term = str_remove(term,"PolIdComp2Sd.")) %>% 
-  knitr::kable(format = "latex",digits = 2,label = "interaction-effects-comparison",booktabs=T,escape = F,align=c("l",rep("c",ncol(.)-1)), 
-               caption = "Comparing interaction effects estimated with separate models with estimated with a single model",
-               col.names = linebreak(c("Term interacted with\nPolIdComp2Sd","Seperate\nmodels","Single\nmodel","Difference","Same\nsign","Both sig.\nor insig.","Consistent"))) %>% 
+  knitr::kable(format = "latex",digits = 2,label = "interaction-effects-comparison",booktabs=T,
+               caption = "Comparing interaction effects estimated with separate models to those estimated with a single model",
+               col.names = c("Term","Seperate","Single model","Sign","Significance","Consistent","Difference")) %>% 
   kableExtra::kable_styling(latex_options = "hold_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
   writeLines("Tables/InteractionEffectsIndVsAll.tex")

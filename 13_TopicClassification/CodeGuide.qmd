@@ -1,6 +1,6 @@
 ---
 title: ""
-format: latex
+format: pdf
 margin-top: "1cm"
 margin-bottom: "1cm"
 ---
