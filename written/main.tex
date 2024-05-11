@@ -96,17 +96,6 @@ The second set of variables in the \textit{LIWC} category refers to the count of
     \item \textit{ideocommenterB}: the political ideology of commenter B is estimated based on the Facebook pages that the user visited. Negative values denote liberal political ideology while positive values represent conservatism.
 \end{itemize}
 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-% Tables % 
-\input{Tables/summary_stats1}
-
-\renewcommand{\arraystretch}{1}
-\input{Tables/summary_stats2}
-\normalsize
-% End tables 
-%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-\clearpage
-
 \section{Methods}
 
 Multilevel models, also known as mixed-effects models, are statistical models used for analyzing data that have a nested structure (see Table \ref{sample-table}  for illustration). This means that the data is organized into groups, and there is variability both within each group and between groups \citep{hox2017multilevel}. Multilevel models can account for correlation within each group. In the present case, evaluations of conversations may be correlated within each individual (because it is the same rater), and conversations may be evaluated similarly (because it is the entity). This does not imply a strictly hierarchical structure since each respondent evaluated multiple conversations but not all conversations have been evaluated by the same respondents. Hence, these data are cross-classified.
@@ -131,18 +120,9 @@ Only one topic is perceived as significantly less toxic on average.
     \item Positive characterization of immigrants (e.g. ``Most immigrants are actually highly educated doctors, lawyers, and computer engineers")
 \end{itemize}
 
-\begin{figure}
-    \centering
-    \includegraphics[width=1.1\linewidth]{figures/topic_interactions.pdf}
-    \caption{Interaction effects of topic with political ideology composite}
-    \label{fig:topic-polid-interaction}
-\end{figure}
-
 \textit{Random slope hypothesis:} The standard deviation of the random slopes for political ideology estimated for each comment is 0.085. Based on this, we estimate that 95\% of the slopes are between $-0.065 - 1.96\times 0.085=-0.23$ and  $-0.0645 + 1.96 \times 0.085=0.10$. In line with my hypothesis above, this means that the relationship between the association between political and perceived toxicity is zero for comments. In other words, some comments do not elicit a reaction across the ideological spectrum. These comments might be too short, unintelligible, or uncontroversial. 
 
-\textit{Cross-level interaction hypothesis:} Figure \ref{fig:topic-polid-interaction} presents interactions effects. Across topics and with few exceptions, liberals perceive comments as more toxic than conservatives. This is represented by the negative slope of the green line for varying scores of political ideology from extremely liberal to extremely conservative. Only comments that support abortion, endorse immigration, and characterize Trump negatively are considered slightly more toxic among conservatives. Liberals, for example, rate comments as significantly more toxic that portray immigrants, abortion, and Hillary Clinton negatively. In sum, I find support for the hypothesis that the association between political ideology and perceived toxicity depends on the topic. 
-
-
+\textit{Cross-level interaction hypothesis:} Figure \ref{fig:topic-polid-interaction} presents interactions effects. Across topics and with few exceptions, liberals perceive comments as more toxic than conservatives. This is represented by the negative slope of the green line for varying scores of political ideology from extremely liberal to extremely conservative. Only comments that support abortion, endorse immigration, and characterize Trump negatively are considered slightly more toxic among conservatives. Liberals, for example, rate comments as significantly more toxic that portray immigrants, abortion, and Hillary Clinton negatively. In sum, I find support for the hypothesis that the association between political ideology and perceived toxicity depends on the topic.
 
 \section{Conclusion and Discussion}
 
@@ -200,6 +180,19 @@ While these results are promising, we would be remiss not to mention this work's
     \label{fig:civility-ideology}
 \end{figure}
 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+% Tables % 
+\renewcommand{\arraystretch}{0.9}
+\input{Tables/summary_stats1}
+
+\input{Tables/summary_stats2}
+
+\input{Tables/summary_stats3}
+\clearpage
+% End tables 
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
 % Regression table 
+\clearpage
 \includepdf[pages={1-},scale=0.95]{tox.html.pdf}
 \end{document}
