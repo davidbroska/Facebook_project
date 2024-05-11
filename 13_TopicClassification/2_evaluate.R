@@ -106,7 +106,8 @@ summ %>%
              "LLM labels predict\nannotator NE labels",
              "Annotator NE labels predict\nannotator DB labels",
              "LLM labels predict\nannotator DB labels")) +
-  labs(y="",shape="Comparison Type",color="Comparison")
+  labs(y="",shape="Comparison Type",color="Comparison",
+       x="Value of reliability statistic")
 ggsave("Figures/classifier_performance.pdf",width=7,height=6,bg="white")
            
 

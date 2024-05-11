@@ -11,6 +11,7 @@ library(stringr)
 library(fixest)
 library(corrplot)
 library(multidplyr)
+library(broom.mixed)
 theme_set(theme_bw(base_size = 8))
 report_effect = function(.m, .coef_name, .one_sided=F){
   
