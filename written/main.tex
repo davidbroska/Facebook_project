@@ -121,7 +121,9 @@ Table \ref{tab:summ-tab-topics} provides summary statistics of variables measure
 %    \item \textit{ideocommenterB}: the political ideology of commenter B is estimated based on the Facebook pages that the user visited. Negative values denote liberal political ideology while positive values represent conservatism.
 %\end{itemize}
 
-Table \ref{} shows summary statistics on sentiment scores assigned to commenter B's comment assigned with the expanded Moral Foundations Dictionary \citep{hopp2021extended}.\footnote{"Each word is assigned 5 sentiment scores that denote the average sentiment of the foundation context in which this word appeared. For example, the word "kill" has an average "care_sent" of -0.69, meaning that all "care-harm" highlights in which "kill" appeared had an average, negative sentiment of -0.69." (Hopp, [n.d.](https://github.com/medianeuroscience/emfdscore/blob/master/eMFDscore_Tutorial.ipynb)}
+Table \ref{tab:summ-tab-emf} shows summary statistics on sentiment scores assigned to commenter B's comment assigned with the expanded Moral Foundations Dictionary \citep{hopp2021extended}.\footnote{"Each word is assigned 5 sentiment scores that denote the average sentiment of the foundation context in which this word appeared. For example, the word 'kill' has an average 'care_sent' of -0.69, meaning that all 'care-harm' highlights in which 'kill' appeared had an average, negative sentiment of -0.69." 
+
+https://github.com/medianeuroscience/emfdscore/blob/master/eMFDscore_Tutorial.ipynb}
 Table \ref{tab:summ-tab-liwc} presents the word frequencies per category in the LIWC dictionary \citep{pennebaker_linguistic_2022}. The counts were transformed with $\log(1+x)$ to account for the right-skew of count variables. These dictionary counts will be included as control variables but they do not represent the focus of the analysis.
 
 \section{Methods}
@@ -175,34 +177,33 @@ While these results are promising, we would be remiss not to mention this work's
 
 \begin{table}[htbp]
     \centering
-    \begin{tabular}{|c|c|}
+    \begin{tabular}{|c|c|c|c|}
     \hline
-    \textbf{Respondent Id} & \textbf{Conversation Id} \\
+    \textbf{Respondent Id} & \textbf{Post Id} & \textbf{Comment A Id} & \textbf{Comment B Id} \\
     \hline
-    1 & 3 \\
-    1 & 2 \\
-    1 & 13 \\
-    1 & 23 \\
-    1 & 5 \\
-    1 & 6 \\
-    1 & 56 \\
+    R1 & P2 & A2 & B2 \\
+    R1 & P13 & A13 & B13 \\
+    R1 & P23 & A23 & B23 \\
+    R1 & P5 & A5 & B5 \\
+    R1 & P6 & A6 & B6 \\
+    R1 & P56 & A56 & B56 \\
     \midrule
-    2 & 4 \\
-    2 & 3 \\
-    2 & 8 \\
-    2 & 9 \\
-    2 & 10 \\
-    2 & 11 \\
-    2 & 12 \\
+    R2 & P4 & A4 & B4 \\
+    R2 & P3 & A3 & B3 \\
+    R2 & P8 & A8 & B8 \\
+    R2 & P9 & A9 & B9 \\
+    R2 & P10 & A10 & B10 \\
+    R2 & P11 & A11 & B11 \\
+    R2 & P12 & A12 & B12 \\
     \midrule
-    3 & 6 \\
-    3 & 22 \\
-    3 & 4 \\
-    3 & 7 \\
-    3 & 9994 \\
-    3 & 11 \\
-    3 & 55 \\
-    \dots & \dots \\
+    R3 & P6 & A6 & B6 \\
+    R3 & P22 & A22 & B22 \\
+    R3 & P4 & A4 & B4 \\
+    R3 & P7 & A7 & B7 \\
+    R3 & P9994 & A9994 & B9994 \\
+    R3 & P11 & A11 & B11 \\
+    R3 & P55 & A55 & B55 \\
+    \dots & \dots & \dots & \dots \\
     \hline
     \end{tabular}
     \caption{Sample table to illustrate the nested data structure}
@@ -227,11 +228,12 @@ While these results are promising, we would be remiss not to mention this work's
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % Summary statistics % 
 \renewcommand{\arraystretch}{0.9}
-\input{Tables/summary_stats1}
+\input{Tables/summary_stats_ind}
 
-\input{Tables/summary_stats2}
+\input{Tables/summary_stats_topics}
 
-\input{Tables/summary_stats3}
+\input{Tables/summary_stats_emf}
+\input{Tables/summary_stats_liwc}
 \clearpage
 % End summary statistics 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
