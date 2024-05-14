@@ -56,7 +56,7 @@ summ_covs %>%
 summ_covs %>% 
   filter(Type %in% c("Topic","Other")) %>% 
   knitr::kable(format = "latex",digits = 2,label = "summ-tab-topics",booktabs=T,
-               caption = "Summary statistics on conversation characteristics (1). LIWC") %>% 
+               caption = "Summary statistics on conversation characteristics (1). Topics and Other") %>% 
   kableExtra::kable_styling(latex_options = "hold_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
   writeLines("Tables/summary_stats_topics.tex")
@@ -72,7 +72,7 @@ summ_covs %>%
 summ_covs %>% 
   filter(Type %in% c("LIWC")) %>% 
   knitr::kable(format = "latex",digits = 2,label = "summ-tab-liwc",booktabs=T,
-               caption = "Summary statistics on conversation characteristics (3)") %>% 
+               caption = "Summary statistics on conversation characteristics (3). LIWC") %>% 
   kableExtra::kable_styling(latex_options = "hold_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
   writeLines("Tables/summary_stats_liwc.tex")
@@ -153,7 +153,7 @@ corrplot(round(cor(dt[c(DVs,"PartisanshipNum","PolIdNum","PolIdComp2Sd")]),2), m
 dev.off()
 
 pdf(file = "Figures/corrplot_topics.pdf")
-corrplot(round(cor(dt[c(topics,emf,"BToxicNum01",B)],use = "complete.obs"),2), method = "number",tl.col = "black",
+corrplot(round(cor(dt[c(topics,emf,"BToxicNum01")],use = "complete.obs"),2), method = "number",tl.col = "black",
          number.cex = 0.7,tl.cex = 0.8,number.digits = 2,type = "upper",diag = T)
 dev.off()
 
