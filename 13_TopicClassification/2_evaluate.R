@@ -112,10 +112,6 @@ ggsave("Figures/classifier_performance.pdf",width=7,height=6,bg="white")
            
 
 
-pdf(file = "Figures/corrplot_topics.pdf")
-corrplot(round(cor(dt[TopicsTab$topic]),2), method = "number",tl.col = "black",
-         number.cex = 0.9,tl.cex = 0.8,number.digits = 2,type = "upper",diag = T,order = "hclust")
-dev.off()
 
 
 

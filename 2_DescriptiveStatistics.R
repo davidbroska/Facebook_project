@@ -22,7 +22,7 @@ Dems = c("PolIdComp","PolIdComp2Sd","Man","Woman","OtherGender","EducationNum","
 summ_covs = dt %>% 
   select(
     BToxicNum01,
-    all_of(Dems), all_of(TopicsTab$topic), all_of(LiwcCats),
+    all_of(Dems), all_of(TopicsTab$topic), all_of(LiwcCats), all_of(emf),
     # Other conversation-level predictors
     Order,IdeoCommenterB,TargetLikesCount) %>% 
   pivot_longer(cols = everything()) %>% 
@@ -47,27 +47,35 @@ summ_covs = dt %>%
 
 summ_covs %>% 
   filter(Type %in% c("Dependent Variable","Demographics")) %>% 
-  knitr::kable(format = "latex",digits = 2, label = "summ-tab1",booktabs=T,
+  knitr::kable(format = "latex",digits = 2, label = "summ-tab-ind",booktabs=T,
                caption = "Summary statistics on characteristics of survey respondents") %>% 
   kableExtra::kable_styling(latex_options = "hold_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
-  writeLines("Tables/summary_stats1.tex")
+  writeLines("Tables/summary_stats_ind.tex")
 
 summ_covs %>% 
   filter(Type %in% c("Topic","Other")) %>% 
-  knitr::kable(format = "latex",digits = 2,label = "summ-tab2",booktabs=T,
-               caption = "Summary statistics on conversation characteristics (1)") %>% 
+  knitr::kable(format = "latex",digits = 2,label = "summ-tab-topics",booktabs=T,
+               caption = "Summary statistics on conversation characteristics (1). LIWC") %>% 
   kableExtra::kable_styling(latex_options = "hold_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
-  writeLines("Tables/summary_stats2.tex")
+  writeLines("Tables/summary_stats_topics.tex")
+
+summ_covs %>% 
+  filter(Type %in% c("emf")) %>% 
+  knitr::kable(format = "latex",digits = 2,label = "summ-tab-emf",booktabs=T,
+               caption = "Summary statistics on conversation characteristics (2). Moral foundations dictionary") %>% 
+  kableExtra::kable_styling(latex_options = "hold_position") %>% 
+  kableExtra::collapse_rows(columns = 1) %>% 
+  writeLines("Tables/summary_stats_emf.tex")
 
 summ_covs %>% 
   filter(Type %in% c("LIWC")) %>% 
-  knitr::kable(format = "latex",digits = 2,label = "summ-tab3",booktabs=T,
-               caption = "Summary statistics on conversation characteristics (2)") %>% 
+  knitr::kable(format = "latex",digits = 2,label = "summ-tab-liwc",booktabs=T,
+               caption = "Summary statistics on conversation characteristics (3)") %>% 
   kableExtra::kable_styling(latex_options = "hold_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
-  writeLines("Tables/summary_stats3.tex")
+  writeLines("Tables/summary_stats_liwc.tex")
 
 # confirm that ID is unique
 dt %>% 
@@ -138,11 +146,17 @@ dt %>%
   geom_col() +
   labs(y="Percent of ratings")
   
-  
+# Corrplots
 pdf(file = "Figures/corrplot.pdf")
 corrplot(round(cor(dt[c(DVs,"PartisanshipNum","PolIdNum","PolIdComp2Sd")]),2), method = "number",tl.col = "black",
          number.cex = 0.7,tl.cex = 0.8,number.digits = 2,type = "upper",diag = T)
 dev.off()
+
+pdf(file = "Figures/corrplot_topics.pdf")
+corrplot(round(cor(dt[c(topics,emf,"BToxicNum01",B)],use = "complete.obs"),2), method = "number",tl.col = "black",
+         number.cex = 0.7,tl.cex = 0.8,number.digits = 2,type = "upper",diag = T)
+dev.off()
+
 
 # the sample is comprised of more liberal than conservative respondents
 dt %>% 

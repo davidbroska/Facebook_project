@@ -458,23 +458,26 @@ all(count(dl,target_id,sort=T)$n==1)
 sum(is.na(dl$IdeoLike))
 
 
-# LIWC  -------------------------------------------------------------------
-
-liwc = read_csv("10_LIWC/LIWC-22_WordFrequencies_Target.csv") %>% 
-  mutate(post_id = paste0("P",post_id),
-         target_id = paste0("T",target_id)) %>% 
-  select(all_of(LiwcCats), target_id) %>% 
-  mutate(across(all_of(LiwcCats), ~ log(.x+1)))
-
-# check for NAs
-liwc %>% 
-  summarise(across(all_of(LiwcCats), ~sum(is.na(.)))) %>% 
-  select_if(~any(.>0))
-length(unique(dt$target_id))
+# LIWC22  ----------------------------------------------------------------------
 
 
+liwc_target = read_csv("data/liwc/liwc_target.csv") %>% 
+  select(target_id, all_of(LiwcCats)) %>% 
+  mutate(across(all_of(LiwcCats), ~ log(1+.)))
+  
+
+# Moral foundations dictionary on target
+emf_target = read_csv("data/liwc/emf_target.csv") %>% 
+  select(target_id,target,contains("Sentiment")) %>% 
+  mutate(across(contains("Sentiment"), ~ scale2(-1*.))) %>% 
+  rename_all( ~ str_replace(.,"Sentiment","NegSen2Sd"))
 
 
+
+# Similarity between posts and comments -----------------------------------
+
+# Use: 
+# TADA-CosineSimTutorial.Rmd
 
 
 
@@ -511,8 +514,10 @@ dt = dt %>%
   left_join(dl,by=c("target_id")) %>% 
   # Join topic labels
   left_join(topic_labels,by="target_id") %>% 
+  # Join moral foundations 
+  left_join(emf_target, by = "target_id") %>% 
   # Join LIWC categories
-  left_join(liwc,by=c("target_id"))  
+  left_join(liwc_target,by=c("target_id"))  
 
 
 # dt %>%

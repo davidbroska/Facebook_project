@@ -12,6 +12,10 @@ library(fixest)
 library(corrplot)
 library(multidplyr)
 library(broom.mixed)
+library(lme4)
+library(performance)
+library(sjPlot)
+library(kableExtra)
 theme_set(theme_bw(base_size = 8))
 report_effect = function(.m, .coef_name, .one_sided=F){
   
@@ -84,7 +88,9 @@ TopicsTab = tribble(
   "progun",            "Pro-Gun",
   "antiwhite",         "Anti-White"
 )
-TopicsTab
+topics = TopicsTab$topic
+emf = c("Care_NegSen","Fairness_NegSen","Loyalty_NegSen","Authority_NegSen","Sanctity_NegSen") %>% 
+  paste0(.,"2Sd")
 
 LiwcCats = c("tone_pos","tone_neg","emo_pos","emo_neg","swear",
              "conflict","prosocial","polite","moral","comm",
