@@ -36,9 +36,10 @@ summ_covs = dt %>%
     Variable %in% Dems ~ "Demographics",
     Variable %in% TopicsTab$topic ~ "Topic",#,antirepcons,antidemlib"),
     Variable %in% LiwcCats ~ "LIWC",
+    Variable %in% emf ~ "Moral Foundations",
     Variable %in% c("Order","IdeoCommenterB","TargetLikesCount") ~ "Other") %>% 
-      factor(levels=c("Dependent Variable","Demographics","Topic","LIWC","Other")),
-    Variable = factor(Variable, levels = c(DVs,Dems,TopicsTab$topic,LiwcCats,
+      factor(levels=c("Dependent Variable","Demographics","Topic","Moral Foundations","LIWC","Other")),
+    Variable = factor(Variable, levels = c(DVs,Dems,TopicsTab$topic,emf,LiwcCats,
                                            "Order","IdeoCommenterB","TargetLikesCount"))
     ) %>% 
   select(Type,everything()) %>% 
@@ -62,7 +63,7 @@ summ_covs %>%
   writeLines("Tables/summary_stats_topics.tex")
 
 summ_covs %>% 
-  filter(Type %in% c("emf")) %>% 
+  filter(Type %in% c("Moral Foundations")) %>% 
   knitr::kable(format = "latex",digits = 2,label = "summ-tab-emf",booktabs=T,
                caption = "Summary statistics on conversation characteristics (2). Moral foundations dictionary") %>% 
   kableExtra::kable_styling(latex_options = "hold_position") %>% 

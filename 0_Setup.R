@@ -89,7 +89,7 @@ TopicsTab = tribble(
   "antiwhite",         "Anti-White"
 )
 topics = TopicsTab$topic
-emf = c("Care_NegSen","Fairness_NegSen","Loyalty_NegSen","Authority_NegSen","Sanctity_NegSen") %>% 
+emf = c("CareNegSen","FairnessNegSen","LoyaltyNegSen","AuthorityNegSen","SanctityNegSen") %>% 
   paste0(.,"2Sd")
 
 LiwcCats = c("tone_pos","tone_neg","emo_pos","emo_neg","swear",

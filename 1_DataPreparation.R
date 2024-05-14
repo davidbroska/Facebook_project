@@ -470,7 +470,7 @@ liwc_target = read_csv("data/liwc/liwc_target.csv") %>%
 emf_target = read_csv("data/liwc/emf_target.csv") %>% 
   select(target_id,target,contains("Sentiment")) %>% 
   mutate(across(contains("Sentiment"), ~ scale2(-1*.))) %>% 
-  rename_all( ~ str_replace(.,"Sentiment","NegSen2Sd"))
+  rename_all( ~ str_replace(.,"_Sentiment","NegSen2Sd"))
 
 
 
