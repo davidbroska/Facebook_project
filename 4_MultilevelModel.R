@@ -181,7 +181,7 @@ m4_tox_all = lmer(fo("BToxicNum01",c(rint,ind,other,topics,emf,LiwcCats,
                   data=dt, REML=is_REML)
 
 
-tab_model(m0_tox,m1b_tox,m2b_tox,m3a_tox,m4_tox_all, file = "tox.html")
+tab_model(m0_tox,m1b_tox,m2b_tox,m3a_tox,m4_tox_all, show.ci=F,file = "tox.html")
 
 
 
