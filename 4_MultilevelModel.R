@@ -90,7 +90,8 @@ summary(m2a_tox)
 # Variance explained
 (0.05408-0.04663) / 0.05408
 
-m2b_tox = lmer(fo("BToxicNum01",c(rint,ind,other,topics,emf,LiwcCats)), 
+m2b_tox = lmer(fo("BToxicNum01",c(rint,ind,other,topics#,emf,LiwcCats
+                                  )), 
                data=dt, REML=is_REML)
 summary(m2b_tox)
 
@@ -149,7 +150,25 @@ summary(m3a_tox)
 
 
 # Cross-level interaction ------------------------------------------------------
-m4_tox_all = lmer(fo("BToxicNum01",c(rint,ind,other,topics,emf,LiwcCats,
+m4_tox_topic = lmer(fo("BToxicNum01",c(rint,ind,other,topics, #emf,LiwcCats,
+                            # Interaction effects with political ideology
+                            "(antiamerica*PolIdComp2Sd)",
+                            "(antichristianity*PolIdComp2Sd)",
+                            "(suggestive*PolIdComp2Sd)",
+                            "(drugs*PolIdComp2Sd)",
+                            "(antitrump*PolIdComp2Sd)",
+                            "(protrump*PolIdComp2Sd)",
+                            "(anticlinton*PolIdComp2Sd)",
+                            "(proclinton*PolIdComp2Sd)",
+                            "(antiimmigrant*PolIdComp2Sd)",
+                            "(proimmigrant*PolIdComp2Sd)",
+                            "(antiabortion*PolIdComp2Sd)",
+                            "(proabortion*PolIdComp2Sd)",
+                            "(antigun*PolIdComp2Sd)",
+                            "(progun*PolIdComp2Sd)"
+                            )),
+                  data=dt, REML=is_REML)
+m4_tox_all = lmer(fo("BToxicNum01",c(rint,ind,other,topics, #emf,LiwcCats,
                             # Interaction effects with political ideology
                             "(antiamerica*PolIdComp2Sd)",
                             "(antichristianity*PolIdComp2Sd)",
@@ -170,20 +189,39 @@ m4_tox_all = lmer(fo("BToxicNum01",c(rint,ind,other,topics,emf,LiwcCats,
                             "(Age2Sd*PolIdComp2Sd)",
                             "(EducationNum2Sd*PolIdComp2Sd)",
                             "(Income2Sd*PolIdComp2Sd)",
-                            "(Order2Sd*PolIdComp2Sd)",
+                            "(Order2Sd*PolIdComp2Sd)"#,
                             # Other interaction effects
-                            "(Care_NegSen2Sd*PolIdComp2Sd)",
-                            "(Fairness_NegSen2Sd*PolIdComp2Sd)",
-                            "(Loyalty_NegSen2Sd*PolIdComp2Sd)",
-                            "(Authority_NegSen2Sd*PolIdComp2Sd)",
-                            "(Sanctity_NegSen2Sd*PolIdComp2Sd)"
+                            #"(Care_NegSen2Sd*PolIdComp2Sd)",
+                            #"(Fairness_NegSen2Sd*PolIdComp2Sd)",
+                            #"(Loyalty_NegSen2Sd*PolIdComp2Sd)",
+                            #"(Authority_NegSen2Sd*PolIdComp2Sd)",
+                            #"(Sanctity_NegSen2Sd*PolIdComp2Sd)"
                             )),
                   data=dt, REML=is_REML)
 
 
 tab_model(m0_tox,m1b_tox,m2b_tox,m3a_tox,m4_tox_all, show.ci=F,file = "tox.html")
 
+maineff = broom.mixed::tidy(m4_tox_topic,conf.int=T) %>% filter(term=="PolIdComp2Sd") %>% pull(estimate)
 
+intdf = broom.mixed::tidy(m4_tox_topic,conf.int=T) %>% 
+  filter(str_detect(term,"PolIdComp"), abs(statistic) > 1.1) %>% 
+  mutate(Effect = ifelse(term=="PolIdComp2Sd","Main Effect of Political\nIdeology Composite","Interaction effect (topic x\nPolitical Ideology Composite)\n"),
+         combined = estimate + maineff,
+         term = str_remove(term,"PolIdComp2Sd[:]") %>% 
+           factor(levels = c(TopicsTab$topic,"PolIdComp2Sd"),labels = c(TopicsTab$label,"Political Ideology\nComposite"))) %>% 
+  arrange(-estimate)
+intdf %>% 
+  ggplot(aes(estimate,reorder(term,estimate),xmin=conf.low,xmax=conf.high,color=Effect)) + 
+  geom_pointrange(size = .35) +
+  geom_vline(xintercept = 0,linetype = "dashed")+
+  scale_color_manual(values = c("Main Effect of Political\nIdeology Composite"="#808080",
+                                "Interaction effect (topic x\nPolitical Ideology Composite)\n"="forestgreen")) +
+  scale_x_continuous(breaks = seq(-0.15,0.15,0.05), labels = scales::comma) +
+  theme(axis.text.y = element_text(size = 8)) +
+  labs(y = "Predictor",x="Point estimate with 95% confidence interval") +
+  theme_bw(base_size = 13)
+ggsave("Figures/4_mlm_interaction.pdf")
 
 
 
@@ -251,11 +289,11 @@ m4_tox_progun = lmer(fo("BToxicNum01",c(rint,ind,topics,emf,LiwcCats,"(progun*Po
 
 
 # moral foundations
-m4_tox_care = lmer(fo("BToxicNum01",c(rint,ind,topics,emf,LiwcCats,"(Care_NegSen2Sd*PolIdComp2Sd)")),data=dt, REML=is_REML)
-m4_tox_fair = lmer(fo("BToxicNum01",c(rint,ind,topics,emf,LiwcCats,"(Fairness_NegSen2Sd*PolIdComp2Sd)")),data=dt, REML=is_REML)
-m4_tox_loyal =lmer(fo("BToxicNum01",c(rint,ind,topics,emf,LiwcCats,"(Loyalty_NegSen2Sd*PolIdComp2Sd)")),data=dt, REML=is_REML)
-m4_tox_auth = lmer(fo("BToxicNum01",c(rint,ind,topics,emf,LiwcCats,"(Authority_NegSen2Sd*PolIdComp2Sd)")),data=dt, REML=is_REML)
-m4_tox_sanc = lmer(fo("BToxicNum01",c(rint,ind,topics,emf,LiwcCats,"(Sanctity_NegSen2Sd*PolIdComp2Sd)")),data=dt, REML=is_REML)
+#m4_tox_care = lmer(fo("BToxicNum01",c(rint,ind,topics,emf,LiwcCats,"(Care_NegSen2Sd*PolIdComp2Sd)")),data=dt, REML=is_REML)
+#m4_tox_fair = lmer(fo("BToxicNum01",c(rint,ind,topics,emf,LiwcCats,"(Fairness_NegSen2Sd*PolIdComp2Sd)")),data=dt, REML=is_REML)
+#m4_tox_loyal =lmer(fo("BToxicNum01",c(rint,ind,topics,emf,LiwcCats,"(Loyalty_NegSen2Sd*PolIdComp2Sd)")),data=dt, REML=is_REML)
+#m4_tox_auth = lmer(fo("BToxicNum01",c(rint,ind,topics,emf,LiwcCats,"(Authority_NegSen2Sd*PolIdComp2Sd)")),data=dt, REML=is_REML)
+#m4_tox_sanc = lmer(fo("BToxicNum01",c(rint,ind,topics,emf,LiwcCats,"(Sanctity_NegSen2Sd*PolIdComp2Sd)")),data=dt, REML=is_REML)
 
 
 m4_tox_ideo = lmer(fo("BToxicNum01",c(rint,ind,topics,emf,LiwcCats,

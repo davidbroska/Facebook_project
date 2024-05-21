@@ -1,12 +1,8 @@
 # Setup ########################################################################
-library(readr) 
-library(dplyr)
-library(ggplot2)
 library(stringr)
 library(AER)
 library(lmtest)
 library(broom)
-library(tidyr)
 library(stringr)
 library(fixest)
 library(corrplot)
@@ -16,7 +12,11 @@ library(lme4)
 library(performance)
 library(sjPlot)
 library(kableExtra)
-theme_set(theme_bw(base_size = 8))
+library(ggplot2)
+library(tidyr)
+library(readr) 
+library(dplyr)
+theme_set(theme_bw(base_size = 10))
 report_effect = function(.m, .coef_name, .one_sided=F){
   
   pval = function(p){

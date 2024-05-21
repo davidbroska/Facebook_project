@@ -29,7 +29,7 @@ pscale = 2*sd(dt$PolIdComp2Sd) / (max(dt$PolIdComp2Sd) - min(dt$PolIdComp2Sd))
 # effects plot
 p_PolIdReg = summfe %>% 
   filter(stringr::str_detect(term,"PolIdComp2Sd")) %>% 
-  #mutate(var = factor(var,levels = DVs,labels = DVsLabs)) %>% 
+  mutate(var = factor(var,levels = DVs,labels = DVsLabs)) %>% 
   ggplot(aes(x=estimate,xmin=conf.low,xmax=conf.high,reorder(var,-estimate)))  +
   geom_vline(xintercept = 0,linetype="dashed") +
   geom_pointrange(size=0.2) +
@@ -37,10 +37,10 @@ p_PolIdReg = summfe %>%
   scale_x_continuous(breaks = seq(-0.06,0.06,by = 0.02)) +
   labs(x="Coefficient estimate with 95% CI",
        y="Dependent variable",
-       caption=str_wrap(paste0("Covariates: ",paste(CovsLabs,collapse=", ")),width = 120),
-       subtitle="Regression on political ideology (standardized)\nLinear probability model with robust SEs and fixed-effects for Fb posts")
+       caption=str_wrap(paste0("Covariates: ",paste(CovsLabs,collapse=", ")),width = 110),
+       subtitle="Regression on political ideology (standardized)\nLinear probability model with robust SEs and fixed-effects for conversations")
 p_PolIdReg
-ggsave("fb_survey/figures/3_PolIdReg2Sd.png",p_PolIdReg,width = 6.25, height=5.5)
+ggsave("Figures/3_PolIdReg2Sd.png",p_PolIdReg,width = 7, height=5.5)
 
 dvorder = summfe %>% 
   filter(stringr::str_detect(term,"PolIdComp2Sd")) %>% 

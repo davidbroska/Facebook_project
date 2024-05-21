@@ -148,15 +148,28 @@ dt %>%
   labs(y="Percent of ratings")
   
 # Corrplots
-pdf(file = "Figures/corrplot.pdf")
+pdf(file = "Figures/corrplot_dvs.pdf")
 corrplot(round(cor(dt[c(DVs,"PartisanshipNum","PolIdNum","PolIdComp2Sd")]),2), method = "number",tl.col = "black",
          number.cex = 0.7,tl.cex = 0.8,number.digits = 2,type = "upper",diag = T)
+dev.off()
+
+
+pdf(file = "Figures/corrplot_dvs_dmd.pdf")
+dmdDVs %>% 
+  select(-target_id,-ResponseId) %>% 
+  cor() %>% 
+  round(2) %>% 
+  corrplot(., method = "number",tl.col = "black",
+           number.cex = 0.7,tl.cex = 0.8,number.digits = 2,type = "upper",diag = T)
 dev.off()
 
 pdf(file = "Figures/corrplot_topics.pdf")
 corrplot(round(cor(dt[c(topics,emf,"BToxicNum01")],use = "complete.obs"),2), method = "number",tl.col = "black",
          number.cex = 0.7,tl.cex = 0.8,number.digits = 2,type = "upper",diag = T)
 dev.off()
+
+
+
 
 
 # the sample is comprised of more liberal than conservative respondents
@@ -214,6 +227,62 @@ p_avgp_ideo
 ggsave("Figures/2_AvgAgreement_Ideo.pdf",p_avgp_ideo,width = PlotWidth, height=PlotHeight)
 
 
+
+# Plot partisan difference ------------------------------------------------
+med = median(unique(dt$PolIdComp))
+
+
+dt %>% 
+  select(target_id,PolIdComp,all_of(DVsDmd)) %>% 
+  pivot_longer(cols = all_of(DVsDmd)) %>% 
+  group_by(target_id,name) %>% 
+  mutate(value = value %>% {.-mean(.,na.rm=T)}) %>% 
+  group_by(name,PolIdComp) %>% 
+  summarise(avg = mean(value)) %>% # avg percent agreeing per variable
+  mutate(name = factor(name,levels = DVsDmd,labels = DVsLabs)) %>% 
+  ggplot(aes(PolIdComp,avg)) + 
+  geom_line() + 
+  facet_wrap(~ name,nrow=3) +
+  #scale_y_continuous(breaks = seq(0,.7,.1)) + 
+  theme(axis.text.x = element_text(angle=90,size = 6),
+        plot.caption = element_text(hjust = 0)) +
+  labs(x="Political ideology",y="Average rating",
+       caption="Note: We take the average agreement per comment because we have more ratings from liberals than from moderates and conservatives.")
+
+
+  
+  
+
+dt %>% 
+  select(ResponseId,target_id,BToxicNum01_NonDmd,Partisanship) %>% 
+  group_by(target_id) %>% 
+  mutate(BToxicNum01_TargetDmd = BToxicNum01_NonDmd %>% {.-mean(.,na.rm=T)}) %>% 
+  ungroup() %>% 
+  group_by(Partisanship) %>% 
+  summarize(mean(BToxicNum01_TargetDmd),mean(BToxicNum01_NonDmd))
+  ggplot(aes(x=Partisanship, y=BToxicNum01_NonDmd)) +
+  geom_violin() +
+  theme_bw() +
+  scale_color_brewer(palette = "RdBu",direction = -1)
+
+
+  
+dt %>% 
+  group_by(target_id) %>% 
+  summarise(AvgPolIdComp = mean(PolIdComp),AvgBToxicNum01 = mean(BToxicNum01_NonDmd),n=n()) %>% 
+  ggplot(aes(AvgPolIdComp,AvgBToxicNum01)) + 
+  geom_jitter(size = .2,width =.1) +
+  geom_smooth()
+  select(ResponseId,target_id,BToxicNum01_NonDmd,PartyId) 
+pivot_wider(id_cols = c(target_id), names_from = Partisanship, values_from = BToxicNum01_NonDmd)
+  arrange(target_id)
+  group_by(target_id) %>% 
+  
+  summarize(sd(PolIdComp),n()) 
+  mutate(BToxicNum01_NonDmd = BToxicNum01_NonDmd %>% {.-mean(.,na.rm=T)}) %>% 
+  ggplot(aes(PolIdComp,BToxicNum01_NonDmd)) +
+  geom_jitter(size = .1) +
+  geom_smooth()
 
 
 # --------------Covs# ------------------------------------------------------------------------------
@@ -313,5 +382,7 @@ Respondents' rating of the toxicity of a comment was recoded as follows: -1='Not
 The graph shows the average rating per comment per political ideology.")
 p_avg_binary_ideo
 ggsave("Figures/2_AvgAgreement_Binary_Ideo.png",p_avg_binary_ideo,width = PlotWidth, height=PlotHeight)
+
+
 
 

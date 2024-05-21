@@ -391,8 +391,18 @@ lapply(dt[DVs], function(x) range(x,na.rm=T))
 
 # created non-demeaned binary dependent variables
 dt_DvsNonDmd = dt %>% 
-  select(ID,target_id, all_of(unique(DVs))) %>%
+  dplyr::select(ID,target_id, all_of(unique(DVs))) %>%
   rename_with(~str_c(.,"_NonDmd"), all_of(unique(DVs))) 
+
+
+# Subtract out mean
+dmdDVs = dt %>% 
+  select(ResponseId,target_id,all_of(DVs)) %>% 
+  pivot_longer(cols = all_of(DVs)) %>% 
+  group_by(name,target_id) %>% 
+  mutate(value=value-mean(value)) %>% 
+  ungroup() %>% 
+  pivot_wider(id_cols=c(target_id,ResponseId),names_from = name,values_from = value)
 
 
 
@@ -462,13 +472,13 @@ sum(is.na(dl$IdeoLike))
 
 
 liwc_target = read_csv("data/liwc/liwc_target.csv") %>% 
-  select(target_id, all_of(LiwcCats)) %>% 
+  dplyr::select(target_id, all_of(LiwcCats)) %>% 
   mutate(across(all_of(LiwcCats), ~ log(1+.)))
   
 
 # Moral foundations dictionary on target
 emf_target = read_csv("data/liwc/emf_target.csv") %>% 
-  select(target_id,target,contains("Sentiment")) %>% 
+  dplyr::select(target_id,target,contains("Sentiment")) %>% 
   mutate(across(contains("Sentiment"), ~ scale2(-1*.))) %>% 
   rename_all( ~ str_replace(.,"_Sentiment","NegSen2Sd"))
 
@@ -486,7 +496,7 @@ emf_target = read_csv("data/liwc/emf_target.csv") %>%
 
 # Create cleaned data ------------------------------------------------
 dt = dt %>% 
-  select(ID,ResponseId:inc_prob,
+  dplyr::select(ID,ResponseId:inc_prob,
          Order,Order2Sd,OrderCat,
          PartyId,
          PolId = r_ideo, PolIdNum, 
@@ -501,6 +511,7 @@ dt = dt %>%
          Jewish,Muslim,NotReligious,ReligionNoAnswer,OtherReligion,
          SexualOrientation, HhSize, Region, 
          Income, Income1k, Income2Sd,
+         BAgreesNum,
          Toxicity,BToxicNum,Productive,ProductiveNum,
          TargetLikesCount,TargetLikesCount2Sd,
          all_of(DVs), 
