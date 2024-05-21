@@ -67,6 +67,11 @@
 
 \maketitle
 
+\begin{abstract}
+Conversations are at the heart of democracies. Civil conversations – i.e., those based on mutual respect and critical engagement – help identify solutions to problems, avoid violent conflict, and foster a better understanding of each other. Existing literature does not sufficiently address how the broader public applies norms to conversations, and the social and psychological factors that shape the perceptions of conversations are not well understood. This project studies the determinants of perceived civility – and toxicity in particular – in the context of the 2016 US presidential election campaign, a time of rapidly changing conservational norms. Across 9,994 conversations in political Facebook groups, I study how 4,675 American survey respondents evaluate Facebook comments in terms of perceived toxicity. I find that, on average, liberals are more likely than conservatives to consider a comment as disrespectful, hateful, or otherwise conducive to making someone leave a conservation. However, this relationship varies across topics, with liberals perceiving comments that support abortion, immigration, and politicians of the Democratic party as less toxic. Conversely, conservatives perceive comments as more toxic when they are suggestive, endorse immigration, and portray the United States or white people negatively.
+\end{abstract}
+\clearpage
+
 \epigraph{Civility costs nothing and buys everything.}{Mary Wortley Montagu 1756}
 \epigraph{Civility is on the ballot.}{Barack Obama 2016}
 %Respect for women is on the ballot. Tolerance is on the ballot. Justice is on the ballot. Equality is on the ballot. Democracy is on the ballot.
@@ -136,37 +141,41 @@ In the following, I will refer to the models reported in the table on pp.13.
 
 \textit{Random intercept hypothesis:} The intraclass correlation indicates that approximately 11\% of the variation in perceived toxicity is attributable to individual factors whereas 39\% of the variation comes from features of the comments (see Model 1). 
 
-\textit{Individual-level hypothesis:} Several individual-level predictors are associated with perceived toxicity. For example, a 2 standard deviation increase in political ideology -- i.e., an increase of approximately 3.5 points on a 1 to 7 scale corresponding to a shift from extremely liberal to moderate or from moderate to extremely conservative -- is associated with an approximate decrease of 6 percentage points in average perceived toxicity, controlling for other variables in the model. More broadly, this association suggests that liberals are more sensitive while conservatives are less so. The magnitude of this association is comparable to a 20-year increase in age. While older folks tend to be less sensitive, more educated people tend to rate comments as more toxic on average. Finally, the coefficient for \textit{Order} suggests that processes by which people get numbed partially explain insensitivity. Having been exposed to six comments before rating the 7th is comparable to the magnitude of the association with political ideology. In total, the individual-level predictors in Model 2 explain 9\% of the variance at the individual level -- i.e. 9\% of 11\%.
+\textit{Individual-level hypothesis:} Several individual-level predictors are associated with perceived toxicity. For example, a 2 standard deviation increase in political ideology -- i.e., an increase of approximately 3.5 points on a 1 to 7 scale corresponding to a shift from extremely liberal to moderate or from moderate to extremely conservative -- is associated with an approximate decrease of 6 percentage points in average perceived toxicity, controlling for other variables in the model. More broadly, this association suggests that liberals are more sensitive while conservatives are less so. The magnitude of this association is comparable to a 20-year increase in age. While older folks tend to be less sensitive, more educated people tend to rate comments as more toxic on average. Finally, the coefficient for \textit{Order} -- i.e., the number of conservations that survey respondents have evaluated before -- suggests that processes by which people get numbed partially explain insensitivity. Having been exposed to six comments before rating the 7th is comparable to the magnitude of the association with political ideology. In total, the individual-level predictors in Model 2 explain 9\% of the variance at the individual level -- i.e. 9\% of 11\%.
 
-\textit{Context-level hypothesis:} The comments on the following topics are considered significantly more toxic (example Facebook comments in parenthesis): 
+\textit{Context-level hypothesis:} According to model 3, comments on the following topics are considered significantly more toxic (example Facebook comments in parenthesis): 
 \begin{itemize}
-    \item Negative characterization of America (e.g. ``The US is governed by incompetent politicians")
+    \item Anti-America (e.g. ``The US is governed by incompetent politicians")
     \item Suggestive content (e.g. ``Prostitutes will be like ...")
-    \item Negative characterization of Hillary Clinton (e.g. ``Hillary is a liar and she will never be president of the United States")
-    \item Drugs (e.g. ``She's high on drugs of stupidity", ``And who's fault is it that the cartels exist?? Your people")
-    \item Negative characterization of immigrants (e.g. ``The immigrants steal our jobs")
+    \item Anti-Hillary Clinton (e.g. ``Hillary is a liar and she will never be president of the United States")
+    \item Anti-Immigrants (e.g. ``The immigrants steal our jobs")
+    \item Anti-White people (e.g. ``Almost all Caucasians have ancestors that were thieves, murderers, and rapists")
 \end{itemize}
 
-Only two topics are perceived as significantly less toxic on average.
+The following topics are perceived as significantly less toxic on average.
 
 \begin{itemize}
-    \item Positive characterization of Hillary Clinton (e.g. ``During the debates, Hillary will mop Donald Trump off of the floor and him into the sewer because she is 20x smarter")
-    \item Positive characterization of immigrants (e.g. ``Most immigrants are actually highly educated doctors, lawyers, and computer engineers")
+    \item Pro-Hillary Clinton (e.g. ``During the debates, Hillary will mop Donald Trump off of the floor and him into the sewer because she is 20x smarter")
+    \item Pro-Immigrants (e.g. ``Most immigrants are actually highly educated doctors, lawyers, and computer engineers")
+    \item Pro-Abortion (e.g. ``Some women don't want to have kids at a particular time. Some never want to have kids. Second, most women who have abortions do so because of financial reasons. Third, contraception isn't 100 percent effective. Some types are only 75 percent or so effective.")
+    \item Anti-Guns (e.g. ``We have too many guns, too easily had, by too many people. Guns within easy reach are far more likely to do harm than good.")
 \end{itemize}
 
 Comparing the a model only with random intercepts against model that also includes the topic predictors (not shown in table), we find that including the 14 topics explains about 13.7\% of the variance in perceived toxicity at the conversation level -- i.e. 13.7\% of the 39\%. 
 
 
 
-\textit{Random slope hypothesis:} According to model 4,\footnote{Model 4 did not converge when using both random slopes and control variables.} the standard deviation of the random slopes for political ideology estimated for each comment is 0.085. Based on this, we estimate that 95\% of the slopes are between $-0.065 - 1.96\times 0.085=-0.23$ and  $-0.0645 + 1.96 \times 0.085=0.10$. In line with our hypothesis above, this means that the relationship between political and perceived toxicity is zero for some comments. In other words, some comments do not elicit a reaction across the ideological spectrum. These comments might be too short, unintelligible, or uncontroversial.
+\textit{Random slope hypothesis:} According to model 4, the standard deviation of the random slopes for political ideology estimated for each comment is 0.085. Based on this, we estimate that 95\% of the slopes are between $-0.065 - 1.96\times 0.085=-0.23$ and  $-0.0645 + 1.96 \times 0.085=0.10$. In line with our hypothesis above, this means that the relationship between political and perceived toxicity is zero for some comments. In other words, some comments do not elicit a reaction across the ideological spectrum. These comments might be too short, unintelligible, or uncontroversial.
 
-\textit{Cross-level interaction hypothesis:} Model 5 estimates interactions effects. For a given topic, a negative effect means that conservatives perceive a comment as less toxic than liberals. Conservatives find comments that endorse abortion, immigration, Hillary Clinton, and that characterize Trump negatively significantly more toxic than liberals. Conservatives perceive comments related to anti-America rhetoric, pro-Trump, anti-Clinton, and anti-abortion as less toxic. In sum, I find support for the hypothesis that the association between political ideology and perceived toxicity depends on the topic. These interaction effects were estimated in a single model. Estimates from separate models are very similar in terms of the sign and statistical significance of the coefficients (see Table \ref{tab:interaction-effects-comparison}).
+\textit{Cross-level interaction hypothesis:} Model 5 estimates interactions effects. For a given topic, a negative effect means that conservatives perceive a comment as less toxic than liberals. Conservatives find comments that endorse immigration and that characterize Trump negatively significantly more toxic than liberals. Conservatives perceive comments related to anti-immigration, pro-Trump, anti-Clinton, and anti-abortion as less toxic. In sum, I find support for the hypothesis that the association between political ideology and perceived toxicity depends on the topic. These interaction effects were estimated in a single model. Estimates from separate models are very similar in terms of the sign and statistical significance of the coefficients (see Table \ref{tab:interaction-effects-comparison}).
 
 \section{Conclusion and Discussion}
 
-Conversations are a crucial element in the democratic process. If someone perceives a conversation as toxic, they might be reluctant to share their perspective or disengage altogether. This study offers preliminary results on the determinants of perceived toxicity in conversations. We find that more variation in perceived toxicity is attributable to the features of comments than to individual-level factors (approximately 3.5 times more variation). Across comments, liberals are more sensitive than conservatives, and this effect seems sizable compared to other predictors' effects. Why are conservatives less sensitive? On average, conservatives have been exposed to more irritating content on social media more often than liberals. For example, \citet{bakshy_exposure_2015} find that conservatives encounter more content that cuts across ideological lines than liberals through friends, their user feed, and the content they click on. That said, the relationship between political ideology and perceived toxicity is not uniform. Both conservatives and liberals are more sensitive when it comes to certain issues. In line with social identity theory, for instance, liberals perceive negative comments on Hillary Clinton as more toxic and conservatives are more sensitive towards negative portrayals of Donald Trump. 
+This study offers preliminary results on the determinants of perceived toxicity in conversations. We find that more variation in perceived toxicity is attributable to the features of comments than to individual-level factors (approximately 3.5 times more variation). Across comments, liberals are more sensitive than conservatives, and this effect seems sizable compared to other predictors' effects. Why are conservatives less sensitive? On average, conservatives have been exposed to more irritating content on social media more often than liberals. For example, \citet{bakshy_exposure_2015} find that conservatives encounter more content that cuts across ideological lines than liberals through friends, their user feed, and the content they click on. That said, the relationship between political ideology and perceived toxicity is not uniform. Both conservatives and liberals are more sensitive when it comes to certain issues. In line with social identity theory, for instance, liberals perceive negative comments on Hillary Clinton as more toxic and conservatives are more sensitive towards negative portrayals of Donald Trump.
 
-While these results are promising, we would be remiss not to mention this work's shortcomings. Toxicity is only one dimension of civility and similar analyses can be conducted for other dependent variables in this dataset, including perceived hate speech or perceived productivity of a conversation. A similar point can be made about the independent variables in this study; many more deserve closer attention than was given in this short report. Last, this analysis has raised more questions than it provides answers. What are the social and psychological processes that underlie differences in perceived toxicity between liberals and conservatives? We will address this question in an expanded version of this research project. 
+These findings have important implications since conversations are a crucial element in the democratic process. If someone perceives a conversation as toxic, they might be reluctant to share their perspective or disengage altogether. Differences in whether a statement counts as a major transgression or a peccadillo may explain fierce disagreement in public debates -- it is unclear how to rectify social problems or to agree upon an appropriate punishment of a perpetrator if people hold irreconcilable views on whether a problematic event occurred (\citealp{hastorf_game_1954}; \citealp{haslam_harm_2020}).
+
+While the results of this study are promising, we would be remiss not to mention this work's shortcomings. Toxicity is only one dimension of civility and similar analyses can be conducted for other dependent variables in this dataset, including perceived hate speech or perceived productivity of a conversation. A similar point can be made about the independent variables in this study; many more deserve closer attention than was given in this short report. Last, this analysis has raised more questions than it provides answers. What are the social and psychological processes that underlie differences in perceived toxicity between liberals and conservatives? We will address this question in an expanded version of this research project. 
 
 \newpage
 \bibliographystyle{asr}
@@ -188,13 +197,13 @@ While these results are promising, we would be remiss not to mention this work's
     R1 & P56 & A56 & B56 \\
     R1 & P6 & A6 & B6 \\
     \midrule
-    R3 & P4 & A4 & B4 \\
-    R3 & P22 & A22 & B22 \\
-    R3 & P6 & A6 & B6 \\
-    R3 & P7 & A7 & B7 \\
-    R3 & P9994 & A9994 & B9994 \\
-    R3 & P11 & A11 & B11 \\
-    R3 & P55 & A55 & B55 \\
+    R2 & P4 & A4 & B4 \\
+    R2 & P22 & A22 & B22 \\
+    R2 & P6 & A6 & B6 \\
+    R2 & P7 & A7 & B7 \\
+    R2 & P9994 & A9994 & B9994 \\
+    R2 & P11 & A11 & B11 \\
+    R2 & P55 & A55 & B55 \\
     \midrule
     \dots & \dots & \dots & \dots \\
     \hline
@@ -296,3 +305,4 @@ Reasoning: This comment is irrelevant because it does not directly refer to immi
 \clearpage
 
 \end{document}
+
