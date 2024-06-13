@@ -146,6 +146,22 @@ full_measures
 
 
 ################################################################################
+# Data-driven ("exploratory") factor analysis
+
+efa2 = dt %>% 
+  select(all_of(c(polite,constructive))) %>% 
+  na.omit() %>% 
+  fa(.,
+     nfactors = 2, 
+     fm = "ml", 
+     cor = "cor", 
+     rotate = "oblimin", 
+     n.iter = 50)
+efa2
+
+
+
+################################################################################
 # Report results
 ################################################################################
 
@@ -185,39 +201,23 @@ semPaths(polcon, whatLabels = "std",nCharNodes=20,fade=F,curve=2,residuals=T,sha
          label.font=1, label.scale=T, node.width=1.5, thresholds=F,edge.label.cex = 1, what="std")
 dev.off()
 
-
-
-
-
-rcov = lavResiduals(full)$cov
-rcov  
-which(abs(rcov)>0.2)
-corrplot(rcov, method = "color", tl.col = "black")
-
-efa2 = dt %>% 
-  select(all_of(c(polite,constructive))) %>% 
-  na.omit() %>% 
-  fa(.,
-     nfactors = 2, 
-     fm = "ml", 
-     cor = "cor", 
-     rotate = "oblimin", 
-     n.iter = 50)
-efa2
+# exploratory factor analysis
+pdf("Figures/16_EFA2Factors.pdf")
 fa.diagram(efa2,cut = 0.01,main = "Exploratory factor analysis")
+dev.off()
 
 
-efa3 = dt %>% 
-  select(all_of(c(polite,constructive))) %>% 
-  na.omit() %>% 
-  fa(.,
-     nfactors = 3, 
-     fm = "ml", 
-     cor = "cor", 
-     rotate = "oblimin", 
-     n.iter = 50)
-efa3
-fa.diagram(efa3,cut = 0.01,main = "Exploratory factor analysis")
+# 
+
+
+
+
+
+
+
+
+
+
 
 # SEM: Perceived constructiveness causes evaluators to see posts as Agreement, Staying on topic
 # It's okay to omit covariance terms but mention them in appendix
