@@ -121,13 +121,14 @@ if(length(CovsLabs) != length(Covs)) warning("Length mismatch");
 
 CovsLean = Covs[-which(Covs %in% c("target_id","Order"))]
 
-DVsTable = tibble(DVs = c("UnderstandBNum01","BMakesEffortNum01","BStaysOnTopicNum01","BAgreesNum01",
+DVsTable = tibble(DVs = c("UnderstandBNum01","BMakesEffortNum01","BStaysOnTopicNum01","BAgreementNum01",
                           "BRespectful","BOpen","BObjective","BEmotional","BSarcastic","BIntolerant","BHostile","BNoneabove",
                           "BToxicNum01","BUseHateSpeechNum01","ProductiveNum01"), 
-                  BinaryDVs = c("UnderstandB","BMakesEffort","BStaysOnTopic","BAgrees",
+                  BinaryDVs = c("UnderstandB","BMakesEffort","BStaysOnTopic","BAgreement",
                                 "BRespectful","BOpen","BObjective","BEmotional","BSarcastic","BIntolerant","BHostile","BNoneabove",
-                                "BIsToxic","BUseHateSpeech","IsProductive"),
-                  CatDVs = c("UnderstandB","BMakesEffort","BStaysOnTopic","BAgrees",
+                                "BIsToxic","BUseHateSpeech","IsProductive"
+                                ),
+                  CatDVs = c("UnderstandB","BMakesEffort","BStaysOnTopic","BAgreement",
                              "BRespectful","BOpen","BObjective","BEmotional","BSarcastic","BIntolerant","BHostile","BNoneabove",
                              "Toxicity","BUseHateSpeech","Productive"),
                   Labs = c("Understand B","B makes effort","B stays on topic","B agrees",

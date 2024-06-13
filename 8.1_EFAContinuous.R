@@ -11,13 +11,14 @@ dt = read_csv(fpath, col_types = c("target_id"="character")) %>%
   mutate(Partisanship = factor(Partisanship, levels=PartisanshipLevels), 
          PolId = factor(PolId,levels=PolIdLevels))
 
+DVs = DVs[ - which(DVs %in% c("BNoneabove","UnderstandB")) ]
 
 
 
 # Split dataset ----------------------------------------------------------------
 
 # Indices for EFA and CFA
-set.seed(0218)
+set.seed(1)
 
 # use subset of respondents in training data
 RespN = floor(FaPSplit * length(unique(dt$ResponseId)))
@@ -51,8 +52,8 @@ scree(efa_cor, factors = F)
 
 
 efa1 = custom_fa(dt_efa, .nfactors = 1)
-efa2 = custom_fa(dt_efa, .nfactors = 2)
-efa3 = custom_fa(dt_efa, .nfactors = 3,.niter = 1000)
+efa2 = custom_fa(dt_efa, .nfactors = 2,.niter = 500)
+efa3 = custom_fa(dt_efa, .nfactors = 3, .niter = 500)
 efa4 = custom_fa(dt_efa, .nfactors = 4)
 efa5 = custom_fa(dt_efa, .nfactors = 5)
 
@@ -60,8 +61,8 @@ efa5 = custom_fa(dt_efa, .nfactors = 5)
 # Solid black lines indicate positive significant loadings
 # Dotted red lines indicate negative significant loadings
 fa.diagram(efa1,cut = 0.1,main = "Exploratory factor analysis with 1 factor")
-fa.diagram(efa2,cut = 0.3,main = "Exploratory factor analysis")
-fa.diagram(efa3,cut = 0.3,main = "Exploratory factor analysis with 3 factors")
+fa.diagram(efa2,cut = 0.1,main = "Exploratory factor analysis")
+fa.diagram(efa3,cut = 0.1,main = "Exploratory factor analysis with 3 factors")
 fa.diagram(efa4,cut = 0.3,main = "Exploratory factor analysis")
 fa.diagram(efa5)
 

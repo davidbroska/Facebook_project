@@ -23,7 +23,7 @@ dt$BTolerant = 1- dt$BIntolerant
 
 AppDVsCommon = DVs[which(!DVs %in% c("BToxicNum01","BUseHateSpeechNum01","BHostile","BIntolerant",
                                      "BNoneabove","BEmotional","BSarcastic","BOpen","BObjective"))]
-AppDVsCommon = c(AppDVsCommon, c("BNotToxicNum01","BNoHateSpeech","BNotHostile","BTolerant"))
+AppDVsCommon = c(AppDVsCommon, c("BNotToxicNum01","BNoHateSpeech","BNotHostile","BTolerant","BRespectful"))
 # Our theory contains 10 variables
 length(AppDVsCommon)
 

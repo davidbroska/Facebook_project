@@ -50,7 +50,7 @@ summ_covs %>%
   filter(Type %in% c("Dependent Variable","Demographics")) %>% 
   knitr::kable(format = "latex",digits = 2, label = "summ-tab-ind",booktabs=T,
                caption = "Summary statistics on characteristics of survey respondents") %>% 
-  kableExtra::kable_styling(latex_options = "hold_position") %>% 
+  kableExtra::kable_styling(latex_options = "HOLD_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
   writeLines("Tables/summary_stats_ind.tex")
 
@@ -58,7 +58,7 @@ summ_covs %>%
   filter(Type %in% c("Topic","Other")) %>% 
   knitr::kable(format = "latex",digits = 2,label = "summ-tab-topics",booktabs=T,
                caption = "Summary statistics on conversation characteristics (1). Topics and Other") %>% 
-  kableExtra::kable_styling(latex_options = "hold_position") %>% 
+  kableExtra::kable_styling(latex_options = "HOLD_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
   writeLines("Tables/summary_stats_topics.tex")
 
@@ -66,7 +66,7 @@ summ_covs %>%
   filter(Type %in% c("Moral Foundations")) %>% 
   knitr::kable(format = "latex",digits = 2,label = "summ-tab-emf",booktabs=T,
                caption = "Summary statistics on conversation characteristics (2). Moral foundations dictionary") %>% 
-  kableExtra::kable_styling(latex_options = "hold_position") %>% 
+  kableExtra::kable_styling(latex_options = "HOLD_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
   writeLines("Tables/summary_stats_emf.tex")
 
@@ -74,7 +74,7 @@ summ_covs %>%
   filter(Type %in% c("LIWC")) %>% 
   knitr::kable(format = "latex",digits = 2,label = "summ-tab-liwc",booktabs=T,
                caption = "Summary statistics on conversation characteristics (3). LIWC") %>% 
-  kableExtra::kable_styling(latex_options = "hold_position") %>% 
+  kableExtra::kable_styling(latex_options = "HOLD_position") %>% 
   kableExtra::collapse_rows(columns = 1) %>% 
   writeLines("Tables/summary_stats_liwc.tex")
 
@@ -243,11 +243,12 @@ dt %>%
   ggplot(aes(PolIdComp,avg)) + 
   geom_line() + 
   facet_wrap(~ name,nrow=3) +
-  #scale_y_continuous(breaks = seq(0,.7,.1)) + 
+  scale_x_continuous(breaks = 1:7) + 
   theme(axis.text.x = element_text(angle=90,size = 6),
         plot.caption = element_text(hjust = 0)) +
   labs(x="Political ideology",y="Average rating",
-       caption="Note: We take the average agreement per comment because we have more ratings from liberals than from moderates and conservatives.")
+       caption="Note: For each comment, we subtract the average rating because some comments are generally more or less civil")
+ggsave("Figures/2_linescivility.pdf",width = PlotWidth, height=PlotHeight)
 
 
   

@@ -342,35 +342,51 @@ dt = dt %>%
     BMakesEffortNum01 = (BMakesEffortNum + 1) / 2,
     # 3. Do you think that Commenter B is staying on topic in their response to Commenter A?
     BStaysOnTopic = ifelse(stayontopic=="Yes",1,0),
-    BStaysOnTopicNum = case_when(stayontopic=="Yes"     ~ 1,
-                                stayontopic=="Not sure" ~ 0, 
-                                stayontopic=="No"       ~-1),
+    BStaysOnTopicNum = case_when(stayontopic=="Yes"      ~ 1,
+                                 stayontopic=="Not sure" ~ 0, 
+                                 stayontopic=="No"       ~-1),
     BStaysOnTopicNum01 = (BStaysOnTopicNum + 1) / 2,
     # 4. In your view, does Commenter B agree or disagree with Commenter A?
-    BAgrees = ifelse(disagree %in% c("Strongly Agrees","Agrees"),1,0),
-    BAgreesNum = case_when(disagree=="Strongly Agrees"     ~ 2,
+    BAgreement = ifelse(disagree %in% c("Strongly Agrees","Agrees"),1,0),
+    BAgreementNum = case_when(disagree=="Strongly Agrees"     ~ 2,
                            disagree=="Agrees"              ~ 1,
                            disagree %in% c("Not sure","Neither Agrees nor Disagrees") ~ 0, 
                            disagree=="Disagrees"           ~-1,
                            disagree=="Strongly Disagrees"  ~-2),
-    BAgreesNum01 = (BAgreesNum + 2) / 4,
+    BAgreementNum01 = (BAgreementNum + 2) / 4,
+    BDisOrAgreesNum = abs(BAgreementNum),
     # 5. to 12. Which of the following words would you use to describe Commenter B's attitude towards Commenter A? Please check all that apply.
+    # Respectful
     BRespectful = attitude_respectful,
+    BNotRespectful = 1 - attitude_respectful,
+    # Open to different opinions
     BOpen = attitude_open,
+    # Objective
     BObjective = attitude_objective,
+    BObjNotEmo = attitude_objective - attitude_emotional,
+    # Emotional
     BEmotional = attitude_emotional,
+    BNotEmotional = 1 - BEmotional,
+    # Sarcastic
     BSarcastic = attitude_sarcastic,
+    BNotSarcastic = 1 - BSarcastic,
+    # Intolerant
     BIntolerant = attitude_intolerant,
+    BNotIntolerant = 1 - BIntolerant,
+    # Hostile
     BHostile = attitude_hostile,
+    BNotHostile = 1 - BHostile,
+    # None of the above
     BNoneabove = attitude_noneabove,
     # 13. Rate the toxicity of Commenter B's comment.
     # Very toxic: A comment that is very hateful, aggressive, disrespectful, or otherwise very likely to make a user leave a discussion or give up on sharing their perspective.
     # Toxic: A comment that is rude, disrespectful, unreasonable, or otherwise somewhat likely to make a user leave a discussion or give up on sharing their perspective.
     BIsToxic = ifelse(Toxicity %in% c("Toxic","Very toxic"),1,0), 
     BToxicNum = case_when(Toxicity=="Not toxic" ~ -1,
-                          Toxicity=="Maybe, not sure"~0,
-                          Toxicity=="Toxic"~1, 
-                          Toxicity=="Very toxic"~2),
+                          Toxicity=="Maybe, not sure"~ 0,
+                          Toxicity=="Toxic"~ 1, 
+                          Toxicity=="Very toxic"~ 2),
+    BNotToxicNum = max(BToxicNum,na.rm=T) - BToxicNum,
     BToxicNum01 = (BToxicNum + 1) / 3,
     # 14. In your opinion, does Commenter B use hate speech? If so, who are the targets? Check all that apply.  
     # Hate speech: A comment that uses pejorative/discriminatory language or attacks persons/groups on the basis of who they are,
@@ -378,6 +394,7 @@ dt = dt %>%
     BUseHateSpeech = ifelse(hatespeech_author==1|hatespeech_commenterA==1|hatespeech_others==1,1,0), 
     BUseHateSpeechNum = hatespeech_commenterA + hatespeech_author + hatespeech_others - hatespeech_no,
     BUseHateSpeechNum01 = (BUseHateSpeechNum + 1) / 4,
+    BNoHateSpeechNum = hatespeech_no - hatespeech_author - hatespeech_commenterA - hatespeech_others,
     # Do you think that this was a productive conversation?
     ProductiveNum = case_when(Productive=="No" ~ -1,
                               Productive=="Not sure"~0,
@@ -411,9 +428,9 @@ dt$TargetLikesCount = log(dt$target_likes_count+1)
 dt$TargetLikesCount2Sd = scale2(dt$TargetLikesCount)
 
 # grand mean center variables 
-numeric_vars = c(DVs,Covs)[ sapply(dt[c(DVs,Covs)], is.numeric) ] 
-dt = dt %>% 
-  mutate(across(all_of(numeric_vars), ~.-mean(.,na.rm=T)))
+# numeric_vars = c(DVs,Covs)[ sapply(dt[c(DVs,Covs)], is.numeric) ] 
+# dt = dt %>% 
+#   mutate(across(all_of(numeric_vars), ~.-mean(.,na.rm=T)))
 
 
 
@@ -500,7 +517,9 @@ dt = dt %>%
          Order,Order2Sd,OrderCat,
          PartyId,
          PolId = r_ideo, PolIdNum, 
-         Partisanship, PartisanshipNum, 
+         Partisanship, PartisanshipNum, BStaysOnTopicNum,BUseHateSpeechNum,
+         BNotIntolerant,BNotEmotional,BNoHateSpeechNum, BMakesEffortNum,BNotHostile,
+         BNotSarcastic,BDisOrAgreesNum,BNotRespectful,BObjNotEmo,
          PolIdComp, PolIdComp2Sd,
          Age, Age2Sd, AgeCat, 
          Gender, Man,Woman,OtherGender,
@@ -511,8 +530,8 @@ dt = dt %>%
          Jewish,Muslim,NotReligious,ReligionNoAnswer,OtherReligion,
          SexualOrientation, HhSize, Region, 
          Income, Income1k, Income2Sd,
-         BAgreesNum,
-         Toxicity,BToxicNum,Productive,ProductiveNum,
+         BAgreementNum,UnderstandBNum,
+         Toxicity,BToxicNum,BNotToxicNum,Productive,ProductiveNum,
          TargetLikesCount,TargetLikesCount2Sd,
          all_of(DVs), 
          all_of(BinaryDVs),
